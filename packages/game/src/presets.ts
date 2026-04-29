@@ -42,6 +42,7 @@ type VehiclePresetOptions = Pick<
   | 'cameraHeight'
   | 'cameraLerp'
   | 'focusHeight'
+  | 'input'
 >;
 type SharedVehiclePresetOptions = Pick<
   VehicleControllerOptions,

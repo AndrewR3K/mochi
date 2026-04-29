@@ -3,6 +3,11 @@ import { useGame } from '@lite3d/engine-vue';
 import { createVehicleArcadeController, distance2d, type Entity } from '@lite3d/game';
 import { computed, onBeforeUnmount, shallowRef } from 'vue';
 
+interface Gate {
+  entity: Entity;
+  color: { x: number; y: number; z: number };
+}
+
 const game = useGame();
 const scene = game.createScene();
 const lap = shallowRef(1);
@@ -22,10 +27,10 @@ const track = [
   createBox('track-c', 0, 0.24, 0, 5.8, 0.5, 5.8, { x: 0.16, y: 0.2, z: 0.35 }),
 ];
 const gates = [
-  createBox('gate-0', 0, 0.9, 9.2, 4, 1.8, 0.25, { x: 0.3, y: 0.95, z: 1 }),
-  createBox('gate-1', 9.2, 0.9, 0, 0.25, 1.8, 4, { x: 0.36, y: 0.95, z: 1 }),
-  createBox('gate-2', 0, 0.9, -9.2, 4, 1.8, 0.25, { x: 0.36, y: 0.95, z: 1 }),
-  createBox('gate-3', -9.2, 0.9, 0, 0.25, 1.8, 4, { x: 0.36, y: 0.95, z: 1 }),
+  createGate('gate-0', 0, 0.9, 9.2, 4, 1.8, 0.25, { x: 0.3, y: 0.95, z: 1 }),
+  createGate('gate-1', 9.2, 0.9, 0, 0.25, 1.8, 4, { x: 0.36, y: 0.95, z: 1 }),
+  createGate('gate-2', 0, 0.9, -9.2, 4, 1.8, 0.25, { x: 0.36, y: 0.95, z: 1 }),
+  createGate('gate-3', -9.2, 0.9, 0, 0.25, 1.8, 4, { x: 0.36, y: 0.95, z: 1 }),
 ];
 
 const controller = createVehicleArcadeController(game, {
@@ -50,7 +55,7 @@ scene.onFrame(({ delta, elapsed }) => {
   lapTimer.value += delta;
   speed.value = Math.abs(controller.getSpeed());
 
-  const currentGate = gates[checkpoint.value];
+  const currentGate = gates[checkpoint.value].entity;
   if (distance2d(car, currentGate) < 1.75) {
     checkpoint.value += 1;
     if (checkpoint.value >= gates.length) {
@@ -65,9 +70,7 @@ scene.onFrame(({ delta, elapsed }) => {
 
   for (let i = 0; i < gates.length; i += 1) {
     const active = i === checkpoint.value;
-    const renderable = gates[i].renderable;
-    if (!renderable) continue;
-    const color = renderable.material.color;
+    const color = gates[i].color;
     color.x = active ? 0.22 : 0.36;
     color.y = active ? 1 : 0.95;
     color.z = active ? 0.72 : 1;
@@ -93,6 +96,22 @@ function createBox(
     transform: { position: { x, y, z }, scale: { x: sx, y: sy, z: sz } },
     renderable: { primitive: 'cube', material: { color } },
   });
+}
+
+function createGate(
+  id: string,
+  x: number,
+  y: number,
+  z: number,
+  sx: number,
+  sy: number,
+  sz: number,
+  color: { x: number; y: number; z: number },
+): Gate {
+  return {
+    entity: createBox(id, x, y, z, sx, sy, sz, color),
+    color,
+  };
 }
 
 </script>

@@ -1,5 +1,11 @@
 import type { Entity } from '@lite3d/runtime';
 
+import {
+  DEFAULT_CHARACTER_INPUT_BINDINGS,
+  isBindingDown,
+  wasBindingPressed,
+  type CharacterInputBindings,
+} from './bindings';
 import type { Game } from './game';
 
 export interface ThirdPersonControllerOptions {
@@ -8,6 +14,7 @@ export interface ThirdPersonControllerOptions {
   sprintMultiplier?: number;
   sprintKey?: string;
   jumpKey?: string;
+  input?: Partial<CharacterInputBindings>;
   jumpVelocity?: number;
   gravity?: number;
   doubleJump?: boolean;
@@ -45,8 +52,12 @@ export function createThirdPersonController(
   const target = options.target;
   const moveSpeed = options.moveSpeed ?? 5;
   const sprintMultiplier = options.sprintMultiplier ?? 1.6;
-  const sprintKey = options.sprintKey ?? 'ShiftLeft';
-  const jumpKey = options.jumpKey ?? 'Space';
+  const inputBindings = {
+    ...DEFAULT_CHARACTER_INPUT_BINDINGS,
+    sprint: options.sprintKey ?? DEFAULT_CHARACTER_INPUT_BINDINGS.sprint,
+    jump: options.jumpKey ?? DEFAULT_CHARACTER_INPUT_BINDINGS.jump,
+    ...options.input,
+  };
   const jumpVelocity = options.jumpVelocity ?? 7.8;
   const gravity = options.gravity ?? 22;
   const groundY = options.groundY ?? target.transform.position.y;
@@ -91,11 +102,11 @@ export function createThirdPersonController(
       z: Math.sin(yaw),
     };
     const moveZ =
-      Number(input.isKeyDown('KeyW') || input.isKeyDown('ArrowUp')) -
-      Number(input.isKeyDown('KeyS') || input.isKeyDown('ArrowDown'));
+      Number(isBindingDown(input, inputBindings.forward)) -
+      Number(isBindingDown(input, inputBindings.backward));
     const moveX =
-      Number(input.isKeyDown('KeyD') || input.isKeyDown('ArrowRight')) -
-      Number(input.isKeyDown('KeyA') || input.isKeyDown('ArrowLeft'));
+      Number(isBindingDown(input, inputBindings.right)) -
+      Number(isBindingDown(input, inputBindings.left));
     const x = right.x * moveX + forward.x * moveZ;
     const z = right.z * moveX + forward.z * moveZ;
     const length = Math.hypot(x, z);
@@ -104,7 +115,7 @@ export function createThirdPersonController(
       const normalizedX = x / length;
       const normalizedZ = z / length;
       const speed =
-        moveSpeed * (input.isKeyDown(sprintKey) ? sprintMultiplier : 1);
+        moveSpeed * (isBindingDown(input, inputBindings.sprint) ? sprintMultiplier : 1);
       target.transform.position.x += normalizedX * speed * delta;
       target.transform.position.z += normalizedZ * speed * delta;
       target.transform.rotation.y = Math.atan2(normalizedX, normalizedZ);
@@ -112,7 +123,7 @@ export function createThirdPersonController(
 
     settleOnGround();
 
-    if (canMove && input.wasKeyPressed(jumpKey) && jumpsRemaining > 0) {
+    if (canMove && wasBindingPressed(input, inputBindings.jump) && jumpsRemaining > 0) {
       verticalVelocity = jumpVelocity;
       jumpsRemaining -= 1;
     }

@@ -24,6 +24,8 @@ Pick presets by camera/control model first, then genre.
 - Kart/arcade racer -> `vehicleArcade`
 - Sim racer -> `vehicleSim`
 
+Use the playground `Preset Lab` demo to switch these camera/control models live. Use `First Person Range` for a focused `firstPerson` example, and `Tactics Board` for an `isometric` example.
+
 ## API patterns
 
 ### Explicit constructor
@@ -40,9 +42,122 @@ import { createControllerPreset } from '@lite3d/game';
 const controller = createControllerPreset(game, 'thirdPersonOrbit', { target: player });
 ```
 
+### Scene reset
+
+```ts
+scene.addReset(() => {
+  controller.reset();
+});
+
+scene.reset();
+```
+
+### Event signals
+
+```ts
+import { createEventSignal } from '@lite3d/game';
+
+const collected = createEventSignal<{ id: string }>();
+const collectedIds: string[] = [];
+const stop = collected.on(({ id }) => {
+  collectedIds.push(id);
+});
+
+collected.emit({ id: 'core-1' });
+stop();
+```
+
+### Entity components
+
+```ts
+import { createComponentType, getComponent, setComponent } from '@lite3d/game';
+
+const health = createComponentType<{ value: number }>('health');
+setComponent(player, health, { value: 100 });
+
+const playerHealth = getComponent(player, health);
+```
+
+### Runtime collision bodies
+
+```ts
+import { queryCollisionBodies, queryTriggerPairs, setBoxCollisionBody } from '@lite3d/game';
+
+setBoxCollisionBody(player);
+setBoxCollisionBody(exitZone, { trigger: true });
+
+const bodies = queryCollisionBodies(game.world.allEntities());
+const triggerPairs = queryTriggerPairs(bodies);
+```
+
+### Vue HUD stats
+
+```ts
+import { useGameStats } from '@lite3d/engine-vue';
+import { computed } from 'vue';
+
+const stats = useGameStats();
+const fpsLabel = computed(() => Math.round(stats.fps.value));
+```
+
+### Vue scene lifecycle
+
+```ts
+import { useGameScene } from '@lite3d/engine-vue';
+
+const sceneHandle = useGameScene();
+const scene = sceneHandle.scene;
+
+sceneHandle.reset();
+```
+
+### Material presets
+
+```ts
+import { createMaterial } from '@lite3d/game';
+
+const player = scene.createEntity({
+  renderable: {
+    primitive: 'cube',
+    material: createMaterial('solid'),
+  },
+});
+```
+
+### Debug bounds
+
+```ts
+import { createDebugBoxBounds, createDebugTargetMarker } from '@lite3d/game';
+
+createDebugBoxBounds(scene, colliders, {
+  enabled: () => showDebugBounds.value,
+});
+
+createDebugTargetMarker(scene, player, {
+  enabled: () => showDebugBounds.value,
+});
+```
+
+### Input bindings
+
+```ts
+const controller = createThirdPersonOrbitController(game, {
+  target: player,
+  input: {
+    forward: 'KeyI',
+    backward: 'KeyK',
+    left: 'KeyJ',
+    right: 'KeyL',
+    jump: 'Space',
+  },
+});
+```
+
 ## Tuning tips
 
 - Start with movement speed and camera distance.
+- Presets accept configurable keyboard bindings through `input`.
+- In vehicle presets, `forward` and `backward` map to throttle and brake.
 - For vehicle presets, tune `acceleration`, `maxSpeed`, `drag`, and `turnSpeed`.
 - Tune sensitivity and camera lerp before adding special logic.
 - Keep defaults unless you have a clear gameplay reason.

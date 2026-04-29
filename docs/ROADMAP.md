@@ -27,47 +27,51 @@ The engine should not become complex by default. AAA-level capability should be 
   - `Nightfall Run`
   - `Orbital Islands`
   - `Velocity Circuit`
+  - `Preset Lab`
+  - `First Person Range`
+  - `Tactics Board`
 
 ## Near-term checklist
 
 ### Runtime
 
-- [ ] Add stable entity/component helpers without overbuilding a full ECS.
+- [x] Add stable entity/component helpers without overbuilding a full ECS.
 - [x] Add scene lifecycle helpers (`createScene`, `mountScene`, `disposeScene`).
-- [ ] Add runtime-level collision primitives (`box`, `sphere`, `trigger`) so demos stop reimplementing collision locally.
-- [ ] Add event/channel helpers for score, damage, collection, and mission events.
+- [x] Add runtime-level collision primitives (`box`, `sphere`, `trigger`) so demos stop reimplementing collision locally.
+- [x] Add event/channel helpers for score, damage, collection, and mission events.
 - [ ] Add deterministic fixed-step mode examples.
 
 ### Rendering
 
-- [ ] Add basic directional/ambient lighting.
-- [ ] Add per-face or simple normal shading for cube/plane geometry.
-- [ ] Add debug rendering for bounds, triggers, and controller targets.
-- [ ] Add simple material presets (`solid`, `emissive`, `warning`, `neutral`).
+- [x] Add basic directional/ambient lighting.
+- [x] Add per-face or simple normal shading for cube/plane geometry.
+- [x] Add debug rendering for bounds and controller targets.
+- [x] Add simple material presets (`solid`, `emissive`, `warning`, `neutral`).
 - [ ] Add asset-loading direction after engine boundaries stabilize.
 
 ### Game facade
 
 - [x] Add scene mounting APIs that handle controller/listener/entity cleanup.
-- [ ] Add controller preset docs with live examples.
+- [x] Add controller preset docs with live examples.
 - [x] Add collision/world helper APIs promoted from playground patterns.
-- [ ] Add reset/replay helpers for demos and small games.
-- [ ] Add input binding config (`WASD`, arrows, gamepad-ready shape).
+- [x] Add reset/replay helpers for demos and small games.
+- [x] Add input binding config (`WASD`, arrows, gamepad-ready shape).
 
 ### Vue layer
 
 - [ ] Add a reusable demo shell/HUD pattern.
-- [ ] Add composables for game stats and scene state.
+- [x] Add composables for game stats.
+- [x] Add composables for scene state.
 - [ ] Keep Vue out of hot-loop simulation data.
-- [ ] Add examples for HUD-only Vue updates from runtime state.
+- [x] Add examples for HUD-only Vue updates from runtime state.
 
 ### Playground demos
 
-- [ ] Add a preset playground that can switch camera/control modes live.
-- [ ] Add a first-person demo.
-- [ ] Add a top-down or isometric tactics demo.
+- [x] Add a preset playground that can switch camera/control modes live.
+- [x] Add a first-person demo.
+- [x] Add a top-down or isometric tactics demo.
 - [x] Improve `Velocity Circuit` with vehicle-feeling steering instead of character-style movement.
-- [ ] Add visual debug toggles.
+- [x] Add visual debug toggles.
 
 ## Medium-term checklist
 

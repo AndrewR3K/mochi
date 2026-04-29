@@ -9,10 +9,10 @@ The long-term ambition is a full-featured, AAA-capable web game engine that rema
 
 ## What is in this repo
 
-- `packages/runtime` - headless runtime primitives (world, entities, transforms, input state, frame loop)
-- `packages/render-webgl` - custom WebGL2 renderer package
+- `packages/runtime` - headless runtime primitives (world, entities, components, collision bodies, transforms, input state, frame loop)
+- `packages/render-webgl` - custom WebGL2 renderer package with simple material lighting
 - `packages/game` - high-level facade (`createGame`), controller presets, scene lifecycle, and collision helpers
-- `packages/engine-vue` - Vue integration (`GameCanvas`, `useGame`, `useFrame`)
+- `packages/engine-vue` - Vue integration (`GameCanvas`, `useGame`, `useGameScene`, `useFrame`, `useGameStats`)
 - `apps/playground` - playable demo app with multiple showcase scenes
 
 ## Current controller presets
@@ -59,7 +59,7 @@ pnpm build
 ## Minimal usage (Vue + facade)
 
 ```ts
-import { createGame, createThirdPersonOverShoulderController } from '@lite3d/game';
+import { createGame, createMaterial, createThirdPersonOverShoulderController } from '@lite3d/game';
 
 const game = createGame({ canvas });
 const scene = game.createScene();
@@ -71,7 +71,7 @@ const player = scene.createEntity({
   },
   renderable: {
     primitive: 'cube',
-    material: { color: { x: 0.4, y: 0.6, z: 1 } },
+    material: createMaterial('solid'),
   },
 });
 
@@ -83,13 +83,19 @@ scene.onFrame(({ delta }) => {
 });
 ```
 
-Call `scene.dispose()` when switching scenes or unmounting UI to remove owned entities, frame listeners, and controllers.
+Call `scene.dispose()` when switching scenes or unmounting UI to remove owned entities, frame listeners, debug visuals, and controllers.
+Call `scene.reset()` to restore owned entity transforms and run custom scene reset hooks.
+Controller presets use WASD/arrows by default and accept an `input` map when a game needs custom bindings.
+Renderer lighting can be tuned with `createGame({ renderer: { lighting: { ambient, direction, directional } } })`.
 
 ## Playground demos
 
 - `Nightfall Run` - third-person combat-style traversal with hazards and extraction objective
 - `Orbital Islands` - jumping/double-jumping platform traversal
 - `Velocity Circuit` - arcade vehicle loop and checkpoint racing flow
+- `Preset Lab` - live controller preset switching sandbox
+- `First Person Range` - first-person movement and signal collection challenge
+- `Tactics Board` - isometric movement with blockers, capture zones, and debug bounds
 
 `vehicleArcade` and `vehicleSim` use vehicle-style throttle, braking, steering, drag, and chase camera behavior rather than character-style movement.
 

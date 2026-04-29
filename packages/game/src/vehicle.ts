@@ -1,5 +1,10 @@
 import type { Entity, World } from '@lite3d/runtime';
 
+import {
+  DEFAULT_VEHICLE_INPUT_BINDINGS,
+  isBindingDown,
+  type VehicleInputBindings,
+} from './bindings';
 import type { Game } from './game';
 
 export interface VehicleControllerOptions {
@@ -15,6 +20,7 @@ export interface VehicleControllerOptions {
   cameraLerp?: number;
   focusHeight?: number;
   groundY?: number;
+  input?: Partial<VehicleInputBindings>;
   enabled?: () => boolean;
   bounds?: {
     minX: number;
@@ -46,6 +52,10 @@ export function createVehicleController(
   const cameraLerp = options.cameraLerp ?? 10;
   const focusHeight = options.focusHeight ?? 0.8;
   const groundY = options.groundY ?? target.transform.position.y;
+  const inputBindings = {
+    ...DEFAULT_VEHICLE_INPUT_BINDINGS,
+    ...options.input,
+  };
   const startX = target.transform.position.x;
   const startY = target.transform.position.y;
   const startZ = target.transform.position.z;
@@ -55,11 +65,11 @@ export function createVehicleController(
   const unsubscribe = game.onFrame(({ delta, input, world }) => {
     const canMove = options.enabled?.() ?? true;
     const throttle =
-      Number(input.isKeyDown('KeyW') || input.isKeyDown('ArrowUp')) -
-      Number(input.isKeyDown('KeyS') || input.isKeyDown('ArrowDown'));
+      Number(isBindingDown(input, inputBindings.forward)) -
+      Number(isBindingDown(input, inputBindings.backward));
     const steer =
-      Number(input.isKeyDown('KeyD') || input.isKeyDown('ArrowRight')) -
-      Number(input.isKeyDown('KeyA') || input.isKeyDown('ArrowLeft'));
+      Number(isBindingDown(input, inputBindings.right)) -
+      Number(isBindingDown(input, inputBindings.left));
 
     if (canMove) {
       if (throttle > 0) {

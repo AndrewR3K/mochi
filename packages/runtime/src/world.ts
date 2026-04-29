@@ -9,6 +9,7 @@ import {
   type Transform,
   type Vec3,
 } from './math';
+import type { ComponentStore } from './components';
 
 export type EntityId = string;
 export type PrimitiveKind = 'cube' | 'plane';
@@ -25,6 +26,7 @@ export interface Renderable {
 export interface Entity {
   id: EntityId;
   transform: Transform;
+  readonly components: ComponentStore;
   renderable?: Renderable;
 }
 
@@ -70,6 +72,7 @@ export class World {
     const entity: Entity = {
       id: options.id ?? `entity-${this.nextId++}`,
       transform: transform(options.transform),
+      components: new Map(),
       renderable: options.renderable,
     };
 

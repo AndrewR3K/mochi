@@ -2,15 +2,21 @@
 import { GameCanvas } from '@lite3d/engine-vue';
 import { computed, shallowRef } from 'vue';
 
+import FirstPersonRangeDemo from './demos/FirstPersonRangeDemo.vue';
 import NightfallDemo from './DemoScene.vue';
 import OrbitalIslandsDemo from './demos/OrbitalIslandsDemo.vue';
+import PresetLabDemo from './demos/PresetLabDemo.vue';
+import TacticsBoardDemo from './demos/TacticsBoardDemo.vue';
 import VelocityCircuitDemo from './demos/VelocityCircuitDemo.vue';
 
-const selectedDemo = shallowRef<'nightfall' | 'orbital' | 'velocity'>('nightfall');
+const selectedDemo = shallowRef<'nightfall' | 'orbital' | 'velocity' | 'presets' | 'range' | 'tactics'>('nightfall');
 const demos = [
   { id: 'nightfall', label: 'Nightfall Run', component: NightfallDemo },
   { id: 'orbital', label: 'Orbital Islands', component: OrbitalIslandsDemo },
   { id: 'velocity', label: 'Velocity Circuit', component: VelocityCircuitDemo },
+  { id: 'presets', label: 'Preset Lab', component: PresetLabDemo },
+  { id: 'range', label: 'First Person Range', component: FirstPersonRangeDemo },
+  { id: 'tactics', label: 'Tactics Board', component: TacticsBoardDemo },
 ] as const;
 
 const currentDemo = computed(

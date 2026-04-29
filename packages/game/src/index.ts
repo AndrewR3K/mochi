@@ -1,5 +1,32 @@
 export { createGame, type Game, type GameOptions, type GameStats } from './game';
 export {
+  DEFAULT_CHARACTER_INPUT_BINDINGS,
+  DEFAULT_VEHICLE_INPUT_BINDINGS,
+  isBindingDown,
+  wasBindingPressed,
+  type CharacterInputBindings,
+  type KeyBinding,
+  type VehicleInputBindings,
+} from './bindings';
+export {
+  createEventSignal,
+  type EventListener,
+  type EventSignal,
+} from './events';
+export {
+  createDebugBoxBounds,
+  createDebugTargetMarker,
+  type DebugBoxBoundsOptions,
+  type DebugTargetMarkerOptions,
+  type DebugVisual,
+} from './debug';
+export {
+  MATERIAL_PRESET_COLORS,
+  createMaterial,
+  materialColor,
+  type MaterialPresetKind,
+} from './materials';
+export {
   createThirdPersonController,
   type ThirdPersonController,
   type ThirdPersonControllerOptions,
@@ -50,7 +77,17 @@ export {
   type VehicleControllerOptions,
 } from './vehicle';
 export type {
+  ComponentId,
+  ComponentStore,
+  ComponentType,
+  BoxCollisionOptions,
+  BoxCollisionShape,
+  CollisionBody,
+  CollisionPair,
+  CollisionShape,
+  CollisionShapeKind,
   Entity,
+  EntityComponent,
   EntityId,
   EntityOptions,
   FrameCallback,
@@ -61,8 +98,32 @@ export type {
   Renderable,
   Runtime,
   RuntimeOptions,
+  SphereCollisionOptions,
+  SphereCollisionShape,
   Transform,
   Vec3,
   World,
 } from '@lite3d/runtime';
-export { vec3 } from '@lite3d/runtime';
+export {
+  collisionBody,
+  createBoxCollisionBody,
+  createComponentType,
+  createSphereCollisionBody,
+  getCollisionBody,
+  getComponent,
+  hasComponent,
+  overlapsCollisionBodies,
+  queryCollisionBodies,
+  queryCollisionPairs,
+  queryComponents,
+  queryTriggerPairs,
+  removeComponent,
+  setBoxCollisionBody,
+  setComponent,
+  setSphereCollisionBody,
+  vec3,
+} from '@lite3d/runtime';
+export type {
+  WebGLLightingOptions,
+  WebGLRendererOptions,
+} from '@lite3d/render-webgl';

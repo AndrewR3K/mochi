@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useGame } from '@lite3d/engine-vue';
+import { useGame, useGameScene, useGameStats } from '@lite3d/engine-vue';
 import {
   createBoxCollider,
   createThirdPersonOverShoulderController,
@@ -10,7 +10,7 @@ import {
   type BoxCollider,
   type Entity,
 } from '@lite3d/game';
-import { computed, onBeforeUnmount, shallowRef } from 'vue';
+import { computed, shallowRef } from 'vue';
 
 interface Core {
   entity: Entity;
@@ -28,8 +28,8 @@ interface Sentry {
 }
 
 const game = useGame();
-const scene = game.createScene();
-const fps = shallowRef(0);
+const { scene, reset: resetScene } = useGameScene();
+const stats = useGameStats();
 const score = shallowRef(0);
 const shield = shallowRef(100);
 const missionTime = shallowRef(75);
@@ -37,6 +37,7 @@ const missionState = shallowRef<'running' | 'won' | 'lost'>('running');
 const resultTitle = computed(() =>
   missionState.value === 'won' ? 'MISSION COMPLETE' : 'MISSION FAILED',
 );
+const fpsLabel = computed(() => Math.round(stats.fps.value));
 const resultBody = computed(() => {
   if (missionState.value === 'won') {
     return 'You secured every core and reached the extraction gate.';
@@ -147,6 +148,17 @@ const controller = createThirdPersonOverShoulderController(game, {
   },
 });
 scene.add(controller);
+scene.addReset(() => {
+  score.value = 0;
+  shield.value = 100;
+  missionTime.value = 75;
+  missionState.value = 'running';
+  controller.reset();
+
+  for (const core of cores) {
+    core.collected = false;
+  }
+});
 
 scene.onFrame(({ delta, elapsed }) => {
   if (missionState.value === 'running') {
@@ -207,12 +219,6 @@ scene.onFrame(({ delta, elapsed }) => {
   ) {
     missionState.value = 'won';
   }
-
-  fps.value = Math.round(game.stats.fps);
-});
-
-onBeforeUnmount(() => {
-  scene.dispose();
 });
 
 function createCore(id: string, x: number, z: number): Core {
@@ -286,19 +292,7 @@ function resolveGroundHeight(): number {
 }
 
 function resetRun(): void {
-  score.value = 0;
-  shield.value = 100;
-  missionTime.value = 75;
-  missionState.value = 'running';
-  player.transform.position.x = 0;
-  player.transform.position.y = 0.65;
-  player.transform.position.z = 0;
-  player.transform.rotation.y = 0;
-  controller.reset();
-
-  for (const core of cores) {
-    core.collected = false;
-  }
+  resetScene();
 }
 </script>
 
@@ -310,7 +304,7 @@ function resetRun(): void {
       <div class="mission__stats">
         <span>{{ Math.ceil(missionTime) }}s</span>
         <span>{{ Math.ceil(shield) }} shield</span>
-        <span>{{ fps }} fps</span>
+        <span>{{ fpsLabel }} fps</span>
       </div>
       <p class="mission__hint">
         WASD to move. Shift to sprint. Space to double-jump. Drag mouse to orbit.
