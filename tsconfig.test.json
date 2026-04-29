@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "types": ["node"],
+    "paths": {
+      "@lite3d/core": ["packages/core/src/index.ts"],
+      "@lite3d/core/*": ["packages/core/src/*"],
+      "@lite3d/gameplay": ["packages/gameplay/src/index.ts"],
+      "@lite3d/gameplay/*": ["packages/gameplay/src/*"],
+      "@lite3d/renderer-webgl": ["packages/renderer-webgl/src/index.ts"],
+      "@lite3d/renderer-webgl/*": ["packages/renderer-webgl/src/*"],
+      "@lite3d/vue": ["packages/vue/src/index.ts"],
+      "@lite3d/vue/*": ["packages/vue/src/*"]
+    }
+  },
+  "include": ["packages/**/*.test.ts", "packages/**/test/**/*.ts"]
+}

@@ -2,9 +2,20 @@
   "name": "lite3d",
   "private": true,
   "packageManager": "pnpm@9.15.0",
-  "workspaces": ["packages/*", "apps/*"],
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
   "scripts": {
     "dev": "pnpm --filter playground dev",
-    "build": "pnpm --filter playground build"
+    "build": "pnpm --filter playground build",
+    "test": "node --import tsx --test \"packages/**/*.test.ts\"",
+    "typecheck": "pnpm -r --workspace-concurrency=1 --if-present typecheck && pnpm exec tsc -p tsconfig.test.json --noEmit",
+    "verify": "pnpm typecheck && pnpm test && pnpm build"
+  },
+  "devDependencies": {
+    "@types/node": "22.0.0",
+    "tsx": "4.8.1",
+    "typescript": "~5.7.2"
   }
 }
