@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck runtime
+        run: pnpm --filter @lite3d/runtime typecheck
+
+      - name: Typecheck render-webgl
+        run: pnpm --filter @lite3d/render-webgl typecheck
+
+      - name: Typecheck game
+        run: pnpm --filter @lite3d/game typecheck
+
+      - name: Build playground
+        run: pnpm --filter playground build

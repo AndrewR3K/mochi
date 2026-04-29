@@ -1,0 +1,14 @@
+# Default owner for all files
+* @AndrewR3K-AI
+
+# CI and repo process
+.github/** @AndrewR3K-AI
+
+# Core engine packages
+packages/runtime/** @AndrewR3K-AI
+packages/render-webgl/** @AndrewR3K-AI
+packages/game/** @AndrewR3K-AI
+packages/engine-vue/** @AndrewR3K-AI
+
+# Demo application
+apps/playground/** @AndrewR3K-AI
