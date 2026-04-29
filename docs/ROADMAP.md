@@ -18,10 +18,10 @@ The engine should not become complex by default. AAA-level capability should be 
 
 ## Current status
 
-- Headless runtime package exists.
-- Custom WebGL2 renderer package exists.
-- Game facade exists.
-- Vue visibility layer exists.
+- `@lite3d/core` exists for headless world, input, components, and frame-loop primitives.
+- `@lite3d/renderer-webgl` exists as the current custom WebGL2 renderer.
+- `@lite3d/gameplay` exists for the high-level facade, controller presets, scene lifecycle, and gameplay helpers.
+- `@lite3d/vue` exists as the Vue adapter for canvas hosting and HUD/UI ergonomics.
 - Controller preset taxonomy exists.
 - Playground has multiple demos:
   - `Nightfall Run`
@@ -40,6 +40,7 @@ The engine should not become complex by default. AAA-level capability should be 
 - [x] Add runtime-level collision primitives (`box`, `sphere`, `trigger`) so demos stop reimplementing collision locally.
 - [x] Add event/channel helpers for score, damage, collection, and mission events.
 - [ ] Add deterministic fixed-step mode examples.
+- [x] Add initial runtime tests for fixed-step ticking, input frame reset, math transforms, and collision queries.
 
 ### Rendering
 
@@ -75,8 +76,9 @@ The engine should not become complex by default. AAA-level capability should be 
 
 ## Medium-term checklist
 
-- [ ] Package public API docs.
-- [ ] Add tests for math, runtime input, controller presets, and scene cleanup.
+- [ ] Package public API docs (vitepress with github pages).
+- [x] Add initial tests for controller presets and scene cleanup.
+- [ ] Expand tests across renderer behavior and Vue composables.
 - [ ] Add release workflow.
 - [ ] Add example starter template.
 - [ ] Decide package publishing strategy.
@@ -88,7 +90,7 @@ The engine should not become complex by default. AAA-level capability should be 
 - [ ] Move from basic entities toward a stable scene/world architecture.
 - [ ] Add transform hierarchy and parent/child relationships.
 - [ ] Add serializable scene format.
-- [ ] Add save/load and snapshot support.
+- [ ] Add save/load and snapshot support (file based and DB based options).
 - [ ] Add worker/off-main-thread exploration for simulation.
 
 ### Rendering
@@ -98,6 +100,7 @@ The engine should not become complex by default. AAA-level capability should be 
 - [ ] Add shadows once lighting and materials are stable.
 - [ ] Add instancing and batching for scale.
 - [ ] Add WebGPU backend exploration after WebGL2 renderer matures.
+- [ ] Advanced LOD presets and support
 
 ### Assets and animation
 
@@ -136,4 +139,3 @@ The engine should not become complex by default. AAA-level capability should be 
 - Avoid framework coupling in runtime and renderer.
 - Build demos that feel playable, not just technically correct.
 - Grow toward AAA capability through staged systems, not speculative rewrites.
-

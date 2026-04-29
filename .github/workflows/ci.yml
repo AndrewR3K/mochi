@@ -28,14 +28,5 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Typecheck runtime
-        run: pnpm --filter @lite3d/runtime typecheck
-
-      - name: Typecheck render-webgl
-        run: pnpm --filter @lite3d/render-webgl typecheck
-
-      - name: Typecheck game
-        run: pnpm --filter @lite3d/game typecheck
-
-      - name: Build playground
-        run: pnpm --filter playground build
+      - name: Verify workspace
+        run: pnpm verify

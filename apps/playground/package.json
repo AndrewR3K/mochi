@@ -8,8 +8,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@lite3d/game": "workspace:*",
-    "@lite3d/engine-vue": "workspace:*",
+    "@lite3d/gameplay": "workspace:*",
+    "@lite3d/vue": "workspace:*",
     "vue": "^3.5.13"
   },
   "devDependencies": {

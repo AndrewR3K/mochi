@@ -1,6 +1,6 @@
 # Recent Changes
 
-This recap covers the latest engine and playground work after the initial WebGL/runtime/game facade setup.
+This recap covers the latest engine and playground work after the initial core/renderer/gameplay facade setup.
 
 ## Engine Facade
 
@@ -34,9 +34,20 @@ This recap covers the latest engine and playground work after the initial WebGL/
 - Added a `Tactics Board` debug toggle for showing blocker collision bounds and the controlled unit target.
 - Updated `Velocity Circuit` to show speed and use the new vehicle controller feel.
 
+## Testing
+
+- Added a root `pnpm test` command using Node's built-in test runner with TypeScript support through `tsx`.
+- Added initial `@lite3d/core` tests for math transform behavior, input frame state, runtime fixed-step ticking, runtime reset cleanup, and collision body queries.
+- Added initial `@lite3d/gameplay` tests for scene ownership, reset/dispose cleanup, public controller preset creation, character input binding movement, and vehicle reset behavior.
+- Added `tsconfig.test.json` so test files are typechecked as part of `pnpm typecheck`.
+- Updated `pnpm verify` so tests run between typechecking and the playground build.
+
 ## Documentation
 
 - Updated `README.md` with scene lifecycle, reset, input binding, and demo coverage notes.
+- Added a root `pnpm verify` command and aligned CI to use the same local validation path.
+- Updated getting-started examples to use scene-owned entities, frame listeners, and controller cleanup.
+- Renamed packages to the cohesive public namespace: `@lite3d/core`, `@lite3d/renderer-webgl`, `@lite3d/gameplay`, and `@lite3d/vue`.
 - Expanded `docs/PRESET_GUIDE.md` with scene reset, input binding examples, vehicle tuning guidance, and live demo references.
 - Updated `docs/ROADMAP.md` to mark completed chunks:
   - typed entity component helpers
@@ -63,7 +74,5 @@ This recap covers the latest engine and playground work after the initial WebGL/
 The recent chunks were checked with:
 
 ```bash
-pnpm --filter @lite3d/game typecheck
-pnpm --filter @lite3d/render-webgl typecheck
-pnpm --filter playground build
+pnpm verify
 ```

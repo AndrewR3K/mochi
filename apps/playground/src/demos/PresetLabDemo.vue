@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useGame } from '@lite3d/engine-vue';
+import { useGame } from '@lite3d/vue';
 import {
   CONTROLLER_PRESET_KINDS,
   createControllerPreset,
   type ControllerPresetKind,
   type Entity,
   type ThirdPersonController,
-} from '@lite3d/game';
+} from '@lite3d/gameplay';
 import { computed, onBeforeUnmount, shallowRef } from 'vue';
 
 const presetLabels: Record<ControllerPresetKind, string> = {

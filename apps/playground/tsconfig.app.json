@@ -4,14 +4,14 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "@lite3d/engine-vue": ["../../packages/engine-vue/src/index.ts"],
-      "@lite3d/engine-vue/*": ["../../packages/engine-vue/src/*"],
-      "@lite3d/game": ["../../packages/game/src/index.ts"],
-      "@lite3d/game/*": ["../../packages/game/src/*"],
-      "@lite3d/render-webgl": ["../../packages/render-webgl/src/index.ts"],
-      "@lite3d/render-webgl/*": ["../../packages/render-webgl/src/*"],
-      "@lite3d/runtime": ["../../packages/runtime/src/index.ts"],
-      "@lite3d/runtime/*": ["../../packages/runtime/src/*"]
+      "@lite3d/vue": ["../../packages/vue/src/index.ts"],
+      "@lite3d/vue/*": ["../../packages/vue/src/*"],
+      "@lite3d/gameplay": ["../../packages/gameplay/src/index.ts"],
+      "@lite3d/gameplay/*": ["../../packages/gameplay/src/*"],
+      "@lite3d/renderer-webgl": ["../../packages/renderer-webgl/src/index.ts"],
+      "@lite3d/renderer-webgl/*": ["../../packages/renderer-webgl/src/*"],
+      "@lite3d/core": ["../../packages/core/src/index.ts"],
+      "@lite3d/core/*": ["../../packages/core/src/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.vue"]

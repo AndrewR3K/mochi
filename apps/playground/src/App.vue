@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { GameCanvas } from '@lite3d/engine-vue';
+import { GameCanvas } from '@lite3d/vue';
 import { computed, shallowRef } from 'vue';
 
 import FirstPersonRangeDemo from './demos/FirstPersonRangeDemo.vue';
@@ -9,7 +9,9 @@ import PresetLabDemo from './demos/PresetLabDemo.vue';
 import TacticsBoardDemo from './demos/TacticsBoardDemo.vue';
 import VelocityCircuitDemo from './demos/VelocityCircuitDemo.vue';
 
-const selectedDemo = shallowRef<'nightfall' | 'orbital' | 'velocity' | 'presets' | 'range' | 'tactics'>('nightfall');
+type DemoId = 'nightfall' | 'orbital' | 'velocity' | 'presets' | 'range' | 'tactics';
+
+const selectedDemo = shallowRef<DemoId>('nightfall');
 const demos = [
   { id: 'nightfall', label: 'Nightfall Run', component: NightfallDemo },
   { id: 'orbital', label: 'Orbital Islands', component: OrbitalIslandsDemo },
@@ -81,18 +83,27 @@ body,
 
 .app__switcher {
   position: absolute;
-  left: 1rem;
-  top: 1rem;
+  left: 50%;
+  bottom: 1rem;
   z-index: 2;
   display: flex;
+  max-width: calc(100% - 2rem);
+  padding: 0.35rem;
   gap: 0.5rem;
+  overflow-x: auto;
+  border: 1px solid rgb(255 255 255 / 14%);
+  border-radius: 999px;
+  background: rgb(5 5 8 / 72%);
+  backdrop-filter: blur(12px);
+  transform: translateX(-50%);
 }
 
 .app__switcher-button {
+  flex: 0 0 auto;
   padding: 0.45rem 0.7rem;
-  border: 1px solid rgb(255 255 255 / 16%);
+  border: 0;
   border-radius: 999px;
-  background: rgb(5 5 8 / 74%);
+  background: transparent;
   color: #e8e8ec;
   font: inherit;
   font-size: 0.78rem;

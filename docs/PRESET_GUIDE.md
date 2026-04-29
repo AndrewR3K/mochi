@@ -31,14 +31,14 @@ Use the playground `Preset Lab` demo to switch these camera/control models live.
 ### Explicit constructor
 
 ```ts
-import { createThirdPersonOrbitController } from '@lite3d/game';
+import { createThirdPersonOrbitController } from '@lite3d/gameplay';
 const controller = createThirdPersonOrbitController(game, { target: player });
 ```
 
 ### Registry style
 
 ```ts
-import { createControllerPreset } from '@lite3d/game';
+import { createControllerPreset } from '@lite3d/gameplay';
 const controller = createControllerPreset(game, 'thirdPersonOrbit', { target: player });
 ```
 
@@ -55,7 +55,7 @@ scene.reset();
 ### Event signals
 
 ```ts
-import { createEventSignal } from '@lite3d/game';
+import { createEventSignal } from '@lite3d/gameplay';
 
 const collected = createEventSignal<{ id: string }>();
 const collectedIds: string[] = [];
@@ -70,7 +70,7 @@ stop();
 ### Entity components
 
 ```ts
-import { createComponentType, getComponent, setComponent } from '@lite3d/game';
+import { createComponentType, getComponent, setComponent } from '@lite3d/gameplay';
 
 const health = createComponentType<{ value: number }>('health');
 setComponent(player, health, { value: 100 });
@@ -81,7 +81,7 @@ const playerHealth = getComponent(player, health);
 ### Runtime collision bodies
 
 ```ts
-import { queryCollisionBodies, queryTriggerPairs, setBoxCollisionBody } from '@lite3d/game';
+import { queryCollisionBodies, queryTriggerPairs, setBoxCollisionBody } from '@lite3d/gameplay';
 
 setBoxCollisionBody(player);
 setBoxCollisionBody(exitZone, { trigger: true });
@@ -93,7 +93,7 @@ const triggerPairs = queryTriggerPairs(bodies);
 ### Vue HUD stats
 
 ```ts
-import { useGameStats } from '@lite3d/engine-vue';
+import { useGameStats } from '@lite3d/vue';
 import { computed } from 'vue';
 
 const stats = useGameStats();
@@ -103,7 +103,7 @@ const fpsLabel = computed(() => Math.round(stats.fps.value));
 ### Vue scene lifecycle
 
 ```ts
-import { useGameScene } from '@lite3d/engine-vue';
+import { useGameScene } from '@lite3d/vue';
 
 const sceneHandle = useGameScene();
 const scene = sceneHandle.scene;
@@ -114,7 +114,7 @@ sceneHandle.reset();
 ### Material presets
 
 ```ts
-import { createMaterial } from '@lite3d/game';
+import { createMaterial } from '@lite3d/gameplay';
 
 const player = scene.createEntity({
   renderable: {
@@ -127,7 +127,7 @@ const player = scene.createEntity({
 ### Debug bounds
 
 ```ts
-import { createDebugBoxBounds, createDebugTargetMarker } from '@lite3d/game';
+import { createDebugBoxBounds, createDebugTargetMarker } from '@lite3d/gameplay';
 
 createDebugBoxBounds(scene, colliders, {
   enabled: () => showDebugBounds.value,

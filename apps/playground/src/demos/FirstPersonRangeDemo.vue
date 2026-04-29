@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useGame } from '@lite3d/engine-vue';
-import { createFirstPersonController, distance2d, type Entity } from '@lite3d/game';
+import { useGame } from '@lite3d/vue';
+import { createFirstPersonController, distance2d, type Entity } from '@lite3d/gameplay';
 import { computed, onBeforeUnmount, shallowRef } from 'vue';
 
 interface SignalNode {

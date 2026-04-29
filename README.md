@@ -9,15 +9,15 @@ The long-term ambition is a full-featured, AAA-capable web game engine that rema
 
 ## What is in this repo
 
-- `packages/runtime` - headless runtime primitives (world, entities, components, collision bodies, transforms, input state, frame loop)
-- `packages/render-webgl` - custom WebGL2 renderer package with simple material lighting
-- `packages/game` - high-level facade (`createGame`), controller presets, scene lifecycle, and collision helpers
-- `packages/engine-vue` - Vue integration (`GameCanvas`, `useGame`, `useGameScene`, `useFrame`, `useGameStats`)
+- `packages/core` (`@lite3d/core`) - headless runtime primitives: world, entities, components, collision bodies, transforms, input state, and frame loop
+- `packages/renderer-webgl` (`@lite3d/renderer-webgl`) - custom WebGL2 renderer with simple material lighting
+- `packages/gameplay` (`@lite3d/gameplay`) - high-level facade (`createGame`), controller presets, scene lifecycle, gameplay helpers, and debug utilities
+- `packages/vue` (`@lite3d/vue`) - Vue adapter (`GameCanvas`, `useGame`, `useGameScene`, `useFrame`, `useGameStats`)
 - `apps/playground` - playable demo app with multiple showcase scenes
 
 ## Current controller presets
 
-From `@lite3d/game`:
+From `@lite3d/gameplay`:
 
 - `createFirstPersonController`
 - `createThirdPersonOrbitController`
@@ -56,10 +56,18 @@ pnpm dev
 pnpm build
 ```
 
+### Verify workspace
+
+```bash
+pnpm verify
+```
+
+`pnpm verify` typechecks every package with a `typecheck` script, then builds the playground. Use it before opening a PR or changing shared engine APIs.
+
 ## Minimal usage (Vue + facade)
 
 ```ts
-import { createGame, createMaterial, createThirdPersonOverShoulderController } from '@lite3d/game';
+import { createGame, createMaterial, createThirdPersonOverShoulderController } from '@lite3d/gameplay';
 
 const game = createGame({ canvas });
 const scene = game.createScene();
@@ -110,4 +118,3 @@ Renderer lighting can be tuned with `createGame({ renderer: { lighting: { ambien
 
 The long-term goal is a configuration-first engine where common game styles are presets instead of bespoke rewrites.  
 The north star is AAA-level capability with beginner-friendly defaults: advanced systems when you need them, simple APIs when you just want to build.
-

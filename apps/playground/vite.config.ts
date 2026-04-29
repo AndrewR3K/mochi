@@ -11,13 +11,13 @@ export default defineConfig({
   resolve: {
     dedupe: ['vue'],
     alias: {
-      '@lite3d/engine-vue': path.join(monorepoRoot, 'packages/engine-vue/src'),
-      '@lite3d/game': path.join(monorepoRoot, 'packages/game/src'),
-      '@lite3d/render-webgl': path.join(
+      '@lite3d/vue': path.join(monorepoRoot, 'packages/vue/src'),
+      '@lite3d/gameplay': path.join(monorepoRoot, 'packages/gameplay/src'),
+      '@lite3d/renderer-webgl': path.join(
         monorepoRoot,
-        'packages/render-webgl/src',
+        'packages/renderer-webgl/src',
       ),
-      '@lite3d/runtime': path.join(monorepoRoot, 'packages/runtime/src'),
+      '@lite3d/core': path.join(monorepoRoot, 'packages/core/src'),
     },
   },
   server: {
