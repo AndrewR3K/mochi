@@ -1,6 +1,6 @@
 # Repository Settings (GitHub)
 
-This document is the recommended baseline for branch protection and pull request flow in `AndrewR3K-AI/light3d`.
+This document is the recommended baseline for branch protection and pull request flow in `AndrewR3K/mochi`.
 
 ## 1) Default branch
 

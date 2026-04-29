@@ -103,7 +103,7 @@ export type {
   Transform,
   Vec3,
   World,
-} from '@lite3d/core';
+} from '@mochi/core';
 export {
   collisionBody,
   createBoxCollisionBody,
@@ -122,8 +122,8 @@ export {
   setComponent,
   setSphereCollisionBody,
   vec3,
-} from '@lite3d/core';
+} from '@mochi/core';
 export type {
   WebGLLightingOptions,
   WebGLRendererOptions,
-} from '@lite3d/renderer-webgl';
+} from '@mochi/renderer-webgl';

@@ -4,7 +4,7 @@ This roadmap is intentionally practical. The long-term goal is a full-featured, 
 
 ## North star
 
-`lite3d` should eventually provide the kinds of systems expected from a serious game engine:
+Mochi should eventually provide the kinds of systems expected from a serious game engine:
 
 - robust scene/world runtime
 - scalable rendering pipeline
@@ -18,10 +18,10 @@ The engine should not become complex by default. AAA-level capability should be 
 
 ## Current status
 
-- `@lite3d/core` exists for headless world, input, components, and frame-loop primitives.
-- `@lite3d/renderer-webgl` exists as the current custom WebGL2 renderer.
-- `@lite3d/gameplay` exists for the high-level facade, controller presets, scene lifecycle, and gameplay helpers.
-- `@lite3d/vue` exists as the Vue adapter for canvas hosting and HUD/UI ergonomics.
+- `@mochi/core` exists for headless world, input, components, and frame-loop primitives.
+- `@mochi/renderer-webgl` exists as the current custom WebGL2 renderer.
+- `@mochi/gameplay` exists for the high-level facade, controller presets, scene lifecycle, and gameplay helpers.
+- `@mochi/vue` exists as the Vue adapter for canvas hosting and HUD/UI ergonomics.
 - Controller preset taxonomy exists.
 - Playground has multiple demos:
   - `Nightfall Run`

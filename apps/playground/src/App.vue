@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { GameCanvas } from '@lite3d/vue';
+import { GameCanvas } from '@mochi/vue';
 import { computed, shallowRef } from 'vue';
 
 import FirstPersonRangeDemo from './demos/FirstPersonRangeDemo.vue';
@@ -43,7 +43,7 @@ const currentDemo = computed(
           </button>
         </nav>
         <header class="app__header">
-          <h1 class="app__title">lite3d</h1>
+          <h1 class="app__title">Mochi</h1>
           <p class="app__subtitle">{{ currentDemo.label }}</p>
         </header>
         <component :is="currentDemo.component" />

@@ -1,5 +1,5 @@
 {
-  "name": "@lite3d/vue",
+  "name": "@mochi/vue",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -16,7 +16,7 @@
     "vue": "^3.4.0"
   },
   "dependencies": {
-    "@lite3d/gameplay": "workspace:*"
+    "@mochi/gameplay": "workspace:*"
   },
   "scripts": {
     "typecheck": "vue-tsc --noEmit -p tsconfig.json"

@@ -1,6 +1,6 @@
 import { onBeforeUnmount } from 'vue';
 
-import type { FrameCallback } from '@lite3d/gameplay';
+import type { FrameCallback } from '@mochi/gameplay';
 
 import { useGame } from './useGame';
 

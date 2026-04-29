@@ -1,4 +1,4 @@
-import type { Entity } from '@lite3d/core';
+import type { Entity } from '@mochi/core';
 
 export interface BoxCollider {
   entity: Entity;

@@ -1,4 +1,4 @@
-import type { PrimitiveKind, RenderSnapshot } from '@lite3d/core';
+import type { PrimitiveKind, RenderSnapshot } from '@mochi/core';
 
 import { geometries } from './geometry';
 
@@ -75,7 +75,7 @@ export function createWebGLRenderer(
   });
 
   if (!gl) {
-    throw new Error('lite3d requires WebGL2 support.');
+    throw new Error('mochi requires WebGL2 support.');
   }
 
   const program = createProgram(gl, vertexShaderSource, fragmentShaderSource);

@@ -1,5 +1,5 @@
 {
-  "name": "@lite3d/core",
+  "name": "@mochi/core",
   "version": "0.1.0",
   "private": true,
   "type": "module",

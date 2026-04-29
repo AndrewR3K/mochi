@@ -1,23 +1,23 @@
-# lite3d
+# Mochi
 
-Custom web game engine with Vue as the visibility layer.
+Vue.js-first 3D game engine.
 
-`lite3d` is built around a simple idea: game developers should spend time on gameplay, not engine plumbing.  
+Mochi is built around a simple idea: game developers should spend time on gameplay, not engine plumbing.
 The core runtime and renderer stay framework-agnostic, while Vue provides an ergonomic shell for canvas hosting and HUD/UI.
 
 The long-term ambition is a full-featured, AAA-capable web game engine that remains approachable for solo developers, small teams, and external contributors.
 
 ## What is in this repo
 
-- `packages/core` (`@lite3d/core`) - headless runtime primitives: world, entities, components, collision bodies, transforms, input state, and frame loop
-- `packages/renderer-webgl` (`@lite3d/renderer-webgl`) - custom WebGL2 renderer with simple material lighting
-- `packages/gameplay` (`@lite3d/gameplay`) - high-level facade (`createGame`), controller presets, scene lifecycle, gameplay helpers, and debug utilities
-- `packages/vue` (`@lite3d/vue`) - Vue adapter (`GameCanvas`, `useGame`, `useGameScene`, `useFrame`, `useGameStats`)
+- `packages/core` (`@mochi/core`) - headless runtime primitives: world, entities, components, collision bodies, transforms, input state, and frame loop
+- `packages/renderer-webgl` (`@mochi/renderer-webgl`) - custom WebGL2 renderer with simple material lighting
+- `packages/gameplay` (`@mochi/gameplay`) - high-level facade (`createGame`), controller presets, scene lifecycle, gameplay helpers, and debug utilities
+- `packages/vue` (`@mochi/vue`) - Vue adapter (`GameCanvas`, `useGame`, `useGameScene`, `useFrame`, `useGameStats`)
 - `apps/playground` - playable demo app with multiple showcase scenes
 
 ## Current controller presets
 
-From `@lite3d/gameplay`:
+From `@mochi/gameplay`:
 
 - `createFirstPersonController`
 - `createThirdPersonOrbitController`
@@ -67,7 +67,7 @@ pnpm verify
 ## Minimal usage (Vue + facade)
 
 ```ts
-import { createGame, createMaterial, createThirdPersonOverShoulderController } from '@lite3d/gameplay';
+import { createGame, createMaterial, createThirdPersonOverShoulderController } from '@mochi/gameplay';
 
 const game = createGame({ canvas });
 const scene = game.createScene();

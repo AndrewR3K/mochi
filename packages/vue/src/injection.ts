@@ -1,6 +1,6 @@
 import type { InjectionKey, ShallowRef } from 'vue';
 
-import type { Game } from '@lite3d/gameplay';
+import type { Game } from '@mochi/gameplay';
 
 export const gameInjectionKey: InjectionKey<ShallowRef<Game | null>> =
-  Symbol('lite3d-game');
+  Symbol('mochi-game');

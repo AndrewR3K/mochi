@@ -1,4 +1,4 @@
-import type { Entity } from '@lite3d/core';
+import type { Entity } from '@mochi/core';
 
 import type { Game } from './game';
 import {

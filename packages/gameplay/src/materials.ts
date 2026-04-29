@@ -1,4 +1,4 @@
-import type { Material, Vec3 } from '@lite3d/core';
+import type { Material, Vec3 } from '@mochi/core';
 
 export type MaterialPresetKind = 'solid' | 'emissive' | 'warning' | 'neutral';
 

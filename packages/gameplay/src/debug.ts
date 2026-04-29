@@ -1,4 +1,4 @@
-import type { Entity, Vec3 } from '@lite3d/core';
+import type { Entity, Vec3 } from '@mochi/core';
 
 import type { BoxCollider } from './collision';
 import { createMaterial } from './materials';

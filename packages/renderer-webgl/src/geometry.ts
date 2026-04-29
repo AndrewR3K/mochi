@@ -1,4 +1,4 @@
-import type { PrimitiveKind } from '@lite3d/core';
+import type { PrimitiveKind } from '@mochi/core';
 
 export interface GeometryData {
   positions: Float32Array;
