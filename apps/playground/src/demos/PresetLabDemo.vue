@@ -8,6 +8,7 @@ import {
   type ThirdPersonController,
 } from '@lite3d/gameplay';
 import { computed, onBeforeUnmount, shallowRef } from 'vue';
+import DemoHud from '../components/DemoHud.vue';
 
 const presetLabels: Record<ControllerPresetKind, string> = {
   firstPerson: 'First Person',
@@ -96,12 +97,13 @@ function createBox(
 </script>
 
 <template>
-  <section class="preset-lab">
-    <p class="preset-lab__eyebrow">PRESET LAB</p>
-    <h2 class="preset-lab__title">{{ activeLabel }}</h2>
-    <p class="preset-lab__hint">
-      Switch control models live. WASD/arrows move, Space jumps where supported, right mouse or drag orbits where supported.
-    </p>
+  <DemoHud
+    mode="PRESET LAB"
+    :title="activeLabel"
+    hint="Switch control models live. WASD/arrows move, Space jumps where supported, right mouse or drag orbits where supported."
+    position="bottom-left"
+    wide
+  >
     <div class="preset-lab__grid">
       <button
         v-for="kind in CONTROLLER_PRESET_KINDS"
@@ -114,48 +116,10 @@ function createBox(
         {{ presetLabels[kind] }}
       </button>
     </div>
-  </section>
+  </DemoHud>
 </template>
 
 <style scoped>
-.preset-lab {
-  position: absolute;
-  left: 1rem;
-  bottom: 1rem;
-  z-index: 2;
-  width: min(30rem, calc(100% - 2rem));
-  padding: 1rem;
-  border: 1px solid rgb(255 255 255 / 14%);
-  border-radius: 1rem;
-  background: rgb(5 5 8 / 76%);
-  color: #eef4ff;
-}
-
-.preset-lab__eyebrow,
-.preset-lab__title,
-.preset-lab__hint {
-  margin: 0;
-}
-
-.preset-lab__eyebrow {
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  opacity: 0.72;
-}
-
-.preset-lab__title {
-  margin-top: 0.25rem;
-  font-size: 1.55rem;
-  line-height: 1;
-}
-
-.preset-lab__hint {
-  margin-top: 0.55rem;
-  font-size: 0.8rem;
-  opacity: 0.76;
-}
-
 .preset-lab__grid {
   display: flex;
   flex-wrap: wrap;
@@ -166,7 +130,7 @@ function createBox(
 .preset-lab__button {
   padding: 0.45rem 0.65rem;
   border: 1px solid rgb(255 255 255 / 14%);
-  border-radius: 999px;
+  border-radius: 8px;
   background: rgb(255 255 255 / 7%);
   color: inherit;
   font: inherit;

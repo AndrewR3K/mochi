@@ -60,7 +60,7 @@ The engine should not become complex by default. AAA-level capability should be 
 
 ### Vue layer
 
-- [ ] Add a reusable demo shell/HUD pattern.
+- [x] Add a reusable demo shell/HUD pattern.
 - [x] Add composables for game stats.
 - [x] Add composables for scene state.
 - [ ] Keep Vue out of hot-loop simulation data.

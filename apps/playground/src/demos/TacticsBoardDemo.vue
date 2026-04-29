@@ -11,6 +11,7 @@ import {
   type Entity,
 } from '@lite3d/gameplay';
 import { computed, onBeforeUnmount, shallowRef } from 'vue';
+import DemoHud from '../components/DemoHud.vue';
 
 interface CapturePoint {
   entity: Entity;
@@ -53,7 +54,7 @@ createDebugTargetMarker(scene, unit, {
 const points: CapturePoint[] = [
   createCapturePoint('capture-a', -7, -6),
   createCapturePoint('capture-b', 7, -5.5),
-  createCapturePoint('capture-c', 0, 6),
+  createCapturePoint('capture-c', 0, 4.2),
 ];
 const controller = createIsometricController(game, {
   target: unit,
@@ -162,13 +163,15 @@ function toggleDebugBounds(): void {
 </script>
 
 <template>
-  <section class="tactics-hud">
-    <p class="tactics-hud__mode">TACTICS BOARD</p>
-    <h2 class="tactics-hud__title">{{ label }}</h2>
-    <p class="tactics-hud__meta">{{ Math.ceil(timer) }}s</p>
-    <p class="tactics-hud__hint">Isometric preset. Move the unit around blockers and secure every zone.</p>
+  <DemoHud
+    mode="TACTICS BOARD"
+    :title="label"
+    :meta="`${Math.ceil(timer)}s`"
+    hint="Isometric preset. Move the unit around blockers and secure every zone."
+    position="bottom-left"
+  >
     <button
-      class="tactics-hud__button"
+      class="demo-action"
       type="button"
       @click="toggleDebugBounds"
     >
@@ -176,66 +179,22 @@ function toggleDebugBounds(): void {
     </button>
     <button
       v-if="state !== 'running'"
-      class="tactics-hud__button"
+      class="demo-action"
       type="button"
       @click="resetBoard"
     >
       Reset board
     </button>
-  </section>
+  </DemoHud>
 </template>
 
 <style scoped>
-.tactics-hud {
-  position: absolute;
-  left: 1rem;
-  bottom: 1rem;
-  z-index: 2;
-  max-width: 23rem;
-  padding: 0.95rem 1rem;
-  border: 1px solid rgb(255 255 255 / 14%);
-  border-radius: 1rem;
-  background: rgb(5 5 8 / 74%);
-  color: #eef4ff;
-}
-
-.tactics-hud__mode,
-.tactics-hud__title,
-.tactics-hud__meta,
-.tactics-hud__hint {
-  margin: 0;
-}
-
-.tactics-hud__mode {
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  opacity: 0.72;
-}
-
-.tactics-hud__title {
-  margin-top: 0.25rem;
-  font-size: 1.45rem;
-  line-height: 1;
-}
-
-.tactics-hud__meta {
-  margin-top: 0.35rem;
-  font-size: 0.86rem;
-  opacity: 0.82;
-}
-
-.tactics-hud__hint {
-  margin-top: 0.55rem;
-  font-size: 0.8rem;
-  opacity: 0.76;
-}
-
-.tactics-hud__button {
+.demo-action {
   margin-top: 0.8rem;
+  margin-right: 0.45rem;
   padding: 0.55rem 0.75rem;
   border: 0;
-  border-radius: 999px;
+  border-radius: 8px;
   background: #eef4ff;
   color: #090b12;
   font: inherit;

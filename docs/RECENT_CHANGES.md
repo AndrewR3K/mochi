@@ -28,6 +28,7 @@ This recap covers the latest engine and playground work after the initial core/r
 - Refactored `Nightfall Run` to use shared collision helpers and `scene.reset()` for replay.
 - Refactored `Nightfall Run` to use `useGameScene()` for scene creation, reset, and automatic disposal.
 - Refactored the `Nightfall Run` FPS HUD to use `useGameStats()` instead of copying stats inside gameplay logic.
+- Added a reusable playground `DemoHud` component and moved common demo HUD panels onto it.
 - Added `Preset Lab`, a live sandbox for switching between all controller presets.
 - Added `First Person Range`, a dedicated `firstPerson` demo with signal collection, a timer, and reset support.
 - Added `Tactics Board`, an `isometric` demo with blockers, capture zones, and reset support.

@@ -2,6 +2,7 @@
 import { useGame } from '@lite3d/vue';
 import { createFirstPersonController, distance2d, type Entity } from '@lite3d/gameplay';
 import { computed, onBeforeUnmount, shallowRef } from 'vue';
+import DemoHud from '../components/DemoHud.vue';
 
 interface SignalNode {
   entity: Entity;
@@ -138,73 +139,29 @@ function resetRange(): void {
 </script>
 
 <template>
-  <section class="range-hud">
-    <p class="range-hud__mode">FIRST PERSON RANGE</p>
-    <h2 class="range-hud__title">{{ label }}</h2>
-    <p class="range-hud__meta">{{ Math.ceil(timer) }}s</p>
-    <p class="range-hud__hint">WASD/arrows move. Drag or right mouse to look. Sync every signal node.</p>
+  <DemoHud
+    mode="FIRST PERSON RANGE"
+    :title="label"
+    :meta="`${Math.ceil(timer)}s`"
+    hint="WASD/arrows move. Drag or right mouse to look. Sync every signal node."
+  >
     <button
       v-if="state !== 'running'"
-      class="range-hud__button"
+      class="demo-action"
       type="button"
       @click="resetRange"
     >
       Reset range
     </button>
-  </section>
+  </DemoHud>
 </template>
 
 <style scoped>
-.range-hud {
-  position: absolute;
-  right: 1rem;
-  bottom: 1rem;
-  z-index: 2;
-  max-width: 24rem;
-  padding: 0.95rem 1rem;
-  border: 1px solid rgb(255 255 255 / 14%);
-  border-radius: 1rem;
-  background: rgb(5 5 8 / 74%);
-  color: #eef4ff;
-}
-
-.range-hud__mode,
-.range-hud__title,
-.range-hud__meta,
-.range-hud__hint {
-  margin: 0;
-}
-
-.range-hud__mode {
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  opacity: 0.72;
-}
-
-.range-hud__title {
-  margin-top: 0.25rem;
-  font-size: 1.45rem;
-  line-height: 1;
-}
-
-.range-hud__meta {
-  margin-top: 0.35rem;
-  font-size: 0.86rem;
-  opacity: 0.82;
-}
-
-.range-hud__hint {
-  margin-top: 0.55rem;
-  font-size: 0.8rem;
-  opacity: 0.76;
-}
-
-.range-hud__button {
+.demo-action {
   margin-top: 0.8rem;
   padding: 0.55rem 0.75rem;
   border: 0;
-  border-radius: 999px;
+  border-radius: 8px;
   background: #eef4ff;
   color: #090b12;
   font: inherit;

@@ -9,6 +9,7 @@ import {
   type Entity,
 } from '@lite3d/gameplay';
 import { computed, onBeforeUnmount, shallowRef } from 'vue';
+import DemoHud from '../components/DemoHud.vue';
 
 interface Beacon {
   entity: Entity;
@@ -76,6 +77,7 @@ scene.onFrame(({ delta, elapsed }) => {
     if (
       state.value === 'running' &&
       !beacon.collected &&
+      Math.abs(player.transform.position.y - beacon.entity.transform.position.y) < 1.25 &&
       distance2d(player, beacon.entity) < 1.1
     ) {
       beacon.collected = true;
@@ -140,29 +142,11 @@ function resolveGroundHeight(): number {
 </script>
 
 <template>
-  <section class="hud">
-    <p class="hud__mode">ORBITAL ISLANDS</p>
-    <h2 class="hud__title">{{ label }}</h2>
-    <p class="hud__meta">{{ Math.ceil(timer) }}s</p>
-    <p class="hud__hint">WASD + Space/Double-jump. Reach every floating beacon.</p>
-  </section>
+  <DemoHud
+    mode="ORBITAL ISLANDS"
+    :title="label"
+    :meta="`${Math.ceil(timer)}s`"
+    hint="WASD + Space/Double-jump. Reach every floating beacon."
+    position="top-right"
+  />
 </template>
-
-<style scoped>
-.hud {
-  position: absolute;
-  right: 1rem;
-  top: 4rem;
-  max-width: 21rem;
-  padding: 0.9rem 1rem;
-  border-radius: 0.9rem;
-  border: 1px solid rgb(255 255 255 / 14%);
-  background: rgb(8 8 14 / 72%);
-  color: #eef4ff;
-}
-.hud__mode,.hud__title,.hud__meta,.hud__hint { margin: 0; }
-.hud__mode { font-size: 0.72rem; letter-spacing: 0.14em; opacity: 0.75; }
-.hud__title { margin-top: 0.3rem; font-size: 1.45rem; }
-.hud__meta { margin-top: 0.35rem; font-size: 0.88rem; opacity: 0.82; }
-.hud__hint { margin-top: 0.55rem; font-size: 0.8rem; opacity: 0.75; }
-</style>

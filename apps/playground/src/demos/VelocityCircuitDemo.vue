@@ -2,6 +2,7 @@
 import { useGame } from '@lite3d/vue';
 import { createVehicleArcadeController, distance2d, type Entity } from '@lite3d/gameplay';
 import { computed, onBeforeUnmount, shallowRef } from 'vue';
+import DemoHud from '../components/DemoHud.vue';
 
 interface Gate {
   entity: Entity;
@@ -117,27 +118,9 @@ function createGate(
 </script>
 
 <template>
-  <section class="hud">
-    <p class="hud__mode">VELOCITY CIRCUIT</p>
-    <h2 class="hud__title">{{ label }}</h2>
-    <p class="hud__hint">W/S throttle and brake. A/D steer through each gate in order.</p>
-  </section>
+  <DemoHud
+    mode="VELOCITY CIRCUIT"
+    :title="label"
+    hint="W/S throttle and brake. A/D steer through each gate in order."
+  />
 </template>
-
-<style scoped>
-.hud {
-  position: absolute;
-  right: 1rem;
-  bottom: 1rem;
-  max-width: 24rem;
-  padding: 0.9rem 1rem;
-  border-radius: 0.9rem;
-  border: 1px solid rgb(255 255 255 / 14%);
-  background: rgb(8 8 14 / 72%);
-  color: #eef4ff;
-}
-.hud__mode,.hud__title,.hud__hint { margin: 0; }
-.hud__mode { font-size: 0.72rem; letter-spacing: 0.14em; opacity: 0.75; }
-.hud__title { margin-top: 0.3rem; font-size: 1.2rem; line-height: 1.15; }
-.hud__hint { margin-top: 0.5rem; font-size: 0.8rem; opacity: 0.76; }
-</style>
