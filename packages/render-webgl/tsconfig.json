@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@lite3d/runtime": ["../runtime/src/index.ts"],
+      "@lite3d/runtime/*": ["../runtime/src/*"]
+    }
+  },
+  "include": ["src/**/*.ts"]
+}

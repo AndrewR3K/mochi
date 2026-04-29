@@ -1,0 +1,10 @@
+{
+  "name": "lite3d",
+  "private": true,
+  "packageManager": "pnpm@9.15.0",
+  "workspaces": ["packages/*", "apps/*"],
+  "scripts": {
+    "dev": "pnpm --filter playground dev",
+    "build": "pnpm --filter playground build"
+  }
+}
