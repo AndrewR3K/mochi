@@ -77,6 +77,7 @@ scene.onFrame(({ delta, elapsed }) => {
     if (
       state.value === 'running' &&
       !beacon.collected &&
+      Math.abs(player.transform.position.y - beacon.entity.transform.position.y) < 1.25 &&
       distance2d(player, beacon.entity) < 1.1
     ) {
       beacon.collected = true;

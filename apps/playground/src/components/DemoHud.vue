@@ -58,13 +58,13 @@ withDefaults(defineProps<{
 }
 
 .demo-hud--bottom-left {
-  bottom: 1rem;
+  bottom: 5.25rem;
   left: 1rem;
 }
 
 .demo-hud--bottom-right {
   right: 1rem;
-  bottom: 1rem;
+  bottom: 5.25rem;
 }
 
 .demo-hud__mode,

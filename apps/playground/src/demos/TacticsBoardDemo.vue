@@ -54,7 +54,7 @@ createDebugTargetMarker(scene, unit, {
 const points: CapturePoint[] = [
   createCapturePoint('capture-a', -7, -6),
   createCapturePoint('capture-b', 7, -5.5),
-  createCapturePoint('capture-c', 0, 6),
+  createCapturePoint('capture-c', 0, 4.2),
 ];
 const controller = createIsometricController(game, {
   target: unit,
