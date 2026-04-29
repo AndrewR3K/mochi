@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { useFrame, useGame } from '@lite3d/engine-vue';
-import { createVehicleArcadeController, type Entity } from '@lite3d/game';
+import { useGame } from '@lite3d/engine-vue';
+import { createVehicleArcadeController, distance2d, type Entity } from '@lite3d/game';
 import { computed, onBeforeUnmount, shallowRef } from 'vue';
 
 const game = useGame();
+const scene = game.createScene();
 const lap = shallowRef(1);
 const checkpoint = shallowRef(0);
 const lapTimer = shallowRef(0);
 const bestLap = shallowRef<number | null>(null);
+const speed = shallowRef(0);
 
 const car = createBox('car', 0, 0.65, 9.2, 1.2, 1, 2.1, {
   x: 1,
@@ -30,15 +32,23 @@ const controller = createVehicleArcadeController(game, {
   target: car,
   groundY: 0.65,
   bounds: { minX: -10.6, maxX: 10.6, minZ: -10.6, maxZ: 10.6 },
+  acceleration: 21,
+  brakeDeceleration: 30,
+  drag: 5.2,
+  maxSpeed: 13.5,
+  reverseSpeed: 4.2,
+  turnSpeed: 2.25,
 });
+scene.add(controller);
 
 const label = computed(() => {
   const best = bestLap.value ? `${bestLap.value.toFixed(1)}s` : '--';
-  return `Lap ${lap.value}  |  Checkpoint ${checkpoint.value + 1}/4  |  Best ${best}`;
+  return `Lap ${lap.value}  |  Checkpoint ${checkpoint.value + 1}/4  |  ${speed.value.toFixed(1)} m/s  |  Best ${best}`;
 });
 
-useFrame(({ delta, elapsed }) => {
+scene.onFrame(({ delta, elapsed }) => {
   lapTimer.value += delta;
+  speed.value = Math.abs(controller.getSpeed());
 
   const currentGate = gates[checkpoint.value];
   if (distance2d(car, currentGate) < 1.75) {
@@ -51,7 +61,7 @@ useFrame(({ delta, elapsed }) => {
     }
   }
 
-  car.transform.rotation.z = Math.sin(elapsed * 8) * 0.02;
+  car.transform.rotation.z = Math.sin(elapsed * 8) * 0.01 - controller.getSpeed() * 0.006;
 
   for (let i = 0; i < gates.length; i += 1) {
     const active = i === checkpoint.value;
@@ -65,10 +75,7 @@ useFrame(({ delta, elapsed }) => {
 });
 
 onBeforeUnmount(() => {
-  controller.dispose();
-  game.world.removeEntity(car.id);
-  for (const segment of track) game.world.removeEntity(segment.id);
-  for (const gate of gates) game.world.removeEntity(gate.id);
+  scene.dispose();
 });
 
 function createBox(
@@ -81,26 +88,20 @@ function createBox(
   sz: number,
   color: { x: number; y: number; z: number },
 ): Entity {
-  return game.world.createEntity({
+  return scene.createEntity({
     id,
     transform: { position: { x, y, z }, scale: { x: sx, y: sy, z: sz } },
     renderable: { primitive: 'cube', material: { color } },
   });
 }
 
-function distance2d(a: Entity, b: Entity): number {
-  return Math.hypot(
-    a.transform.position.x - b.transform.position.x,
-    a.transform.position.z - b.transform.position.z,
-  );
-}
 </script>
 
 <template>
   <section class="hud">
     <p class="hud__mode">VELOCITY CIRCUIT</p>
     <h2 class="hud__title">{{ label }}</h2>
-    <p class="hud__hint">Arcade vehicle preset. Hit gates in order.</p>
+    <p class="hud__hint">W/S throttle and brake. A/D steer through each gate in order.</p>
   </section>
 </template>
 

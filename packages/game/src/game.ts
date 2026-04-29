@@ -13,6 +13,13 @@ import {
 } from '@lite3d/render-webgl';
 
 import { connectBrowserInput } from './browserInput';
+import {
+  createScene,
+  mountScene,
+  type GameScene,
+  type MountedScene,
+  type SceneSetup,
+} from './scene';
 
 export interface GameOptions {
   canvas: HTMLCanvasElement;
@@ -38,6 +45,8 @@ export interface Game {
   dispose(): void;
   setSize(width: number, height: number): void;
   onFrame(callback: FrameCallback): () => void;
+  createScene(): GameScene;
+  mountScene<T>(setup: SceneSetup<T>): MountedScene<T>;
 }
 
 export function createGame(options: GameOptions): Game {
@@ -125,6 +134,12 @@ export function createGame(options: GameOptions): Game {
     setSize,
     onFrame(callback) {
       return runtime.onFrame(callback);
+    },
+    createScene() {
+      return createScene(game);
+    },
+    mountScene(setup) {
+      return mountScene(game, setup);
     },
   };
 

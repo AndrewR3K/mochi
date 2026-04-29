@@ -10,8 +10,8 @@ Pick presets by camera/control model first, then genre.
 - `topDown` - overhead tactical control
 - `isometric` - fixed angled camera
 - `sideScroller2D` - side view movement lane
-- `vehicleArcade` - fast, forgiving chase camera
-- `vehicleSim` - heavier, steadier vehicle feel
+- `vehicleArcade` - fast, forgiving throttle/brake/steer vehicle movement
+- `vehicleSim` - heavier vehicle movement with slower acceleration and steadier steering
 - `railCamera` - constrained cinematic movement
 - `strategyFreeCam` - detached map camera
 
@@ -43,6 +43,7 @@ const controller = createControllerPreset(game, 'thirdPersonOrbit', { target: pl
 ## Tuning tips
 
 - Start with movement speed and camera distance.
+- For vehicle presets, tune `acceleration`, `maxSpeed`, `drag`, and `turnSpeed`.
 - Tune sensitivity and camera lerp before adding special logic.
 - Keep defaults unless you have a clear gameplay reason.
 - Add a new preset only if multiple projects need the same tuned profile.

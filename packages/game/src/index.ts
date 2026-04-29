@@ -19,7 +19,36 @@ export {
   createVehicleSimController,
   type ControllerPresetKind,
   type PresetControllerOptions,
+  type VehiclePresetControllerOptions,
 } from './presets';
+export {
+  createBoxCollider,
+  distance2d,
+  horizontalRadius,
+  moveWithBoxCollisions,
+  overlapsBoxFootprint,
+  resolveBoxCollisions,
+  resolveGroundHeight,
+  type BoxCollider,
+  type BoxColliderOptions,
+  type MoveWithBoxCollisionsOptions,
+  type ResolveBoxCollisionOptions,
+  type ResolveGroundHeightOptions,
+} from './collision';
+export {
+  createScene,
+  disposeScene,
+  mountScene,
+  type Disposable,
+  type GameScene,
+  type MountedScene,
+  type SceneSetup,
+} from './scene';
+export {
+  createVehicleController,
+  type VehicleController,
+  type VehicleControllerOptions,
+} from './vehicle';
 export type {
   Entity,
   EntityId,

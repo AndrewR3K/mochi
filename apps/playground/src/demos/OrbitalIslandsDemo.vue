@@ -1,6 +1,13 @@
 <script setup lang="ts">
-import { useFrame, useGame } from '@lite3d/engine-vue';
-import { createThirdPersonOrbitController, type Entity } from '@lite3d/game';
+import { useGame } from '@lite3d/engine-vue';
+import {
+  createBoxCollider,
+  createThirdPersonOrbitController,
+  distance2d,
+  resolveGroundHeight as resolveColliderGroundHeight,
+  type BoxCollider,
+  type Entity,
+} from '@lite3d/game';
 import { computed, onBeforeUnmount, shallowRef } from 'vue';
 
 interface Beacon {
@@ -9,14 +16,8 @@ interface Beacon {
   baseY: number;
 }
 
-interface Platform {
-  entity: Entity;
-  halfX: number;
-  halfZ: number;
-  topY: number;
-}
-
 const game = useGame();
+const scene = game.createScene();
 const beaconsCollected = shallowRef(0);
 const timer = shallowRef(60);
 const state = shallowRef<'running' | 'won' | 'lost'>('running');
@@ -26,7 +27,7 @@ const player = createBox('island-player', 0, 0.7, 0, 0.85, 1.4, 0.85, {
   y: 0.58,
   z: 1,
 });
-const platforms: Platform[] = [
+const platforms: BoxCollider[] = [
   createPlatform('island-start', 0, 0.2, 0, 5.5, 0.4, 5.5, { x: 0.08, y: 0.12, z: 0.2 }),
   createPlatform('island-a', 6.5, 1.2, -3.2, 3.2, 0.4, 3.2, { x: 0.1, y: 0.2, z: 0.38 }),
   createPlatform('island-b', -7.2, 2.1, -5.5, 3.8, 0.4, 3.8, { x: 0.22, y: 0.14, z: 0.4 }),
@@ -50,6 +51,7 @@ const controller = createThirdPersonOrbitController(game, {
   enabled: () => state.value === 'running',
   resolveGroundHeight,
 });
+scene.add(controller);
 
 const label = computed(() => {
   if (state.value === 'won') return 'All beacons synced';
@@ -57,7 +59,7 @@ const label = computed(() => {
   return `${beaconsCollected.value}/5 beacons`;
 });
 
-useFrame(({ delta, elapsed }) => {
+scene.onFrame(({ delta, elapsed }) => {
   if (state.value === 'running') {
     timer.value = Math.max(0, timer.value - delta);
     if (timer.value === 0) state.value = 'lost';
@@ -87,10 +89,7 @@ useFrame(({ delta, elapsed }) => {
 });
 
 onBeforeUnmount(() => {
-  controller.dispose();
-  game.world.removeEntity(player.id);
-  for (const platform of platforms) game.world.removeEntity(platform.entity.id);
-  for (const beacon of beacons) game.world.removeEntity(beacon.entity.id);
+  scene.dispose();
 });
 
 function createPlatform(
@@ -102,9 +101,9 @@ function createPlatform(
   sy: number,
   sz: number,
   color: { x: number; y: number; z: number },
-): Platform {
+): BoxCollider {
   const entity = createBox(id, x, y, z, sx, sy, sz, color);
-  return { entity, halfX: sx / 2, halfZ: sz / 2, topY: y + sy / 2 + 0.001 };
+  return createBoxCollider(entity, { standable: true });
 }
 
 function createBeacon(id: string, x: number, z: number, y: number): Beacon {
@@ -125,7 +124,7 @@ function createBox(
   sz: number,
   color: { x: number; y: number; z: number },
 ): Entity {
-  return game.world.createEntity({
+  return scene.createEntity({
     id,
     transform: { position: { x, y, z }, scale: { x: sx, y: sy, z: sz } },
     renderable: { primitive: 'cube', material: { color } },
@@ -133,28 +132,10 @@ function createBox(
 }
 
 function resolveGroundHeight(): number {
-  const base = 0.7;
-  const radius = Math.min(player.transform.scale.x, player.transform.scale.z) * 0.5;
-  const halfHeight = player.transform.scale.y * 0.5;
-  let ground = base;
-
-  for (const platform of platforms) {
-    const dx = Math.abs(player.transform.position.x - platform.entity.transform.position.x);
-    const dz = Math.abs(player.transform.position.z - platform.entity.transform.position.z);
-    if (platform.halfX + radius - dx <= 0 || platform.halfZ + radius - dz <= 0) continue;
-    const stand = platform.topY + halfHeight;
-    if (player.transform.position.y < stand - 0.6) continue;
-    ground = Math.max(ground, stand);
-  }
-
-  return ground;
-}
-
-function distance2d(a: Entity, b: Entity): number {
-  return Math.hypot(
-    a.transform.position.x - b.transform.position.x,
-    a.transform.position.z - b.transform.position.z,
-  );
+  return resolveColliderGroundHeight(player, platforms, {
+    baseY: 0.7,
+    snapDistance: 0.6,
+  });
 }
 </script>
 

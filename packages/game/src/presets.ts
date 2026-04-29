@@ -6,6 +6,11 @@ import {
   type ThirdPersonController,
   type ThirdPersonControllerOptions,
 } from './thirdPerson';
+import {
+  createVehicleController,
+  type VehicleController,
+  type VehicleControllerOptions,
+} from './vehicle';
 
 type SharedPresetOptions = Omit<
   ThirdPersonControllerOptions,
@@ -25,10 +30,31 @@ type SharedPresetOptions = Omit<
   | 'maxPitch'
   | 'focusHeight'
 >;
+type VehiclePresetOptions = Pick<
+  VehicleControllerOptions,
+  | 'acceleration'
+  | 'brakeDeceleration'
+  | 'drag'
+  | 'maxSpeed'
+  | 'reverseSpeed'
+  | 'turnSpeed'
+  | 'cameraDistance'
+  | 'cameraHeight'
+  | 'cameraLerp'
+  | 'focusHeight'
+>;
+type SharedVehiclePresetOptions = Pick<
+  VehicleControllerOptions,
+  'target' | 'groundY' | 'enabled' | 'bounds'
+>;
 
 export interface PresetControllerOptions extends SharedPresetOptions {
   target: Entity;
 }
+
+export interface VehiclePresetControllerOptions
+  extends SharedVehiclePresetOptions,
+    VehiclePresetOptions {}
 
 export type ControllerPresetKind =
   | 'firstPerson'
@@ -209,46 +235,38 @@ export function createSideScroller2DController(
 
 export function createVehicleArcadeController(
   game: Game,
-  options: PresetControllerOptions,
-): ThirdPersonController {
-  return createThirdPersonController(game, {
-    moveSpeed: 9.5,
-    sprintMultiplier: 1.12,
-    jumpVelocity: 0,
-    gravity: 30,
-    doubleJump: false,
+  options: VehiclePresetControllerOptions,
+): VehicleController {
+  return createVehicleController(game, {
+    acceleration: 19,
+    brakeDeceleration: 28,
+    drag: 5.8,
+    maxSpeed: 12,
+    reverseSpeed: 4,
+    turnSpeed: 2.05,
     cameraDistance: 9.4,
     cameraHeight: 2.8,
     focusHeight: 0.85,
     cameraLerp: 11,
-    cameraRotationLerp: 22,
-    lookSensitivity: 0.0028,
-    rotateButtons: [2],
-    minPitch: -0.4,
-    maxPitch: 0.55,
     ...options,
   });
 }
 
 export function createVehicleSimController(
   game: Game,
-  options: PresetControllerOptions,
-): ThirdPersonController {
-  return createThirdPersonController(game, {
-    moveSpeed: 7.8,
-    sprintMultiplier: 1.04,
-    jumpVelocity: 0,
-    gravity: 34,
-    doubleJump: false,
+  options: VehiclePresetControllerOptions,
+): VehicleController {
+  return createVehicleController(game, {
+    acceleration: 10.5,
+    brakeDeceleration: 18,
+    drag: 2.8,
+    maxSpeed: 10.5,
+    reverseSpeed: 3.2,
+    turnSpeed: 1.25,
     cameraDistance: 10.6,
     cameraHeight: 3.1,
     focusHeight: 0.7,
     cameraLerp: 8,
-    cameraRotationLerp: 14,
-    lookSensitivity: 0.0022,
-    rotateButtons: [2],
-    minPitch: -0.35,
-    maxPitch: 0.45,
     ...options,
   });
 }

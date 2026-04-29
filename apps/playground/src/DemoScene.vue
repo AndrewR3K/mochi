@@ -1,6 +1,15 @@
 <script setup lang="ts">
-import { useFrame, useGame } from '@lite3d/engine-vue';
-import { createThirdPersonOverShoulderController, type Entity } from '@lite3d/game';
+import { useGame } from '@lite3d/engine-vue';
+import {
+  createBoxCollider,
+  createThirdPersonOverShoulderController,
+  distance2d,
+  moveWithBoxCollisions,
+  resolveBoxCollisions,
+  resolveGroundHeight as resolveColliderGroundHeight,
+  type BoxCollider,
+  type Entity,
+} from '@lite3d/game';
 import { computed, onBeforeUnmount, shallowRef } from 'vue';
 
 interface Core {
@@ -18,16 +27,8 @@ interface Sentry {
   phase: number;
 }
 
-interface Obstacle {
-  entity: Entity;
-  halfX: number;
-  halfZ: number;
-  passY: number;
-  topY: number;
-  standable: boolean;
-}
-
 const game = useGame();
+const scene = game.createScene();
 const fps = shallowRef(0);
 const score = shallowRef(0);
 const shield = shallowRef(100);
@@ -53,7 +54,7 @@ const statusLabel = computed(() => {
   return `${score.value}/6 cores secured`;
 });
 
-const ground = game.world.createEntity({
+const ground = scene.createEntity({
   id: 'ground',
   transform: {
     scale: { x: 24, y: 1, z: 24 },
@@ -66,7 +67,7 @@ const ground = game.world.createEntity({
   },
 });
 
-const player = game.world.createEntity({
+const player = scene.createEntity({
   id: 'player',
   transform: {
     position: { x: 0, y: 0.65, z: 0 },
@@ -86,7 +87,7 @@ const gateColor = {
   z: 1,
 };
 const gate = createBox('gate', 0, 1.6, -10.2, 4.2, 3.2, 0.45, gateColor);
-const obstacles: Obstacle[] = [
+const obstacles: BoxCollider[] = [
   createObstacle('north-wall', 0, 0.5, -12, 24, 1, 0.45, Infinity, false, { x: 0.1, y: 0.16, z: 0.22 }),
   createObstacle('south-wall', 0, 0.5, 12, 24, 1, 0.45, Infinity, false, { x: 0.1, y: 0.16, z: 0.22 }),
   createObstacle('west-wall', -12, 0.5, 0, 0.45, 1, 24, Infinity, false, { x: 0.1, y: 0.16, z: 0.22 }),
@@ -145,8 +146,9 @@ const controller = createThirdPersonOverShoulderController(game, {
     maxZ: 11.3,
   },
 });
+scene.add(controller);
 
-useFrame(({ delta, elapsed }) => {
+scene.onFrame(({ delta, elapsed }) => {
   if (missionState.value === 'running') {
     missionTime.value = Math.max(0, missionTime.value - delta);
     if (missionTime.value <= 0 || shield.value <= 0) {
@@ -210,13 +212,7 @@ useFrame(({ delta, elapsed }) => {
 });
 
 onBeforeUnmount(() => {
-  controller.dispose();
-  game.world.removeEntity(ground.id);
-  game.world.removeEntity(player.id);
-  game.world.removeEntity(gate.id);
-  for (const obstacle of obstacles) game.world.removeEntity(obstacle.entity.id);
-  for (const core of cores) game.world.removeEntity(core.entity.id);
-  for (const sentry of sentries) game.world.removeEntity(sentry.entity.id);
+  scene.dispose();
 });
 
 function createCore(id: string, x: number, z: number): Core {
@@ -246,7 +242,7 @@ function createBox(
   sz: number,
   color: { x: number; y: number; z: number },
 ): Entity {
-  return game.world.createEntity({
+  return scene.createEntity({
     id,
     transform: {
       position: { x, y, z },
@@ -270,107 +266,23 @@ function createObstacle(
   passY: number,
   standable: boolean,
   color: { x: number; y: number; z: number },
-): Obstacle {
-  return {
-    entity: createBox(id, x, y, z, sx, sy, sz, color),
-    halfX: sx / 2,
-    halfZ: sz / 2,
+): BoxCollider {
+  return createBoxCollider(createBox(id, x, y, z, sx, sy, sz, color), {
     passY,
-    topY: y + sy / 2 + 0.001,
     standable,
-  };
+  });
 }
 
 function resolveObstacleCollisions(): void {
-  const radius = Math.min(player.transform.scale.x, player.transform.scale.z) * 0.5;
-
-  for (const obstacle of obstacles) {
-    if (player.transform.position.y > obstacle.passY) continue;
-
-    const dx = player.transform.position.x - obstacle.entity.transform.position.x;
-    const dz = player.transform.position.z - obstacle.entity.transform.position.z;
-    const overlapX = obstacle.halfX + radius - Math.abs(dx);
-    const overlapZ = obstacle.halfZ + radius - Math.abs(dz);
-
-    if (overlapX <= 0 || overlapZ <= 0) continue;
-
-    if (obstacle.standable) {
-      const playerHalfHeight = player.transform.scale.y * 0.5;
-      const standingCenterY = obstacle.topY + playerHalfHeight;
-      if (player.transform.position.y >= standingCenterY - 0.14) continue;
-    }
-
-    if (overlapX < overlapZ) {
-      player.transform.position.x += Math.sign(dx || 1) * overlapX;
-    } else {
-      player.transform.position.z += Math.sign(dz || 1) * overlapZ;
-    }
-  }
+  resolveBoxCollisions(player, obstacles);
 }
 
 function moveSentryWithCollision(sentry: Sentry, targetX: number, targetZ: number): void {
-  const startX = sentry.entity.transform.position.x;
-  const startZ = sentry.entity.transform.position.z;
-  const dx = targetX - startX;
-  const dz = targetZ - startZ;
-  const distance = Math.hypot(dx, dz);
-  const stepDistance = 0.12;
-  const steps = Math.max(1, Math.ceil(distance / stepDistance));
-
-  for (let i = 1; i <= steps; i += 1) {
-    const t = i / steps;
-    const nextX = startX + dx * t;
-    const nextZ = startZ + dz * t;
-    if (isSentryOverlappingObstacle(sentry, nextX, nextZ)) return;
-    sentry.entity.transform.position.x = nextX;
-    sentry.entity.transform.position.z = nextZ;
-  }
-}
-
-function isSentryOverlappingObstacle(
-  sentry: Sentry,
-  x: number,
-  z: number,
-): boolean {
-  const radius = Math.min(sentry.entity.transform.scale.x, sentry.entity.transform.scale.z) * 0.5;
-
-  for (const obstacle of obstacles) {
-    const dx = x - obstacle.entity.transform.position.x;
-    const dz = z - obstacle.entity.transform.position.z;
-    const overlapX = obstacle.halfX + radius - Math.abs(dx);
-    const overlapZ = obstacle.halfZ + radius - Math.abs(dz);
-    if (overlapX > 0 && overlapZ > 0) return true;
-  }
-
-  return false;
+  moveWithBoxCollisions(sentry.entity, targetX, targetZ, obstacles);
 }
 
 function resolveGroundHeight(): number {
-  const baseGround = 0.65;
-  const footRadius = Math.min(player.transform.scale.x, player.transform.scale.z) * 0.5;
-  const playerHalfHeight = player.transform.scale.y * 0.5;
-  let height = baseGround;
-
-  for (const obstacle of obstacles) {
-    if (!obstacle.standable) continue;
-    const dx = Math.abs(player.transform.position.x - obstacle.entity.transform.position.x);
-    const dz = Math.abs(player.transform.position.z - obstacle.entity.transform.position.z);
-    const overlapX = obstacle.halfX + footRadius - dx;
-    const overlapZ = obstacle.halfZ + footRadius - dz;
-    if (overlapX <= 0 || overlapZ <= 0) continue;
-    const standingCenterY = obstacle.topY + playerHalfHeight;
-    if (player.transform.position.y < standingCenterY - 0.55) continue;
-    height = Math.max(height, standingCenterY);
-  }
-
-  return height;
-}
-
-function distance2d(a: Entity, b: Entity): number {
-  return Math.hypot(
-    a.transform.position.x - b.transform.position.x,
-    a.transform.position.z - b.transform.position.z,
-  );
+  return resolveColliderGroundHeight(player, obstacles, { baseY: 0.65 });
 }
 
 function resetRun(): void {
