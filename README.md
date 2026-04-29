@@ -1,5 +1,7 @@
 # Mochi
 
+<img src="docs/assets/mochi-logo.png" alt="Mochi logo" width="560">
+
 Vue.js-first 3D game engine.
 
 Mochi is built around a simple idea: game developers should spend time on gameplay, not engine plumbing.
