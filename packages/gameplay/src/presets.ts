@@ -11,6 +11,11 @@ import {
   type VehicleController,
   type VehicleControllerOptions,
 } from './vehicle';
+import {
+  createSpaceflightController,
+  type SpaceflightController,
+  type SpaceflightControllerOptions,
+} from './spaceflight';
 
 type SharedPresetOptions = Omit<
   ThirdPersonControllerOptions,
@@ -48,6 +53,23 @@ type SharedVehiclePresetOptions = Pick<
   VehicleControllerOptions,
   'target' | 'groundY' | 'enabled' | 'bounds'
 >;
+type SpaceflightPresetOptions = Omit<
+  SpaceflightControllerOptions,
+  | 'target'
+  | 'thrust'
+  | 'brakeDeceleration'
+  | 'drag'
+  | 'maxSpeed'
+  | 'strafeSpeed'
+  | 'yawSpeed'
+  | 'pitchSpeed'
+  | 'rollSpeed'
+  | 'autoLevelRoll'
+  | 'cameraDistance'
+  | 'cameraHeight'
+  | 'cameraLerp'
+  | 'focusDistance'
+>;
 
 export interface PresetControllerOptions extends SharedPresetOptions {
   target: Entity;
@@ -56,6 +78,10 @@ export interface PresetControllerOptions extends SharedPresetOptions {
 export interface VehiclePresetControllerOptions
   extends SharedVehiclePresetOptions,
     VehiclePresetOptions {}
+
+export interface SpaceflightPresetControllerOptions extends SpaceflightPresetOptions {
+  target: Entity;
+}
 
 export type ControllerPresetKind =
   | 'firstPerson'
@@ -66,6 +92,7 @@ export type ControllerPresetKind =
   | 'sideScroller2D'
   | 'vehicleArcade'
   | 'vehicleSim'
+  | 'spaceflightArcade'
   | 'railCamera'
   | 'strategyFreeCam';
 
@@ -78,9 +105,15 @@ export const CONTROLLER_PRESET_KINDS: ControllerPresetKind[] = [
   'sideScroller2D',
   'vehicleArcade',
   'vehicleSim',
+  'spaceflightArcade',
   'railCamera',
   'strategyFreeCam',
 ];
+
+export type PresetController =
+  | ThirdPersonController
+  | VehicleController
+  | SpaceflightController;
 
 export function createFirstPersonController(
   game: Game,
@@ -272,6 +305,28 @@ export function createVehicleSimController(
   });
 }
 
+export function createSpaceflightArcadeController(
+  game: Game,
+  options: SpaceflightPresetControllerOptions,
+): SpaceflightController {
+  return createSpaceflightController(game, {
+    thrust: 22,
+    brakeDeceleration: 30,
+    drag: 0.65,
+    maxSpeed: 24,
+    strafeSpeed: 8.5,
+    yawSpeed: 1.85,
+    pitchSpeed: 1.45,
+    rollSpeed: 2.2,
+    autoLevelRoll: 1.25,
+    cameraDistance: 11,
+    cameraHeight: 2.2,
+    cameraLerp: 9,
+    focusDistance: 7,
+    ...options,
+  });
+}
+
 export function createRailCameraController(
   game: Game,
   options: PresetControllerOptions,
@@ -322,28 +377,36 @@ export function createStrategyFreeCamController(
 export function createControllerPreset(
   game: Game,
   kind: ControllerPresetKind,
-  options: PresetControllerOptions,
-): ThirdPersonController {
+  options:
+    | PresetControllerOptions
+    | VehiclePresetControllerOptions
+    | SpaceflightPresetControllerOptions,
+): PresetController {
   switch (kind) {
     case 'firstPerson':
-      return createFirstPersonController(game, options);
+      return createFirstPersonController(game, options as PresetControllerOptions);
     case 'thirdPersonOrbit':
-      return createThirdPersonOrbitController(game, options);
+      return createThirdPersonOrbitController(game, options as PresetControllerOptions);
     case 'thirdPersonOverShoulder':
-      return createThirdPersonOverShoulderController(game, options);
+      return createThirdPersonOverShoulderController(game, options as PresetControllerOptions);
     case 'topDown':
-      return createTopDownController(game, options);
+      return createTopDownController(game, options as PresetControllerOptions);
     case 'isometric':
-      return createIsometricController(game, options);
+      return createIsometricController(game, options as PresetControllerOptions);
     case 'sideScroller2D':
-      return createSideScroller2DController(game, options);
+      return createSideScroller2DController(game, options as PresetControllerOptions);
     case 'vehicleArcade':
-      return createVehicleArcadeController(game, options);
+      return createVehicleArcadeController(game, options as VehiclePresetControllerOptions);
     case 'vehicleSim':
-      return createVehicleSimController(game, options);
+      return createVehicleSimController(game, options as VehiclePresetControllerOptions);
+    case 'spaceflightArcade':
+      return createSpaceflightArcadeController(
+        game,
+        options as SpaceflightPresetControllerOptions,
+      );
     case 'railCamera':
-      return createRailCameraController(game, options);
+      return createRailCameraController(game, options as PresetControllerOptions);
     case 'strategyFreeCam':
-      return createStrategyFreeCamController(game, options);
+      return createStrategyFreeCamController(game, options as PresetControllerOptions);
   }
 }

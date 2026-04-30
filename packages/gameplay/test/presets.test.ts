@@ -3,6 +3,7 @@ import { describe, it } from 'node:test';
 import {
   CONTROLLER_PRESET_KINDS,
   createControllerPreset,
+  createSpaceflightArcadeController,
   createThirdPersonController,
   createThirdPersonOrbitController,
   createVehicleArcadeController,
@@ -21,7 +22,7 @@ describe('controller presets', () => {
       controller.dispose();
     }
 
-    assert.equal(CONTROLLER_PRESET_KINDS.length, 10);
+    assert.equal(CONTROLLER_PRESET_KINDS.length, 11);
   });
 
   it('moves third-person targets from configured input bindings', () => {
@@ -81,5 +82,28 @@ describe('controller presets', () => {
     assert.equal(controller.getSpeed(), 0);
     assert.deepEqual(target.transform.position, { x: 0, y: 0, z: 0 });
     assert.equal(target.transform.rotation.y, 0);
+  });
+
+  it('flies spaceflight controllers in open 3D space', () => {
+    const game = createHeadlessGame();
+    const target = game.world.createEntity({ id: 'ship' });
+    const controller = createSpaceflightArcadeController(game, { target });
+
+    game.runtime.inputWriter.setKey('KeyW', true);
+    game.runtime.inputWriter.setKey('KeyD', true);
+    game.runtime.inputWriter.setKey('Space', true);
+    game.runtime.tick(0.25);
+
+    assert.ok(controller.getSpeed() > 0);
+    assert.ok(target.transform.position.y > 0);
+    assert.ok(target.transform.position.z < 0);
+    assert.ok(target.transform.rotation.y > 0);
+
+    controller.reset();
+
+    assert.equal(controller.getSpeed(), 0);
+    assert.deepEqual(controller.velocity, { x: 0, y: 0, z: 0 });
+    assert.deepEqual(target.transform.position, { x: 0, y: 0, z: 0 });
+    assert.deepEqual(target.transform.rotation, { x: 0, y: 0, z: 0 });
   });
 });

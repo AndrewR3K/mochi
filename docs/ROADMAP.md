@@ -26,8 +26,9 @@ The engine should not become complex by default. AAA-level capability should be 
 - Playground has multiple demos:
   - `Nightfall Run`
   - `Orbital Islands`
-  - `Velocity Circuit`
-  - `Preset Lab`
+- `Velocity Circuit`
+- `Starfield Drift`
+- `Preset Lab`
   - `First Person Range`
   - `Tactics Board`
 
@@ -72,6 +73,7 @@ The engine should not become complex by default. AAA-level capability should be 
 - [x] Add a first-person demo.
 - [x] Add a top-down or isometric tactics demo.
 - [x] Improve `Velocity Circuit` with vehicle-feeling steering instead of character-style movement.
+- [x] Add a first spaceflight demo and reusable arcade spacecraft controller.
 - [x] Add visual debug toggles.
 
 ## Medium-term checklist
@@ -101,6 +103,7 @@ The engine should not become complex by default. AAA-level capability should be 
 - [ ] Add instancing and batching for scale.
 - [ ] Add WebGPU backend exploration after WebGL2 renderer matures.
 - [ ] Advanced LOD presets and support
+- [ ] ray tracing support
 
 ### Assets and animation
 
@@ -123,6 +126,8 @@ The engine should not become complex by default. AAA-level capability should be 
 - [ ] Add starter templates by game style.
 - [ ] Add example cookbook.
 - [ ] Add profiling and performance guidance.
+- [ ] Multiplayer support
+- [ ] Anti Cheat
 
 ### Ecosystem
 
@@ -130,6 +135,8 @@ The engine should not become complex by default. AAA-level capability should be 
 - [ ] Add package/versioning strategy.
 - [ ] Create project website/docs site.
 - [ ] Add community demo gallery when ready.
+- [ ] Tauri support for desktop native and mobile native games
+- [ ] Support for React and Svelte
 
 ## Design principles
 

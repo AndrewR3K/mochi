@@ -6,15 +6,24 @@ import FirstPersonRangeDemo from './demos/FirstPersonRangeDemo.vue';
 import NightfallDemo from './DemoScene.vue';
 import OrbitalIslandsDemo from './demos/OrbitalIslandsDemo.vue';
 import PresetLabDemo from './demos/PresetLabDemo.vue';
+import StarfieldDriftDemo from './demos/StarfieldDriftDemo.vue';
 import TacticsBoardDemo from './demos/TacticsBoardDemo.vue';
 import VelocityCircuitDemo from './demos/VelocityCircuitDemo.vue';
 
-type DemoId = 'nightfall' | 'orbital' | 'velocity' | 'presets' | 'range' | 'tactics';
+type DemoId =
+  | 'nightfall'
+  | 'orbital'
+  | 'starfield'
+  | 'velocity'
+  | 'presets'
+  | 'range'
+  | 'tactics';
 
 const selectedDemo = shallowRef<DemoId>('nightfall');
 const demos = [
   { id: 'nightfall', label: 'Nightfall Run', component: NightfallDemo },
   { id: 'orbital', label: 'Orbital Islands', component: OrbitalIslandsDemo },
+  { id: 'starfield', label: 'Starfield Drift', component: StarfieldDriftDemo },
   { id: 'velocity', label: 'Velocity Circuit', component: VelocityCircuitDemo },
   { id: 'presets', label: 'Preset Lab', component: PresetLabDemo },
   { id: 'range', label: 'First Person Range', component: FirstPersonRangeDemo },
