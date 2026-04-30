@@ -72,7 +72,7 @@ pnpm build
 pnpm verify
 ```
 
-`pnpm verify` typechecks every package with a `typecheck` script, then builds the playground. Use it before opening a PR or changing shared engine APIs.
+`pnpm verify` typechecks every package with a `typecheck` script, runs the test suite, and builds the apps. Use it before opening a PR or changing shared engine APIs.
 
 ## Minimal usage (Vue + facade)
 
@@ -135,8 +135,9 @@ Entity blueprints instantiate reusable prefab-style hierarchies while keeping ga
 - [First Game in 10 Minutes](docs/FIRST_GAME.md)
 - [Alpha Release](docs/ALPHA_RELEASE.md)
 - [External Developer Workflow](docs/EXTERNAL_DEVELOPER_WORKFLOW.md)
+- [Versioning](docs/VERSIONING.md)
+- [Release Process](docs/RELEASE_PROCESS.md)
 - [Public API Reference Direction](docs/API_REFERENCE.md)
-- [npm Publishing Setup](docs/NPM_PUBLISHING.md)
 - [Discussions](docs/DISCUSSIONS.md)
 - [Choosing Camera + Controls](docs/PRESET_GUIDE.md)
 - [Suggested Game Project Layout](docs/PROJECT_LAYOUT.md)

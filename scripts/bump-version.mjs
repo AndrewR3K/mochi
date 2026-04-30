@@ -100,32 +100,61 @@ async function findVersionedPackageFiles() {
 function bumpVersion(version, bump) {
   validateVersion(version);
 
-  const [core] = version.split('-');
-  const parts = core.split('.').map((part) => Number.parseInt(part, 10));
-
-  if (parts.length !== 3 || parts.some((part) => Number.isNaN(part))) {
-    fail(`Unsupported version format: ${version}`);
+  if (bump === 'alpha' || bump === 'beta' || bump === 'rc') {
+    return bumpPrerelease(version, bump);
   }
 
+  const { major, minor, patch } = parseVersion(version);
+
   if (bump === 'major') {
-    return `${parts[0] + 1}.0.0`;
+    return `${major + 1}.0.0`;
   }
 
   if (bump === 'minor') {
-    return `${parts[0]}.${parts[1] + 1}.0`;
+    return `${major}.${minor + 1}.0`;
   }
 
   if (bump === 'patch') {
-    return `${parts[0]}.${parts[1]}.${parts[2] + 1}`;
+    return `${major}.${minor}.${patch + 1}`;
   }
 
-  fail(`Unsupported bump type: ${bump}. Use major, minor, or patch.`);
+  fail(`Unsupported bump type: ${bump}. Use alpha, beta, rc, major, minor, or patch.`);
 }
 
 function validateVersion(version) {
-  if (!/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(version)) {
+  if (!/^\d+\.\d+\.\d+(?:-(?:alpha|beta|rc)\.\d+)?$/.test(version)) {
     fail(`Invalid version: ${version}`);
   }
+}
+
+function bumpPrerelease(version, preid) {
+  const parsed = parseVersion(version);
+
+  if (!parsed.preid) {
+    return `${parsed.major}.${parsed.minor + 1}.0-${preid}.0`;
+  }
+
+  if (parsed.preid === preid) {
+    return `${parsed.major}.${parsed.minor}.${parsed.patch}-${preid}.${parsed.prerelease + 1}`;
+  }
+
+  return `${parsed.major}.${parsed.minor}.${parsed.patch}-${preid}.0`;
+}
+
+function parseVersion(version) {
+  const match = /^(\d+)\.(\d+)\.(\d+)(?:-(alpha|beta|rc)\.(\d+))?$/.exec(version);
+
+  if (!match) {
+    fail(`Unsupported version format: ${version}`);
+  }
+
+  return {
+    major: Number(match[1]),
+    minor: Number(match[2]),
+    patch: Number(match[3]),
+    preid: match[4],
+    prerelease: match[5] ? Number(match[5]) : 0,
+  };
 }
 
 async function readJson(file) {

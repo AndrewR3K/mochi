@@ -90,6 +90,7 @@ Mochi is web-native first. It should feel natural inside Vue and other frontend 
 - [x] Add release workflow.
 - [x] Add example starter template.
 - [x] Decide package publishing strategy for alpha.
+- [x] Add alpha/beta/rc versioning flow.
 
 ## Long-term platform checklist
 
@@ -110,6 +111,7 @@ Mochi is web-native first. It should feel natural inside Vue and other frontend 
 - [ ] Add WebGPU backend exploration after WebGL2 renderer matures.
 - [ ] Add advanced LOD presets and support.
 - [ ] Add ray tracing direction when the renderer stack is ready.
+- [ ] Add Particle system
 
 ### Assets and animation
 
@@ -146,7 +148,7 @@ Mochi is web-native first. It should feel natural inside Vue and other frontend 
 ### Ecosystem
 
 - [ ] Establish contribution guidelines.
-- [ ] Add package/versioning strategy.
+- [x] Add package/versioning strategy.
 - [ ] Create project website/docs site.
 - [ ] Add community demo gallery when ready.
 - [ ] Add Tauri support for desktop and mobile builds.

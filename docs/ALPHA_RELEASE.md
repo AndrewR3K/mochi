@@ -55,7 +55,7 @@ These APIs should avoid churn unless a change clearly improves the external deve
 - Renderer materials are intentionally simple and not PBR.
 - Physics is still lightweight collision/query tooling, not a full physics backend.
 - Shadows, post-processing, batching, and editor UI are future renderer/tooling work.
-- npm publishing is not the default alpha path until package strategy is finalized.
+- npm publishing starts on prerelease dist-tags; `latest` is reserved for stable releases.
 - React and Svelte adapters are future ecosystem work.
 
 ## Exit checklist

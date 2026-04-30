@@ -8,15 +8,6 @@ on:
         required: true
         default: true
         type: boolean
-      tag:
-        description: npm dist-tag to publish with.
-        required: true
-        default: alpha
-        type: choice
-        options:
-          - alpha
-          - beta
-          - latest
 
 permissions:
   contents: read
@@ -55,6 +46,29 @@ jobs:
           echo "NPM_TOKEN is required for a real npm publish."
           exit 1
 
+      - name: Resolve npm dist-tag
+        id: release
+        shell: bash
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+
+          if [[ "${VERSION}" == *"-alpha."* ]]; then
+            TAG="alpha"
+          elif [[ "${VERSION}" == *"-beta."* ]]; then
+            TAG="beta"
+          elif [[ "${VERSION}" == *"-rc."* ]]; then
+            TAG="rc"
+          elif [[ "${VERSION}" == *"-"* ]]; then
+            echo "Unsupported prerelease version '${VERSION}'. Use alpha, beta, or rc."
+            exit 1
+          else
+            TAG="latest"
+          fi
+
+          echo "version=${VERSION}" >> "${GITHUB_OUTPUT}"
+          echo "tag=${TAG}" >> "${GITHUB_OUTPUT}"
+          echo "Publishing version ${VERSION} with npm tag ${TAG}."
+
       - name: Publish packages
         shell: bash
         run: |
@@ -68,7 +82,7 @@ jobs:
 
             pnpm --dir "${package_dir}" publish \
               --access public \
-              --tag "${{ inputs.tag }}" \
+              --tag "${{ steps.release.outputs.tag }}" \
               --provenance \
               ${dry_run_flag}
           }
