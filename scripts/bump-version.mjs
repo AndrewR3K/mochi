@@ -1,0 +1,146 @@
+import { readdir, readFile, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import process from 'node:process';
+
+const args = parseArgs(process.argv.slice(2));
+const root = process.cwd();
+const packageFiles = await findVersionedPackageFiles();
+const rootPackagePath = join(root, 'package.json');
+const rootPackage = await readJson(rootPackagePath);
+const currentVersion = rootPackage.version;
+
+if (!currentVersion) {
+  fail('Root package.json must define a version.');
+}
+
+if (args.check) {
+  const mismatches = [];
+  for (const file of packageFiles) {
+    const manifest = await readJson(file);
+    if (manifest.version !== currentVersion) {
+      mismatches.push(`${relative(file)} has ${manifest.version}, expected ${currentVersion}`);
+    }
+  }
+
+  if (mismatches.length > 0) {
+    fail(`Package versions are out of sync:\n${mismatches.join('\n')}`);
+  }
+
+  console.log(`All package versions are synced at ${currentVersion}.`);
+  process.exit(0);
+}
+
+const nextVersion = args.version || bumpVersion(currentVersion, args.bump || 'patch');
+validateVersion(nextVersion);
+
+if (nextVersion === currentVersion) {
+  fail(`Next version must be different from the current version (${currentVersion}).`);
+}
+
+for (const file of [rootPackagePath, ...packageFiles]) {
+  const manifest = await readJson(file);
+  if (!manifest.version) {
+    continue;
+  }
+
+  manifest.version = nextVersion;
+  await writeJson(file, manifest);
+}
+
+console.log(`Updated package versions: ${currentVersion} -> ${nextVersion}`);
+
+function parseArgs(argv) {
+  const parsed = {};
+
+  for (let index = 0; index < argv.length; index++) {
+    const arg = argv[index];
+
+    if (arg === '--check') {
+      parsed.check = true;
+      continue;
+    }
+
+    if (arg === '--version') {
+      parsed.version = argv[++index]?.trim();
+      continue;
+    }
+
+    if (arg === '--bump') {
+      parsed.bump = argv[++index]?.trim();
+      continue;
+    }
+
+    fail(`Unknown argument: ${arg}`);
+  }
+
+  if (parsed.version === '') {
+    delete parsed.version;
+  }
+
+  return parsed;
+}
+
+async function findVersionedPackageFiles() {
+  const packagesDir = join(root, 'packages');
+  const packageNames = await readdir(packagesDir);
+  const files = [];
+
+  for (const packageName of packageNames) {
+    const packagePath = join(packagesDir, packageName, 'package.json');
+    const manifest = await readJson(packagePath);
+
+    if (manifest.version) {
+      files.push(packagePath);
+    }
+  }
+
+  return files.sort();
+}
+
+function bumpVersion(version, bump) {
+  validateVersion(version);
+
+  const [core] = version.split('-');
+  const parts = core.split('.').map((part) => Number.parseInt(part, 10));
+
+  if (parts.length !== 3 || parts.some((part) => Number.isNaN(part))) {
+    fail(`Unsupported version format: ${version}`);
+  }
+
+  if (bump === 'major') {
+    return `${parts[0] + 1}.0.0`;
+  }
+
+  if (bump === 'minor') {
+    return `${parts[0]}.${parts[1] + 1}.0`;
+  }
+
+  if (bump === 'patch') {
+    return `${parts[0]}.${parts[1]}.${parts[2] + 1}`;
+  }
+
+  fail(`Unsupported bump type: ${bump}. Use major, minor, or patch.`);
+}
+
+function validateVersion(version) {
+  if (!/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(version)) {
+    fail(`Invalid version: ${version}`);
+  }
+}
+
+async function readJson(file) {
+  return JSON.parse(await readFile(file, 'utf8'));
+}
+
+async function writeJson(file, value) {
+  await writeFile(file, `${JSON.stringify(value, null, 2)}\n`);
+}
+
+function relative(file) {
+  return file.replace(`${root}\\`, '').replace(`${root}/`, '');
+}
+
+function fail(message) {
+  console.error(message);
+  process.exit(1);
+}

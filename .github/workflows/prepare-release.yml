@@ -1,0 +1,83 @@
+name: Prepare Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: Version bump to apply when an exact version is not provided.
+        required: true
+        default: patch
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      version:
+        description: Optional exact version, for example 0.2.0.
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Bump package versions
+        run: pnpm version:bump -- --bump "${{ inputs.bump }}" --version "${{ inputs.version }}"
+
+      - name: Update lockfile
+        run: pnpm install --lockfile-only
+
+      - name: Verify workspace
+        run: pnpm verify
+
+      - name: Open release pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          BRANCH="release/v${VERSION}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "${BRANCH}"
+          git add package.json packages/*/package.json pnpm-lock.yaml
+          git commit -m "Release v${VERSION}"
+          git push --set-upstream origin "${BRANCH}"
+
+          cat > release-pr-body.md <<EOF
+          ## Summary
+          - bump package versions to v${VERSION}
+          - update the pnpm lockfile
+
+          ## Verification
+          - pnpm verify
+          EOF
+
+          gh pr create \
+            --base main \
+            --head "${BRANCH}" \
+            --title "Release v${VERSION}" \
+            --body-file release-pr-body.md
