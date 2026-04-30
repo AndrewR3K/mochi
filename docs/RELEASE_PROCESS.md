@@ -80,13 +80,13 @@ Mochi publishes under the `@mochi-labs` scope:
 
 The unscoped `mochi` package is taken, so do not use it for publishing.
 
-Before the first real publish:
+Before publishing from GitHub Actions:
 
 1. Create or claim the npm `mochi-labs` organization.
 2. Keep packages public.
 3. Add the publishing account as an owner or maintainer.
-4. Create a granular npm token with read/write access to the `@mochi-labs` scope.
-5. Add it to GitHub Actions repository secrets as `NPM_TOKEN`.
+4. Configure npm Trusted Publishing for each package.
+5. Use GitHub Actions as the trusted publisher with owner `AndrewR3K`, repository `mochi`, and workflow `publish-npm.yml`.
 
 Confirm local npm access with:
 
@@ -104,7 +104,7 @@ Run **Actions** -> **Publish npm** with:
 Only run with `dry_run: false` after:
 
 - the `@mochi-labs` npm organization is created or claimed
-- `NPM_TOKEN` is set in GitHub Actions secrets
+- each package has npm Trusted Publishing configured for `publish-npm.yml`
 - the dry run passes
 - a separate app has been tested with the intended install path
 
@@ -119,6 +119,6 @@ pnpm build
 
 If published packages work without `pnpm.overrides`, update `docs/EXTERNAL_DEVELOPER_WORKFLOW.md` to remove the tarball-only workaround.
 
-## Trusted Publishing Later
+## Trusted Publishing
 
-GitHub Actions can eventually use npm trusted publishing with provenance instead of long-lived tokens. Keep `id-token: write` in the workflow so the repo is ready for that path.
+The publish workflow uses npm Trusted Publishing with provenance instead of long-lived npm tokens. Keep `id-token: write` in the workflow and do not add an npm auth token unless npm changes the publishing model.
