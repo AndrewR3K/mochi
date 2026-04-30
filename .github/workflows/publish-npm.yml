@@ -82,11 +82,11 @@ jobs:
               provenance_flag=""
             fi
 
-            pnpm --dir "${package_dir}" publish \
+            (cd "${package_dir}" && npm publish \
               --access public \
               --tag "${{ steps.release.outputs.tag }}" \
               ${provenance_flag} \
-              ${dry_run_flag}
+              ${dry_run_flag})
           }
 
           publish_package packages/core
