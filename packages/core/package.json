@@ -2,11 +2,13 @@
   "name": "@mochi-labs/core",
   "version": "0.2.0-alpha.1",
   "private": false,
+  "license": "SEE LICENSE IN LICENSE.md",
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "files": [
-    "src"
+    "src",
+    "LICENSE.md"
   ],
   "repository": {
     "type": "git",
