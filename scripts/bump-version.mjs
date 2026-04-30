@@ -55,6 +55,10 @@ function parseArgs(argv) {
   for (let index = 0; index < argv.length; index++) {
     const arg = argv[index];
 
+    if (arg === '--') {
+      continue;
+    }
+
     if (arg === '--check') {
       parsed.check = true;
       continue;
