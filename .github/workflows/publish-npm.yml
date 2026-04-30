@@ -17,8 +17,6 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    env:
-      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
     steps:
       - name: Checkout
@@ -39,12 +37,6 @@ jobs:
 
       - name: Verify workspace
         run: pnpm verify
-
-      - name: Require npm token for real publish
-        if: ${{ !inputs.dry_run && env.NODE_AUTH_TOKEN == '' }}
-        run: |
-          echo "NPM_TOKEN is required for a real npm publish."
-          exit 1
 
       - name: Resolve npm dist-tag
         id: release
