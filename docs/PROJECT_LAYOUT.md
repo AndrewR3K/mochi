@@ -36,8 +36,10 @@ Keep gameplay state in engine/runtime structures. Keep Vue focused on HUDs, menu
 ## Engine vs game code
 
 Treat `packages/*` as the engine that external developers install and build against. Treat `apps/playground` as a consumer of that public API.
+Treat `apps/alpha-starter` as the smallest external-developer proof point.
 
 - Demos should be written like external game code.
+- The alpha starter should stay small, copyable, and free of playground-only assumptions.
 - Demo-specific mission rules, enemy behavior, scoring, layout, and UI should stay in the demo/app layer.
 - Promote code into `packages/gameplay` only when it is a reusable engine primitive with a clear public API.
 - If a demo needs a new engine feature, make that a reviewable engine change and keep the demo as an example of the public API.

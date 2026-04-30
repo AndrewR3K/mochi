@@ -16,6 +16,7 @@ The goal is a web-native engine that can grow toward Unity, Godot, and Unreal-le
 - `packages/gameplay` (`@mochi/gameplay`) - high-level facade (`createGame`), controller presets, scene lifecycle, gameplay helpers, and debug utilities
 - `packages/vue` (`@mochi/vue`) - Vue adapter (`GameCanvas`, `useGame`, `useGameScene`, `useFrame`, `useGameStats`)
 - `apps/playground` - playable demo app with multiple showcase scenes
+- `apps/alpha-starter` - isolated starter app that exercises Mochi like an external developer would
 
 ## Current controller presets
 
@@ -51,6 +52,12 @@ pnpm install
 
 ```bash
 pnpm dev
+```
+
+### Run alpha starter
+
+```bash
+pnpm dev:starter
 ```
 
 ### Build playground
@@ -125,6 +132,10 @@ Entity blueprints instantiate reusable prefab-style hierarchies while keeping ga
 ## Start here docs
 
 - [Getting Started](docs/GETTING_STARTED.md)
+- [First Game in 10 Minutes](docs/FIRST_GAME.md)
+- [Alpha Release](docs/ALPHA_RELEASE.md)
+- [External Developer Workflow](docs/EXTERNAL_DEVELOPER_WORKFLOW.md)
+- [Public API Reference Direction](docs/API_REFERENCE.md)
 - [Choosing Camera + Controls](docs/PRESET_GUIDE.md)
 - [Suggested Game Project Layout](docs/PROJECT_LAYOUT.md)
 - [Roadmap](docs/ROADMAP.md)

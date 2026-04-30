@@ -33,6 +33,7 @@ Mochi is web-native first. It should feel natural inside Vue and other frontend 
   - `Preset Lab`
   - `First Person Range`
   - `Tactics Board`
+- `Alpha Starter`
 
 ## Near-term checklist
 
@@ -85,10 +86,10 @@ Mochi is web-native first. It should feel natural inside Vue and other frontend 
 
 - [ ] Package public API docs (vitepress with github pages).
 - [x] Add initial tests for controller presets and scene cleanup.
-- [ ] Expand tests across renderer behavior and Vue composables.
-- [ ] Add release workflow.
-- [ ] Add example starter template.
-- [ ] Decide package publishing strategy.
+- [x] Expand tests across renderer behavior and Vue composables.
+- [x] Add release workflow.
+- [x] Add example starter template.
+- [x] Decide package publishing strategy for alpha.
 
 ## Long-term platform checklist
 

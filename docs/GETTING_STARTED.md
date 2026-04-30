@@ -11,6 +11,12 @@ pnpm dev
 
 Open the URL printed by Vite.
 
+To test the external-developer starter instead of the full playground:
+
+```bash
+pnpm dev:starter
+```
+
 ## 2) Understand the package split
 
 - `@mochi/core` - world state, input state, and frame loop primitives
@@ -93,11 +99,12 @@ Use `scene.reset()` when a demo needs replay behavior without rebuilding the who
 
 ## Recommended workflow
 
-1. Prototype in `apps/playground`
-2. Keep gameplay logic scene-local first
-3. Extract shared mechanics into `packages/gameplay` only when they are useful outside one demo
-4. Run `pnpm verify` before changing public API or opening a PR
-5. Add new presets when a control/camera pattern stabilizes
+1. Prototype engine ideas in `apps/playground`
+2. Validate external-facing flow in `apps/alpha-starter`
+3. Keep gameplay logic scene-local first
+4. Extract shared mechanics into `packages/gameplay` only when they are useful outside one demo
+5. Run `pnpm verify` before changing public API or opening a PR
+6. Add new presets when a control/camera pattern stabilizes
 
 ## Common pitfalls
 

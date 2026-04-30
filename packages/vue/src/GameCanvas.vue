@@ -14,6 +14,7 @@ import {
 } from 'vue';
 
 import { gameInjectionKey } from './injection';
+import { createGameCanvasOptions } from './gameCanvasOptions';
 
 const props = withDefaults(
   defineProps<{
@@ -48,15 +49,13 @@ onMounted(() => {
   const root = rootEl.value;
   if (!canvas || !root) return;
 
-  const game = createGame({
+  const game = createGame(createGameCanvasOptions({
     canvas,
     runtime: props.runtime,
     maxPixelRatio: props.maxPixelRatio,
     autoStart: props.autoStart,
-    renderer: {
-      clearColor: props.clearColor,
-    },
-  });
+    clearColor: props.clearColor,
+  }));
 
   unsubscribeFrame = props.onFrame ? game.onFrame(props.onFrame) : null;
   game.setSize(root.clientWidth, root.clientHeight);

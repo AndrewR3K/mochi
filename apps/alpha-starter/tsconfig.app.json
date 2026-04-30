@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@mochi/vue": ["../../packages/vue/src/index.ts"],
+      "@mochi/vue/*": ["../../packages/vue/src/*"],
+      "@mochi/gameplay": ["../../packages/gameplay/src/index.ts"],
+      "@mochi/gameplay/*": ["../../packages/gameplay/src/*"],
+      "@mochi/renderer-webgl": ["../../packages/renderer-webgl/src/index.ts"],
+      "@mochi/renderer-webgl/*": ["../../packages/renderer-webgl/src/*"],
+      "@mochi/core": ["../../packages/core/src/index.ts"],
+      "@mochi/core/*": ["../../packages/core/src/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.vue"]
+}

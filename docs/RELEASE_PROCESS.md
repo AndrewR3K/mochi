@@ -40,3 +40,26 @@ Use this command to test a local bump before reverting it:
 ```bash
 pnpm version:bump -- --bump patch
 ```
+
+## Alpha Release Dry Run
+
+Before the first alpha release, validate the starter and packed packages:
+
+```bash
+pnpm verify
+pnpm --filter alpha-starter build
+New-Item -ItemType Directory -Force -Path dist-packages
+pnpm --dir packages/core pack --pack-destination ../../dist-packages
+pnpm --dir packages/renderer-webgl pack --pack-destination ../../dist-packages
+pnpm --dir packages/gameplay pack --pack-destination ../../dist-packages
+pnpm --dir packages/vue pack --pack-destination ../../dist-packages
+```
+
+Install those tarballs in a separate app before tagging alpha. This catches missing exports, dependency mistakes, and docs assumptions that workspace linking can hide.
+Use `pnpm.overrides` in the separate app to point every `@mochi/*` package at the matching tarball until Mochi packages are published to a registry.
+
+During alpha, use:
+
+- **Patch** for bug fixes, docs fixes, and release-process corrections.
+- **Minor** for new public APIs, templates, demos, or capability that external developers can use.
+- **Major** only for intentional breaking changes after writing migration notes.
