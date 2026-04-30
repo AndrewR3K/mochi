@@ -49,6 +49,59 @@ export function mat4Multiply(a: Mat4, b: Mat4): Mat4 {
   return out;
 }
 
+export function mat4MultiplyVec4(
+  matrix: Mat4,
+  vector: readonly [number, number, number, number],
+): [number, number, number, number] {
+  return [
+    matrix[0] * vector[0] + matrix[4] * vector[1] + matrix[8] * vector[2] + matrix[12] * vector[3],
+    matrix[1] * vector[0] + matrix[5] * vector[1] + matrix[9] * vector[2] + matrix[13] * vector[3],
+    matrix[2] * vector[0] + matrix[6] * vector[1] + matrix[10] * vector[2] + matrix[14] * vector[3],
+    matrix[3] * vector[0] + matrix[7] * vector[1] + matrix[11] * vector[2] + matrix[15] * vector[3],
+  ];
+}
+
+export function mat4Invert(matrix: Mat4): Mat4 {
+  const out = new Float32Array(16);
+  const b00 = matrix[0] * matrix[5] - matrix[1] * matrix[4];
+  const b01 = matrix[0] * matrix[6] - matrix[2] * matrix[4];
+  const b02 = matrix[0] * matrix[7] - matrix[3] * matrix[4];
+  const b03 = matrix[1] * matrix[6] - matrix[2] * matrix[5];
+  const b04 = matrix[1] * matrix[7] - matrix[3] * matrix[5];
+  const b05 = matrix[2] * matrix[7] - matrix[3] * matrix[6];
+  const b06 = matrix[8] * matrix[13] - matrix[9] * matrix[12];
+  const b07 = matrix[8] * matrix[14] - matrix[10] * matrix[12];
+  const b08 = matrix[8] * matrix[15] - matrix[11] * matrix[12];
+  const b09 = matrix[9] * matrix[14] - matrix[10] * matrix[13];
+  const b10 = matrix[9] * matrix[15] - matrix[11] * matrix[13];
+  const b11 = matrix[10] * matrix[15] - matrix[11] * matrix[14];
+  const determinant = b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06;
+
+  if (determinant === 0) {
+    throw new Error('Matrix is not invertible.');
+  }
+
+  const inverse = 1 / determinant;
+  out[0] = (matrix[5] * b11 - matrix[6] * b10 + matrix[7] * b09) * inverse;
+  out[1] = (matrix[2] * b10 - matrix[1] * b11 - matrix[3] * b09) * inverse;
+  out[2] = (matrix[13] * b05 - matrix[14] * b04 + matrix[15] * b03) * inverse;
+  out[3] = (matrix[10] * b04 - matrix[9] * b05 - matrix[11] * b03) * inverse;
+  out[4] = (matrix[6] * b08 - matrix[4] * b11 - matrix[7] * b07) * inverse;
+  out[5] = (matrix[0] * b11 - matrix[2] * b08 + matrix[3] * b07) * inverse;
+  out[6] = (matrix[14] * b02 - matrix[12] * b05 - matrix[15] * b01) * inverse;
+  out[7] = (matrix[8] * b05 - matrix[10] * b02 + matrix[11] * b01) * inverse;
+  out[8] = (matrix[4] * b10 - matrix[5] * b08 + matrix[7] * b06) * inverse;
+  out[9] = (matrix[1] * b08 - matrix[0] * b10 - matrix[3] * b06) * inverse;
+  out[10] = (matrix[12] * b04 - matrix[13] * b02 + matrix[15] * b00) * inverse;
+  out[11] = (matrix[9] * b02 - matrix[8] * b04 - matrix[11] * b00) * inverse;
+  out[12] = (matrix[5] * b07 - matrix[4] * b09 - matrix[6] * b06) * inverse;
+  out[13] = (matrix[0] * b09 - matrix[1] * b07 + matrix[2] * b06) * inverse;
+  out[14] = (matrix[13] * b01 - matrix[12] * b03 - matrix[14] * b00) * inverse;
+  out[15] = (matrix[8] * b03 - matrix[9] * b01 + matrix[10] * b00) * inverse;
+
+  return out;
+}
+
 export function mat4Perspective(
   fovRadians: number,
   aspect: number,

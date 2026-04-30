@@ -2,8 +2,12 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import {
   World,
+  canCollisionBodiesInteract,
   overlapsCollisionBodies,
   queryCollisionBodies,
+  queryCollisionBodiesAlongRay,
+  queryCollisionBodiesAtPoint,
+  queryCollisionBodiesInSphere,
   queryCollisionPairs,
   queryTriggerPairs,
   setBoxCollisionBody,
@@ -72,5 +76,120 @@ describe('collision bodies', () => {
     assert.equal(pairs[0].a.entity.id, 'player');
     assert.equal(pairs[0].b.entity.id, 'pickup');
     assert.equal(triggerPairs.length, 1);
+  });
+
+  it('filters collision pairs with layers and masks', () => {
+    const world = new World();
+    const playerLayer = 1;
+    const enemyLayer = 1 << 1;
+    const pickupLayer = 1 << 2;
+    const player = setSphereCollisionBody(world.createEntity({ id: 'player' }), {
+      radius: 1,
+      layer: playerLayer,
+      mask: enemyLayer | pickupLayer,
+    });
+    const enemy = setSphereCollisionBody(world.createEntity({ id: 'enemy' }), {
+      radius: 1,
+      layer: enemyLayer,
+      mask: playerLayer,
+    });
+    const decoration = setSphereCollisionBody(world.createEntity({ id: 'decoration' }), {
+      radius: 1,
+      layer: pickupLayer,
+      mask: 0,
+    });
+
+    const pairs = queryCollisionPairs(queryCollisionBodies(world.allEntities()));
+
+    assert.equal(canCollisionBodiesInteract(player, enemy), true);
+    assert.equal(canCollisionBodiesInteract(player, decoration), false);
+    assert.equal(overlapsCollisionBodies(player, decoration), false);
+    assert.equal(pairs.length, 1);
+    assert.equal(pairs[0].a.entity.id, 'player');
+    assert.equal(pairs[0].b.entity.id, 'enemy');
+  });
+
+  it('queries collision bodies by point and sphere volume', () => {
+    const world = new World();
+    const terrainLayer = 1;
+    const actorLayer = 1 << 1;
+    const floor = setBoxCollisionBody(world.createEntity({
+      id: 'floor',
+      transform: { scale: { x: 10, y: 1, z: 10 } },
+    }), {
+      layer: terrainLayer,
+      mask: actorLayer,
+    });
+    const unit = setSphereCollisionBody(world.createEntity({
+      id: 'unit',
+      transform: { position: { x: 3, y: 0, z: 0 } },
+    }), {
+      radius: 0.5,
+      layer: actorLayer,
+      mask: terrainLayer,
+    });
+    const bodies = [floor, unit];
+
+    const pointHits = queryCollisionBodiesAtPoint(bodies, { x: 0, y: 0, z: 0 }, {
+      layer: actorLayer,
+      mask: terrainLayer,
+    });
+    const terrainHits = queryCollisionBodiesInSphere(bodies, { x: 2.25, y: 0, z: 0 }, 0.5, {
+      layer: actorLayer,
+      mask: terrainLayer,
+    });
+    const actorHits = queryCollisionBodiesInSphere(bodies, { x: 2.25, y: 0, z: 0 }, 0.5, {
+      layer: terrainLayer,
+      mask: actorLayer,
+    });
+
+    assert.deepEqual(pointHits.map((body) => body.entity.id), ['floor']);
+    assert.deepEqual(terrainHits.map((body) => body.entity.id), ['floor']);
+    assert.deepEqual(actorHits.map((body) => body.entity.id), ['unit']);
+  });
+
+  it('queries collision bodies along rays in hit order', () => {
+    const world = new World();
+    const targetLayer = 1 << 1;
+    setSphereCollisionBody(world.createEntity({
+      id: 'near',
+      transform: { position: { x: 0, y: 0, z: -4 } },
+    }), {
+      radius: 0.5,
+      layer: targetLayer,
+    });
+    setBoxCollisionBody(world.createEntity({
+      id: 'far',
+      transform: {
+        position: { x: 0, y: 0, z: -8 },
+        scale: { x: 2, y: 2, z: 2 },
+      },
+    }), {
+      layer: targetLayer,
+    });
+    setSphereCollisionBody(world.createEntity({
+      id: 'ignored',
+      transform: { position: { x: 0, y: 0, z: -2 } },
+    }), {
+      radius: 0.5,
+      layer: 1 << 3,
+    });
+
+    const hits = queryCollisionBodiesAlongRay(
+      queryCollisionBodies(world.allEntities()),
+      {
+        origin: { x: 0, y: 0, z: 0 },
+        direction: { x: 0, y: 0, z: -2 },
+      },
+      {
+        layer: 1,
+        mask: targetLayer,
+        maxDistance: 10,
+      },
+    );
+
+    assert.deepEqual(hits.map((hit) => hit.body.entity.id), ['near', 'far']);
+    assert.equal(hits[0].distance, 3.5);
+    assert.deepEqual(hits[0].point, { x: 0, y: 0, z: -3.5 });
   });
 });

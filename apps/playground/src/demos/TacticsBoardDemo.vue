@@ -3,11 +3,16 @@ import { useGame } from '@mochi/vue';
 import {
   createBoxCollider,
   createDebugBoxBounds,
+  createDebugRay,
   createDebugTargetMarker,
+  createGameInspectionSnapshot,
   createIsometricController,
-  distance2d,
+  createSceneScheduler,
+  overlapsCollisionBodies,
   resolveBoxCollisions,
+  setBoxCollisionBody,
   type BoxCollider,
+  type CollisionBody,
   type Entity,
 } from '@mochi/gameplay';
 import { computed, onBeforeUnmount, shallowRef } from 'vue';
@@ -15,9 +20,14 @@ import DemoHud from '../components/DemoHud.vue';
 
 interface CapturePoint {
   entity: Entity;
+  body: CollisionBody;
   color: { x: number; y: number; z: number };
   secured: boolean;
 }
+
+const unitLayer = 1;
+const blockerLayer = 1 << 1;
+const captureLayer = 1 << 2;
 
 const game = useGame();
 const scene = game.createScene();
@@ -25,9 +35,12 @@ const secured = shallowRef(0);
 const timer = shallowRef(70);
 const state = shallowRef<'running' | 'won' | 'lost'>('running');
 const debugBounds = shallowRef(false);
+const inspection = shallowRef(createGameInspectionSnapshot(game));
+const scheduler = createSceneScheduler(scene);
 
 scene.createEntity({
   id: 'tactics-board',
+  tags: ['terrain'],
   transform: { scale: { x: 22, y: 1, z: 22 } },
   renderable: {
     primitive: 'plane',
@@ -39,6 +52,13 @@ const unit = createBox('tactics-unit', 0, 0.65, 7, 0.95, 1.3, 0.95, {
   x: 0.45,
   y: 0.72,
   z: 1,
+}, ['actor', 'player']);
+const unitBody = setBoxCollisionBody(unit, {
+  halfX: 0.55,
+  halfY: 0.7,
+  halfZ: 0.55,
+  layer: unitLayer,
+  mask: blockerLayer | captureLayer,
 });
 const blockers: BoxCollider[] = [
   createBlocker('tactics-blocker-a', -4, 0.55, -2, 1.2, 1.1, 5, { x: 0.18, y: 0.2, z: 0.3 }),
@@ -50,6 +70,11 @@ createDebugBoxBounds(scene, blockers, {
 });
 createDebugTargetMarker(scene, unit, {
   enabled: () => debugBounds.value,
+});
+createDebugRay(scene, () => unit.transform.position, () => ({ x: 0, y: 0, z: -1 }), {
+  id: 'tactics-debug-ray',
+  enabled: () => debugBounds.value,
+  length: 3,
 });
 const points: CapturePoint[] = [
   createCapturePoint('capture-a', -7, -6),
@@ -73,12 +98,17 @@ scene.addReset(() => {
     point.secured = false;
   }
 });
+scene.addReset(scheduleInspectionRefresh);
+scheduleInspectionRefresh();
 
 const label = computed(() => {
   if (state.value === 'won') return 'All zones secured';
   if (state.value === 'lost') return 'Operation timed out';
   return `${secured.value}/3 zones secured`;
 });
+const inspectionLabel = computed(() =>
+  `${inspection.value.entityCount} entities · ${inspection.value.collisionBodyCount} bodies · ${inspection.value.collisionPairCount} pairs`,
+);
 
 scene.onFrame(({ delta, elapsed }) => {
   if (state.value === 'running') {
@@ -98,7 +128,7 @@ scene.onFrame(({ delta, elapsed }) => {
     if (
       state.value === 'running' &&
       !point.secured &&
-      distance2d(unit, point.entity) < 1.35
+      overlapsCollisionBodies(unitBody, point.body)
     ) {
       point.secured = true;
       secured.value += 1;
@@ -124,13 +154,31 @@ function createBlocker(
   sz: number,
   color: { x: number; y: number; z: number },
 ): BoxCollider {
-  return createBoxCollider(createBox(id, x, y, z, sx, sy, sz, color));
+  const entity = createBox(id, x, y, z, sx, sy, sz, color, ['blocker', 'terrain']);
+  setBoxCollisionBody(entity, {
+    halfX: sx / 2,
+    halfY: sy / 2,
+    halfZ: sz / 2,
+    layer: blockerLayer,
+    mask: unitLayer,
+  });
+  return createBoxCollider(entity);
 }
 
 function createCapturePoint(id: string, x: number, z: number): CapturePoint {
   const color = { x: 1, y: 0.62, z: 0.22 };
+  const entity = createBox(id, x, 0.5, z, 0.85, 0.35, 0.85, color, ['objective', 'trigger']);
+
   return {
-    entity: createBox(id, x, 0.5, z, 0.85, 0.35, 0.85, color),
+    entity,
+    body: setBoxCollisionBody(entity, {
+      halfX: 1.35,
+      halfY: 1,
+      halfZ: 1.35,
+      layer: captureLayer,
+      mask: unitLayer,
+      trigger: true,
+    }),
     color,
     secured: false,
   };
@@ -145,9 +193,11 @@ function createBox(
   sy: number,
   sz: number,
   color: { x: number; y: number; z: number },
+  tags: string[] = [],
 ): Entity {
   return scene.createEntity({
     id,
+    tags,
     transform: { position: { x, y, z }, scale: { x: sx, y: sy, z: sz } },
     renderable: { primitive: 'cube', material: { color } },
   });
@@ -159,6 +209,15 @@ function resetBoard(): void {
 
 function toggleDebugBounds(): void {
   debugBounds.value = !debugBounds.value;
+  inspection.value = createGameInspectionSnapshot(game);
+}
+
+function scheduleInspectionRefresh(): void {
+  scheduler.interval(0.25, () => {
+    if (debugBounds.value) {
+      inspection.value = createGameInspectionSnapshot(game);
+    }
+  });
 }
 </script>
 
@@ -177,6 +236,18 @@ function toggleDebugBounds(): void {
     >
       {{ debugBounds ? 'Hide bounds' : 'Show bounds' }}
     </button>
+    <div v-if="debugBounds" class="demo-inspection">
+      <p class="demo-inspection__line">{{ inspectionLabel }}</p>
+      <p class="demo-inspection__line">
+        Tags:
+        <span
+          v-for="entry in inspection.tags"
+          :key="entry.tag"
+        >
+          {{ entry.tag }}({{ entry.count }})
+        </span>
+      </p>
+    </div>
     <button
       v-if="state !== 'running'"
       class="demo-action"
@@ -200,5 +271,19 @@ function toggleDebugBounds(): void {
   font: inherit;
   font-size: 0.8rem;
   cursor: pointer;
+}
+
+.demo-inspection {
+  margin-top: 0.7rem;
+  font-size: 0.76rem;
+  opacity: 0.82;
+}
+
+.demo-inspection__line {
+  margin: 0.2rem 0 0;
+}
+
+.demo-inspection__line span + span {
+  margin-left: 0.35rem;
 }
 </style>

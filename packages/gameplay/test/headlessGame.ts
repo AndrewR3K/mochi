@@ -11,6 +11,7 @@ export function createHeadlessGame(): HeadlessGame {
   const runtime = createRuntime();
   const stats: GameStats = {
     frame: 0,
+    rawDelta: 0,
     delta: 0,
     elapsed: 0,
     fps: 0,

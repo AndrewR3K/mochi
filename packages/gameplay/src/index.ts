@@ -17,11 +17,20 @@ export {
 } from './events';
 export {
   createDebugBoxBounds,
+  createDebugRay,
   createDebugTargetMarker,
   type DebugBoxBoundsOptions,
+  type DebugRayOptions,
   type DebugTargetMarkerOptions,
   type DebugVisual,
 } from './debug';
+export {
+  createAssetRegistry,
+  type AssetLoader,
+  type AssetRecord,
+  type AssetRegistry,
+  type AssetStatus,
+} from './assets';
 export {
   MATERIAL_PRESET_COLORS,
   createMaterial,
@@ -68,6 +77,12 @@ export {
   type ResolveGroundHeightOptions,
 } from './collision';
 export {
+  instantiateEntityBlueprint,
+  type EntityBlueprint,
+  type EntityBlueprintInstance,
+  type EntityBlueprintOptions,
+} from './blueprints';
+export {
   createScene,
   disposeScene,
   mountScene,
@@ -76,6 +91,13 @@ export {
   type MountedScene,
   type SceneSetup,
 } from './scene';
+export {
+  createSceneScheduler,
+  type SceneScheduleEvent,
+  type SceneScheduleOptions,
+  type SceneScheduledTask,
+  type SceneScheduler,
+} from './scheduler';
 export {
   createSpaceflightController,
   getSpaceflightForward,
@@ -92,20 +114,44 @@ export {
   type ProjectileTarget,
 } from './projectiles';
 export {
+  createGameInspectionSnapshot,
+  type GameInspectionSnapshot,
+  type TagInspection,
+} from './inspection';
+export {
+  createDamageZone,
+  createTriggerVolume,
+  type DamageZone,
+  type DamageZoneEvent,
+  type DamageZoneOptions,
+  type TriggerVolume,
+  type TriggerVolumeEvent,
+  type TriggerVolumeOptions,
+  type TriggerVolumeShape,
+} from './triggers';
+export {
   createVehicleController,
   type VehicleController,
   type VehicleControllerOptions,
 } from './vehicle';
 export type {
+  Camera,
   ComponentId,
   ComponentStore,
   ComponentType,
   BoxCollisionOptions,
   BoxCollisionShape,
   CollisionBody,
+  CollisionFilterOptions,
+  CollisionLayer,
   CollisionPair,
+  CollisionQueryOptions,
+  CollisionRay,
+  CollisionRayHit,
+  CollisionRayQueryOptions,
   CollisionShape,
   CollisionShapeKind,
+  CameraRay,
   Entity,
   EntityComponent,
   EntityId,
@@ -122,18 +168,31 @@ export type {
   SphereCollisionShape,
   Transform,
   Vec3,
+  ViewportPoint,
   World,
+  WorldEntitySnapshot,
+  WorldSnapshot,
 } from '@mochi/core';
 export {
+  DEFAULT_COLLISION_LAYER,
+  DEFAULT_COLLISION_MASK,
+  canCollisionBodiesInteract,
   collisionBody,
+  composeEntityWorldMatrix,
+  createCameraRay,
   createBoxCollisionBody,
   createComponentType,
   createSphereCollisionBody,
+  getCameraForward,
   getCollisionBody,
   getComponent,
+  getEntityWorldPosition,
   hasComponent,
   overlapsCollisionBodies,
   queryCollisionBodies,
+  queryCollisionBodiesAlongRay,
+  queryCollisionBodiesAtPoint,
+  queryCollisionBodiesInSphere,
   queryCollisionPairs,
   queryComponents,
   queryTriggerPairs,

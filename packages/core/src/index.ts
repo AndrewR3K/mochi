@@ -1,4 +1,10 @@
 export {
+  createCameraRay,
+  getCameraForward,
+  type CameraRay,
+  type ViewportPoint,
+} from './camera';
+export {
   createComponentType,
   getComponent,
   hasComponent,
@@ -11,12 +17,18 @@ export {
   type EntityComponent,
 } from './components';
 export {
+  DEFAULT_COLLISION_LAYER,
+  DEFAULT_COLLISION_MASK,
+  canCollisionBodiesInteract,
   collisionBody,
   createBoxCollisionBody,
   createSphereCollisionBody,
   getCollisionBody,
   overlapsCollisionBodies,
   queryCollisionBodies,
+  queryCollisionBodiesAlongRay,
+  queryCollisionBodiesAtPoint,
+  queryCollisionBodiesInSphere,
   queryCollisionPairs,
   queryTriggerPairs,
   setBoxCollisionBody,
@@ -24,7 +36,13 @@ export {
   type BoxCollisionOptions,
   type BoxCollisionShape,
   type CollisionBody,
+  type CollisionFilterOptions,
+  type CollisionLayer,
   type CollisionPair,
+  type CollisionQueryOptions,
+  type CollisionRay,
+  type CollisionRayHit,
+  type CollisionRayQueryOptions,
   type CollisionShape,
   type CollisionShapeKind,
   type SphereCollisionOptions,
@@ -40,8 +58,10 @@ export {
 export {
   composeTransform,
   mat4Identity,
+  mat4Invert,
   mat4LookAt,
   mat4Multiply,
+  mat4MultiplyVec4,
   mat4Perspective,
   transform,
   vec3,
@@ -59,6 +79,8 @@ export {
 } from './runtime';
 export {
   World,
+  composeEntityWorldMatrix,
+  getEntityWorldPosition,
   type Camera,
   type Entity,
   type EntityId,
@@ -68,4 +90,6 @@ export {
   type Renderable,
   type RenderObjectSnapshot,
   type RenderSnapshot,
+  type WorldEntitySnapshot,
+  type WorldSnapshot,
 } from './world';

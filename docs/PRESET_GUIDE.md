@@ -26,7 +26,7 @@ Pick presets by camera/control model first, then genre.
 - Sim racer -> `vehicleSim`
 - Small space game -> `spaceflightArcade`
 
-Use the playground `Preset Lab` demo to switch these camera/control models live. Use `First Person Range` for a focused `firstPerson` example, `Tactics Board` for an `isometric` example, and `Starfield Drift` for a `spaceflightArcade` example.
+Use the playground `Preset Lab` demo to switch these camera/control models live. `First Person Range` shows `firstPerson`, `Tactics Board` shows `isometric`, and `Starfield Drift` shows `spaceflightArcade`.
 
 ## API patterns
 
@@ -80,16 +80,92 @@ setComponent(player, health, { value: 100 });
 const playerHealth = getComponent(player, health);
 ```
 
+### Entity names and tags
+
+```ts
+const boss = scene.createEntity({
+  id: 'boss-01',
+  name: 'Gate Warden',
+  tags: ['enemy', 'boss'],
+});
+
+const bosses = game.world.queryEntitiesByTag('boss');
+game.world.addTag(boss, 'active');
+```
+
 ### Runtime collision bodies
 
 ```ts
 import { queryCollisionBodies, queryTriggerPairs, setBoxCollisionBody } from '@mochi/gameplay';
 
-setBoxCollisionBody(player);
-setBoxCollisionBody(exitZone, { trigger: true });
+const playerLayer = 1;
+const pickupLayer = 1 << 1;
+
+setBoxCollisionBody(player, {
+  layer: playerLayer,
+  mask: pickupLayer,
+});
+setBoxCollisionBody(exitZone, {
+  layer: pickupLayer,
+  mask: playerLayer,
+  trigger: true,
+});
 
 const bodies = queryCollisionBodies(game.world.allEntities());
 const triggerPairs = queryTriggerPairs(bodies);
+```
+
+### Spatial collision queries
+
+```ts
+import {
+  createCameraRay,
+  queryCollisionBodiesAlongRay,
+  queryCollisionBodiesAtPoint,
+  queryCollisionBodiesInSphere,
+} from '@mochi/gameplay';
+
+const nearby = queryCollisionBodiesInSphere(
+  queryCollisionBodies(game.world.allEntities()),
+  player.transform.position,
+  4,
+);
+
+const clicked = queryCollisionBodiesAtPoint(
+  queryCollisionBodies(game.world.allEntities()),
+  targetPoint,
+);
+
+const aimed = queryCollisionBodiesAlongRay(
+  queryCollisionBodies(game.world.allEntities()),
+  createCameraRay(game.world.camera, {
+    x: pointerX,
+    y: pointerY,
+    width: game.renderer.width,
+    height: game.renderer.height,
+  }),
+  { maxDistance: 100 },
+);
+```
+
+### Trigger volumes and damage zones
+
+```ts
+import { createDamageZone, setSphereCollisionBody } from '@mochi/gameplay';
+
+setSphereCollisionBody(player, { radius: 0.6 });
+
+createDamageZone({
+  scene,
+  targets: () => [player],
+  position: { x: 4, y: 0, z: -2 },
+  shape: { kind: 'box', halfX: 1.5, halfY: 1, halfZ: 1.5 },
+  damage: 10,
+  interval: 0.75,
+  onDamage: ({ target, damage }) => {
+    console.log(`${target.id} took ${damage}`);
+  },
+});
 ```
 
 ### Projectiles
@@ -178,6 +254,117 @@ const controller = createThirdPersonOrbitController(game, {
 });
 ```
 
+### Parent and child entities
+
+```ts
+const ship = scene.createEntity({ id: 'ship' });
+const turret = scene.createEntity({
+  id: 'ship-turret',
+  parent: ship,
+  transform: { position: { x: 0, y: 0.8, z: -0.4 } },
+});
+
+ship.transform.position.z -= 5;
+```
+
+The child keeps a local transform, while rendering and collision queries use the composed world transform.
+
+### World snapshots
+
+```ts
+const saved = game.world.createWorldSnapshot();
+
+game.world.clear();
+game.world.loadWorldSnapshot(saved);
+```
+
+World snapshots include camera state, entity transforms, hierarchy, renderables, and world-space positions. Keep game-specific state such as score, inventory, quest flags, and network state in game code or dedicated systems.
+
+### Game inspection snapshots
+
+```ts
+import { createGameInspectionSnapshot } from '@mochi/gameplay';
+
+const inspection = createGameInspectionSnapshot(game);
+console.log(inspection.entityCount, inspection.collisionBodyCount, inspection.tags);
+```
+
+Use inspection snapshots for debug HUDs, editor panels, profiling tools, and automated checks. They summarize engine-owned state and leave game-specific interpretation to the app.
+
+### Scene scheduler
+
+```ts
+import { createSceneScheduler } from '@mochi/gameplay';
+
+const scheduler = createSceneScheduler(scene);
+
+scheduler.delay(2, () => {
+  spawnWave();
+});
+
+scheduler.interval(0.25, () => {
+  refreshDebugOverlay();
+});
+```
+
+Scheduled callbacks are owned by the scene and are cleaned up on scene disposal.
+
+### Asset registry
+
+```ts
+import { createAssetRegistry } from '@mochi/gameplay';
+
+const assets = createAssetRegistry();
+
+assets.register('level:arena', async () => {
+  const response = await fetch('/levels/arena.json');
+  return response.json();
+});
+
+await assets.preload(['level:arena']);
+const arena = assets.get('level:arena')?.value;
+```
+
+Use asset registries as a loading/cache boundary. They are intentionally data-agnostic so future mesh, texture, scene, audio, and game-specific asset pipelines can build on the same lifecycle.
+
+### Entity blueprints
+
+```ts
+import { instantiateEntityBlueprint } from '@mochi/gameplay';
+
+const ship = instantiateEntityBlueprint(scene, {
+  id: 'ship',
+  name: 'Scout',
+  tags: ['vehicle'],
+  renderable: {
+    primitive: 'cube',
+    material: createMaterial('solid'),
+  },
+  children: [
+    {
+      id: 'turret',
+      tags: ['weapon'],
+      transform: { position: { x: 0, y: 0.8, z: -0.4 } },
+    },
+  ],
+});
+```
+
+Blueprints are prefab-style entity hierarchies. They should describe reusable structure; behavior, AI, inventory, and mission state should live in systems or scene code.
+
+### Debug rays
+
+```ts
+import { createDebugRay } from '@mochi/gameplay';
+
+createDebugRay(scene, player.transform.position, { x: 0, y: 0, z: -1 }, {
+  enabled: () => showDebug.value,
+  length: 6,
+});
+```
+
+Debug rays are scene-owned visuals for aiming, selection, sensors, and ray-query debugging.
+
 ### Spaceflight controls
 
 ```ts
@@ -202,7 +389,7 @@ const controller = createSpaceflightArcadeController(game, {
 ## Tuning tips
 
 - Start with movement speed and camera distance.
-- Presets accept configurable keyboard bindings through `input`.
+- Presets accept custom keyboard bindings through `input`.
 - In vehicle presets, `forward` and `backward` map to throttle and brake.
 - For vehicle presets, tune `acceleration`, `maxSpeed`, `drag`, and `turnSpeed`.
 - In spaceflight presets, tune `thrust`, `maxSpeed`, `drag`, pitch/yaw/roll speeds, and 3D bounds.
