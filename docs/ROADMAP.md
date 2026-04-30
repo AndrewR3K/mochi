@@ -26,9 +26,9 @@ The engine should not become complex by default. AAA-level capability should be 
 - Playground has multiple demos:
   - `Nightfall Run`
   - `Orbital Islands`
-- `Velocity Circuit`
-- `Starfield Drift`
-- `Preset Lab`
+  - `Velocity Circuit`
+  - `Starfield Drift`
+  - `Preset Lab`
   - `First Person Range`
   - `Tactics Board`
 
@@ -145,6 +145,7 @@ The engine should not become complex by default. AAA-level capability should be 
 - Keep the default path simple.
 - Preserve lower-level escape hatches.
 - Promote patterns only after they appear in more than one demo.
+- Keep demos as examples of public engine usage, not as hidden requirements for engine modification.
 - Avoid framework coupling in runtime and renderer.
 - Build demos that feel playable, not just technically correct.
 - Grow toward AAA capability through staged systems, not speculative rewrites.
