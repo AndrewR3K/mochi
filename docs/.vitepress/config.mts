@@ -75,6 +75,7 @@ export default defineConfig({
     siteTitle: false,
     nav: [
       { text: 'Guide', link: '/GETTING_STARTED' },
+      { text: 'Demos', link: '/DEMOS' },
       { text: 'Tutorials', link: '/FIRST_GAME' },
       { text: 'API', link: '/API_REFERENCE' },
       { text: 'Roadmap', link: '/ROADMAP' },
@@ -91,6 +92,19 @@ export default defineConfig({
           { text: 'First Game in 10 Minutes', link: '/FIRST_GAME' },
           { text: 'Alpha Release', link: '/ALPHA_RELEASE' },
           { text: 'Developer Resources', link: '/RESOURCES' },
+        ],
+      },
+      {
+        text: 'Demos',
+        items: [
+          { text: 'All Demos', link: '/DEMOS' },
+          { text: 'Nightfall Run', link: '/demos/nightfall' },
+          { text: 'Orbital Islands', link: '/demos/orbital' },
+          { text: 'Starfield Drift', link: '/demos/starfield' },
+          { text: 'Velocity Circuit', link: '/demos/velocity' },
+          { text: 'Preset Lab', link: '/demos/presets' },
+          { text: 'First Person Range', link: '/demos/range' },
+          { text: 'Tactics Board', link: '/demos/tactics' },
         ],
       },
       {

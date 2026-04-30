@@ -39,6 +39,16 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Build playground demos
+        run: pnpm --filter playground build
+        env:
+          VITE_BASE_PATH: /${{ github.event.repository.name }}/demos/playground/
+
+      - name: Copy demos into docs public assets
+        run: |
+          mkdir -p docs/assets/demos/playground
+          cp -r apps/playground/dist/* docs/assets/demos/playground
+
       - name: Build docs
         run: pnpm docs:build
         env:

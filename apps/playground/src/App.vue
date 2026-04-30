@@ -19,7 +19,6 @@ type DemoId =
   | 'range'
   | 'tactics';
 
-const selectedDemo = shallowRef<DemoId>('nightfall');
 const demos = [
   { id: 'nightfall', label: 'Nightfall Run', component: NightfallDemo },
   { id: 'orbital', label: 'Orbital Islands', component: OrbitalIslandsDemo },
@@ -30,9 +29,24 @@ const demos = [
   { id: 'tactics', label: 'Tactics Board', component: TacticsBoardDemo },
 ] as const;
 
+const params = new URLSearchParams(window.location.search);
+const initialDemo = params.get('demo') as DemoId | null;
+
+const selectedDemo = shallowRef<DemoId>(
+  demos.some((demo) => demo.id === initialDemo) ? initialDemo! : 'nightfall',
+);
+
 const currentDemo = computed(
   () => demos.find((demo) => demo.id === selectedDemo.value) ?? demos[0],
 );
+
+function selectDemo(id: DemoId) {
+  selectedDemo.value = id;
+
+  const url = new URL(window.location.href);
+  url.searchParams.set('demo', id);
+  window.history.replaceState({}, '', url);
+}
 </script>
 
 <template>
@@ -46,7 +60,7 @@ const currentDemo = computed(
             class="app__switcher-button"
             :class="{ 'app__switcher-button--active': demo.id === selectedDemo }"
             type="button"
-            @click="selectedDemo = demo.id"
+            @click="selectDemo(demo.id)"
           >
             {{ demo.label }}
           </button>
