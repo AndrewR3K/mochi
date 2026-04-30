@@ -10,8 +10,8 @@ import {
   resolveGroundHeight,
   type BoxCollider,
   type Entity,
-} from '@mochi/gameplay';
-import { useGame, useGameScene } from '@mochi/vue';
+} from '@mochi-labs/gameplay';
+import { useGame, useGameScene } from '@mochi-labs/vue';
 
 const props = defineProps<{
   showDebug: boolean;

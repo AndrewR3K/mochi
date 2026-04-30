@@ -35,7 +35,7 @@ pnpm --dir packages/vue pack --pack-destination ../../dist-packages
 ```
 
 Then install the generated tarballs in the separate app. This catches dependency and export issues that workspace aliases can hide.
-Until the packages are published to a registry, the separate app must also use `pnpm.overrides` for each `@mochi/*` package so transitive Mochi dependencies resolve to local tarballs.
+Until the packages are published to a registry, the separate app must also use `pnpm.overrides` for each `@mochi-labs/*` package so transitive Mochi dependencies resolve to local tarballs.
 
 ## Stable during alpha
 
@@ -66,3 +66,5 @@ These APIs should avoid churn unless a change clearly improves the external deve
 - [x] Package/release process docs are current.
 - [x] Alpha limitations are linked from README and release notes.
 - [x] Renderer and Vue adapter alpha tests are in place.
+- [x] GitHub issue and discussion templates are in place.
+- [x] npm publish workflow and token setup docs are in place.

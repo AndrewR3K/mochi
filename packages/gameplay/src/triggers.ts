@@ -6,7 +6,7 @@ import {
   type CollisionBody,
   type Entity,
   type Vec3,
-} from '@mochi/core';
+} from '@mochi-labs/core';
 
 import { createEventSignal, type EventSignal } from './events';
 import type { GameScene } from './scene';

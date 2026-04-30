@@ -1,4 +1,4 @@
-import type { Entity, Vec3 } from '@mochi/core';
+import type { Entity, Vec3 } from '@mochi-labs/core';
 
 import { createEventSignal, type EventSignal } from './events';
 import type { GameScene } from './scene';

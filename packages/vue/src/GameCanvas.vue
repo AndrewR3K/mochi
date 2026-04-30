@@ -4,7 +4,7 @@ import {
   type FrameCallback,
   type Game,
   type RuntimeOptions,
-} from '@mochi/gameplay';
+} from '@mochi-labs/gameplay';
 import {
   onBeforeUnmount,
   onMounted,

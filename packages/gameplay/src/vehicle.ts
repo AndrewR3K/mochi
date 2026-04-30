@@ -1,4 +1,4 @@
-import type { Entity, World } from '@mochi/core';
+import type { Entity, World } from '@mochi-labs/core';
 
 import {
   DEFAULT_VEHICLE_INPUT_BINDINGS,

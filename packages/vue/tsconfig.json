@@ -5,12 +5,12 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "baseUrl": ".",
     "paths": {
-      "@mochi/gameplay": ["../gameplay/src/index.ts"],
-      "@mochi/gameplay/*": ["../gameplay/src/*"],
-      "@mochi/renderer-webgl": ["../renderer-webgl/src/index.ts"],
-      "@mochi/renderer-webgl/*": ["../renderer-webgl/src/*"],
-      "@mochi/core": ["../core/src/index.ts"],
-      "@mochi/core/*": ["../core/src/*"]
+      "@mochi-labs/gameplay": ["../gameplay/src/index.ts"],
+      "@mochi-labs/gameplay/*": ["../gameplay/src/*"],
+      "@mochi-labs/renderer-webgl": ["../renderer-webgl/src/index.ts"],
+      "@mochi-labs/renderer-webgl/*": ["../renderer-webgl/src/*"],
+      "@mochi-labs/core": ["../core/src/index.ts"],
+      "@mochi-labs/core/*": ["../core/src/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.vue"]

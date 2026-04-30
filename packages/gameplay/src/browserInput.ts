@@ -1,4 +1,4 @@
-import type { InputWriter } from '@mochi/core';
+import type { InputWriter } from '@mochi-labs/core';
 
 export function connectBrowserInput(
   element: HTMLElement,

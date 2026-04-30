@@ -1,4 +1,4 @@
-import type { Entity, EntityOptions } from '@mochi/core';
+import type { Entity, EntityOptions } from '@mochi-labs/core';
 
 import type { GameScene } from './scene';
 

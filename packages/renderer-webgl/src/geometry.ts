@@ -1,4 +1,4 @@
-import type { PrimitiveKind } from '@mochi/core';
+import type { PrimitiveKind } from '@mochi-labs/core';
 
 export interface GeometryData {
   positions: Float32Array;

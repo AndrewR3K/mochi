@@ -1,0 +1,54 @@
+name: Feature request
+description: Propose a new engine capability, API, template, or workflow.
+title: "[Feature]: "
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Mochi should grow through practical, playable slices. Describe the game-dev problem first, then the API you wish existed.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What developer or player problem does this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: What should Mochi provide?
+      placeholder: "A helper, preset, renderer feature, docs page, workflow, starter..."
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: Desired developer experience
+      description: Show what the API or usage might look like.
+      render: ts
+  - type: dropdown
+    id: package
+    attributes:
+      label: Likely package or area
+      multiple: true
+      options:
+        - "@mochi-labs/core"
+        - "@mochi-labs/renderer-webgl"
+        - "@mochi-labs/gameplay"
+        - "@mochi-labs/vue"
+        - "apps/playground"
+        - "apps/alpha-starter"
+        - "docs"
+        - "release/tooling"
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Fit check
+      options:
+        - label: This can be demonstrated in a game scene or starter.
+        - label: This keeps the default path simple for new developers.
+        - label: This does not require Vue in the runtime or renderer.

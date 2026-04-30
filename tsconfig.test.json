@@ -4,14 +4,14 @@
     "baseUrl": ".",
     "types": ["node"],
     "paths": {
-      "@mochi/core": ["packages/core/src/index.ts"],
-      "@mochi/core/*": ["packages/core/src/*"],
-      "@mochi/gameplay": ["packages/gameplay/src/index.ts"],
-      "@mochi/gameplay/*": ["packages/gameplay/src/*"],
-      "@mochi/renderer-webgl": ["packages/renderer-webgl/src/index.ts"],
-      "@mochi/renderer-webgl/*": ["packages/renderer-webgl/src/*"],
-      "@mochi/vue": ["packages/vue/src/index.ts"],
-      "@mochi/vue/*": ["packages/vue/src/*"]
+      "@mochi-labs/core": ["packages/core/src/index.ts"],
+      "@mochi-labs/core/*": ["packages/core/src/*"],
+      "@mochi-labs/gameplay": ["packages/gameplay/src/index.ts"],
+      "@mochi-labs/gameplay/*": ["packages/gameplay/src/*"],
+      "@mochi-labs/renderer-webgl": ["packages/renderer-webgl/src/index.ts"],
+      "@mochi-labs/renderer-webgl/*": ["packages/renderer-webgl/src/*"],
+      "@mochi-labs/vue": ["packages/vue/src/index.ts"],
+      "@mochi-labs/vue/*": ["packages/vue/src/*"]
     }
   },
   "include": ["packages/**/*.test.ts", "packages/**/test/**/*.ts"]

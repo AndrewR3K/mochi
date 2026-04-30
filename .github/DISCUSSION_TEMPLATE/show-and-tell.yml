@@ -1,0 +1,23 @@
+title: "[Show and tell]: "
+labels: ["show-and-tell"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Share what you made with Mochi. Screenshots, short clips, and code snippets are welcome.
+  - type: textarea
+    id: project
+    attributes:
+      label: What did you build?
+    validations:
+      required: true
+  - type: textarea
+    id: media
+    attributes:
+      label: Screenshots or recordings
+      description: Drag images or videos here.
+  - type: textarea
+    id: feedback
+    attributes:
+      label: Mochi feedback
+      description: What felt great, and what felt rough?

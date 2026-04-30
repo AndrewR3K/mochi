@@ -27,6 +27,8 @@ Merge the release pull request into `main`.
 
 After the merge, the **Release** workflow reads the root `package.json` version, creates the matching `vX.Y.Z` tag if needed, and generates a GitHub release.
 
+Publishing to npm is manual during alpha. Use the **Publish npm** workflow after the GitHub release exists and after `NPM_TOKEN` has been added to repository Actions secrets. See [npm Publishing Setup](NPM_PUBLISHING.md).
+
 ## Local Checks
 
 Use this command to confirm package versions are synced:
@@ -56,10 +58,24 @@ pnpm --dir packages/vue pack --pack-destination ../../dist-packages
 ```
 
 Install those tarballs in a separate app before tagging alpha. This catches missing exports, dependency mistakes, and docs assumptions that workspace linking can hide.
-Use `pnpm.overrides` in the separate app to point every `@mochi/*` package at the matching tarball until Mochi packages are published to a registry.
+Use `pnpm.overrides` in the separate app to point every `@mochi-labs/*` package at the matching tarball until Mochi packages are published to a registry.
 
 During alpha, use:
 
 - **Patch** for bug fixes, docs fixes, and release-process corrections.
 - **Minor** for new public APIs, templates, demos, or capability that external developers can use.
 - **Major** only for intentional breaking changes after writing migration notes.
+
+## npm Publish Dry Run
+
+Run **Actions** -> **Publish npm** with:
+
+- `dry_run`: `true`
+- `tag`: `alpha`
+
+Only run with `dry_run: false` after:
+
+- the `@mochi-labs` npm organization is created or claimed
+- `NPM_TOKEN` is set in GitHub Actions secrets
+- the dry run passes
+- a separate app has been tested with the intended install path

@@ -33,14 +33,14 @@ Use the playground `Preset Lab` demo to switch these camera/control models live.
 ### Explicit constructor
 
 ```ts
-import { createThirdPersonOrbitController } from '@mochi/gameplay';
+import { createThirdPersonOrbitController } from '@mochi-labs/gameplay';
 const controller = createThirdPersonOrbitController(game, { target: player });
 ```
 
 ### Registry style
 
 ```ts
-import { createControllerPreset } from '@mochi/gameplay';
+import { createControllerPreset } from '@mochi-labs/gameplay';
 const controller = createControllerPreset(game, 'thirdPersonOrbit', { target: player });
 ```
 
@@ -57,7 +57,7 @@ scene.reset();
 ### Event signals
 
 ```ts
-import { createEventSignal } from '@mochi/gameplay';
+import { createEventSignal } from '@mochi-labs/gameplay';
 
 const collected = createEventSignal<{ id: string }>();
 const collectedIds: string[] = [];
@@ -72,7 +72,7 @@ stop();
 ### Entity components
 
 ```ts
-import { createComponentType, getComponent, setComponent } from '@mochi/gameplay';
+import { createComponentType, getComponent, setComponent } from '@mochi-labs/gameplay';
 
 const health = createComponentType<{ value: number }>('health');
 setComponent(player, health, { value: 100 });
@@ -96,7 +96,7 @@ game.world.addTag(boss, 'active');
 ### Runtime collision bodies
 
 ```ts
-import { queryCollisionBodies, queryTriggerPairs, setBoxCollisionBody } from '@mochi/gameplay';
+import { queryCollisionBodies, queryTriggerPairs, setBoxCollisionBody } from '@mochi-labs/gameplay';
 
 const playerLayer = 1;
 const pickupLayer = 1 << 1;
@@ -123,7 +123,7 @@ import {
   queryCollisionBodiesAlongRay,
   queryCollisionBodiesAtPoint,
   queryCollisionBodiesInSphere,
-} from '@mochi/gameplay';
+} from '@mochi-labs/gameplay';
 
 const nearby = queryCollisionBodiesInSphere(
   queryCollisionBodies(game.world.allEntities()),
@@ -151,7 +151,7 @@ const aimed = queryCollisionBodiesAlongRay(
 ### Trigger volumes and damage zones
 
 ```ts
-import { createDamageZone, setSphereCollisionBody } from '@mochi/gameplay';
+import { createDamageZone, setSphereCollisionBody } from '@mochi-labs/gameplay';
 
 setSphereCollisionBody(player, { radius: 0.6 });
 
@@ -171,7 +171,7 @@ createDamageZone({
 ### Projectiles
 
 ```ts
-import { createProjectileEmitter, getSpaceflightForward } from '@mochi/gameplay';
+import { createProjectileEmitter, getSpaceflightForward } from '@mochi-labs/gameplay';
 
 const blasters = createProjectileEmitter({
   scene,
@@ -194,7 +194,7 @@ blasters.fire({
 ### Vue HUD stats
 
 ```ts
-import { useGameStats } from '@mochi/vue';
+import { useGameStats } from '@mochi-labs/vue';
 import { computed } from 'vue';
 
 const stats = useGameStats();
@@ -204,7 +204,7 @@ const fpsLabel = computed(() => Math.round(stats.fps.value));
 ### Vue scene lifecycle
 
 ```ts
-import { useGameScene } from '@mochi/vue';
+import { useGameScene } from '@mochi-labs/vue';
 
 const sceneHandle = useGameScene();
 const scene = sceneHandle.scene;
@@ -215,7 +215,7 @@ sceneHandle.reset();
 ### Material presets
 
 ```ts
-import { createMaterial } from '@mochi/gameplay';
+import { createMaterial } from '@mochi-labs/gameplay';
 
 const player = scene.createEntity({
   renderable: {
@@ -228,7 +228,7 @@ const player = scene.createEntity({
 ### Debug bounds
 
 ```ts
-import { createDebugBoxBounds, createDebugTargetMarker } from '@mochi/gameplay';
+import { createDebugBoxBounds, createDebugTargetMarker } from '@mochi-labs/gameplay';
 
 createDebugBoxBounds(scene, colliders, {
   enabled: () => showDebugBounds.value,
@@ -283,7 +283,7 @@ World snapshots include camera state, entity transforms, hierarchy, renderables,
 ### Game inspection snapshots
 
 ```ts
-import { createGameInspectionSnapshot } from '@mochi/gameplay';
+import { createGameInspectionSnapshot } from '@mochi-labs/gameplay';
 
 const inspection = createGameInspectionSnapshot(game);
 console.log(inspection.entityCount, inspection.collisionBodyCount, inspection.tags);
@@ -294,7 +294,7 @@ Use inspection snapshots for debug HUDs, editor panels, profiling tools, and aut
 ### Scene scheduler
 
 ```ts
-import { createSceneScheduler } from '@mochi/gameplay';
+import { createSceneScheduler } from '@mochi-labs/gameplay';
 
 const scheduler = createSceneScheduler(scene);
 
@@ -312,7 +312,7 @@ Scheduled callbacks are owned by the scene and are cleaned up on scene disposal.
 ### Asset registry
 
 ```ts
-import { createAssetRegistry } from '@mochi/gameplay';
+import { createAssetRegistry } from '@mochi-labs/gameplay';
 
 const assets = createAssetRegistry();
 
@@ -330,7 +330,7 @@ Use asset registries as a loading/cache boundary. They are intentionally data-ag
 ### Entity blueprints
 
 ```ts
-import { instantiateEntityBlueprint } from '@mochi/gameplay';
+import { instantiateEntityBlueprint } from '@mochi-labs/gameplay';
 
 const ship = instantiateEntityBlueprint(scene, {
   id: 'ship',
@@ -355,7 +355,7 @@ Blueprints are prefab-style entity hierarchies. They should describe reusable st
 ### Debug rays
 
 ```ts
-import { createDebugRay } from '@mochi/gameplay';
+import { createDebugRay } from '@mochi-labs/gameplay';
 
 createDebugRay(scene, player.transform.position, { x: 0, y: 0, z: -1 }, {
   enabled: () => showDebug.value,
@@ -368,7 +368,7 @@ Debug rays are scene-owned visuals for aiming, selection, sensors, and ray-query
 ### Spaceflight controls
 
 ```ts
-import { createSpaceflightArcadeController } from '@mochi/gameplay';
+import { createSpaceflightArcadeController } from '@mochi-labs/gameplay';
 
 const controller = createSpaceflightArcadeController(game, {
   target: ship,

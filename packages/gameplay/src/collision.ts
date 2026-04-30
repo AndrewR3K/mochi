@@ -1,4 +1,4 @@
-import type { Entity } from '@mochi/core';
+import type { Entity } from '@mochi-labs/core';
 
 export interface BoxCollider {
   entity: Entity;

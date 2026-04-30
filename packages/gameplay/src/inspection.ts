@@ -3,7 +3,7 @@ import {
   queryCollisionPairs,
   queryTriggerPairs,
   type WorldSnapshot,
-} from '@mochi/core';
+} from '@mochi-labs/core';
 
 import type { Game } from './game';
 

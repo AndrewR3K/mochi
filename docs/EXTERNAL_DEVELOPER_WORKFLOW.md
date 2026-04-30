@@ -13,7 +13,7 @@ pnpm --filter alpha-starter build
 
 Rules for the starter:
 
-- Import from `@mochi/*` package roots only.
+- Import from `@mochi-labs/*` package roots only.
 - Do not import from `packages/*/src/*` directly.
 - Do not copy helpers from `apps/playground`.
 - Treat friction as product feedback and create issues for it.
@@ -43,23 +43,23 @@ pnpm --dir packages/vue pack --pack-destination ../../dist-packages
 ```json
 {
   "dependencies": {
-    "@mochi/core": "file:../lite3d/dist-packages/mochi-core-0.1.1.tgz",
-    "@mochi/renderer-webgl": "file:../lite3d/dist-packages/mochi-renderer-webgl-0.1.1.tgz",
-    "@mochi/gameplay": "file:../lite3d/dist-packages/mochi-gameplay-0.1.1.tgz",
-    "@mochi/vue": "file:../lite3d/dist-packages/mochi-vue-0.1.1.tgz"
+    "@mochi-labs/core": "file:../lite3d/dist-packages/mochi-labs-core-0.1.1.tgz",
+    "@mochi-labs/renderer-webgl": "file:../lite3d/dist-packages/mochi-labs-renderer-webgl-0.1.1.tgz",
+    "@mochi-labs/gameplay": "file:../lite3d/dist-packages/mochi-labs-gameplay-0.1.1.tgz",
+    "@mochi-labs/vue": "file:../lite3d/dist-packages/mochi-labs-vue-0.1.1.tgz"
   },
   "pnpm": {
     "overrides": {
-      "@mochi/core": "file:../lite3d/dist-packages/mochi-core-0.1.1.tgz",
-      "@mochi/renderer-webgl": "file:../lite3d/dist-packages/mochi-renderer-webgl-0.1.1.tgz",
-      "@mochi/gameplay": "file:../lite3d/dist-packages/mochi-gameplay-0.1.1.tgz",
-      "@mochi/vue": "file:../lite3d/dist-packages/mochi-vue-0.1.1.tgz"
+      "@mochi-labs/core": "file:../lite3d/dist-packages/mochi-labs-core-0.1.1.tgz",
+      "@mochi-labs/renderer-webgl": "file:../lite3d/dist-packages/mochi-labs-renderer-webgl-0.1.1.tgz",
+      "@mochi-labs/gameplay": "file:../lite3d/dist-packages/mochi-labs-gameplay-0.1.1.tgz",
+      "@mochi-labs/vue": "file:../lite3d/dist-packages/mochi-labs-vue-0.1.1.tgz"
     }
   }
 }
 ```
 
-The overrides are required until Mochi packages are published to a registry. They force transitive `@mochi/*` dependencies to resolve to the local tarballs instead of npm.
+The overrides are required until Mochi packages are published to a registry. They force transitive `@mochi-labs/*` dependencies to resolve to the local tarballs instead of npm.
 
 4. Build the separate app.
 

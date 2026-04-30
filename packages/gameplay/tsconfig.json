@@ -4,10 +4,10 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "@mochi/renderer-webgl": ["../renderer-webgl/src/index.ts"],
-      "@mochi/renderer-webgl/*": ["../renderer-webgl/src/*"],
-      "@mochi/core": ["../core/src/index.ts"],
-      "@mochi/core/*": ["../core/src/*"]
+      "@mochi-labs/renderer-webgl": ["../renderer-webgl/src/index.ts"],
+      "@mochi-labs/renderer-webgl/*": ["../renderer-webgl/src/*"],
+      "@mochi-labs/core": ["../core/src/index.ts"],
+      "@mochi-labs/core/*": ["../core/src/*"]
     }
   },
   "include": ["src/**/*.ts"]

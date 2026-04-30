@@ -1,0 +1,21 @@
+<svg width="960" height="520" viewBox="0 0 960 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="960" height="520" rx="28" fill="#070B16"/>
+  <rect x="100" y="50" width="760" height="420" rx="24" fill="#101827" stroke="#2F405E" stroke-width="4"/>
+  <path d="M210 160h150v82H210zM600 220h150v102H600zM415 340h130v58H415z" fill="#F59E0B" fill-opacity=".85"/>
+  <circle cx="480" cy="360" r="24" fill="#93C5FD"/>
+  <circle cx="250" cy="140" r="18" fill="#A7F3D0"/>
+  <circle cx="705" cy="180" r="18" fill="#A7F3D0"/>
+  <circle cx="480" cy="120" r="18" fill="#A7F3D0"/>
+  <path d="M480 360 C400 290 310 230 250 140" stroke="#93C5FD" stroke-width="5" stroke-dasharray="12 12"/>
+  <path d="M480 360 C550 300 645 250 705 180" stroke="#93C5FD" stroke-width="5" stroke-dasharray="12 12"/>
+  <path d="M480 360 C465 270 470 195 480 120" stroke="#93C5FD" stroke-width="5" stroke-dasharray="12 12"/>
+  <text x="480" y="38" text-anchor="middle" fill="#F8FAFC" font-family="Arial, sans-serif" font-size="24" font-weight="700">Signal Grove starter loop</text>
+  <text x="480" y="505" text-anchor="middle" fill="#94A3B8" font-family="Arial, sans-serif" font-size="18">Move the player, collect 3 signals, toggle debug bounds while tuning.</text>
+  <text x="480" y="366" text-anchor="middle" fill="#06111F" font-family="Arial, sans-serif" font-size="14" font-weight="700">Player</text>
+  <text x="250" y="112" text-anchor="middle" fill="#D1FAE5" font-family="Arial, sans-serif" font-size="16" font-weight="700">Signal A</text>
+  <text x="705" y="152" text-anchor="middle" fill="#D1FAE5" font-family="Arial, sans-serif" font-size="16" font-weight="700">Signal B</text>
+  <text x="480" y="92" text-anchor="middle" fill="#D1FAE5" font-family="Arial, sans-serif" font-size="16" font-weight="700">Signal C</text>
+  <text x="285" y="208" text-anchor="middle" fill="#111827" font-family="Arial, sans-serif" font-size="16" font-weight="700">Blocker</text>
+  <text x="675" y="276" text-anchor="middle" fill="#111827" font-family="Arial, sans-serif" font-size="16" font-weight="700">Blocker</text>
+  <text x="480" y="376" text-anchor="middle" fill="#111827" font-family="Arial, sans-serif" font-size="15" font-weight="700">Platform</text>
+</svg>

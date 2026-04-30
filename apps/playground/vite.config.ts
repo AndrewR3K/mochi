@@ -11,13 +11,13 @@ export default defineConfig({
   resolve: {
     dedupe: ['vue'],
     alias: {
-      '@mochi/vue': path.join(monorepoRoot, 'packages/vue/src'),
-      '@mochi/gameplay': path.join(monorepoRoot, 'packages/gameplay/src'),
-      '@mochi/renderer-webgl': path.join(
+      '@mochi-labs/vue': path.join(monorepoRoot, 'packages/vue/src'),
+      '@mochi-labs/gameplay': path.join(monorepoRoot, 'packages/gameplay/src'),
+      '@mochi-labs/renderer-webgl': path.join(
         monorepoRoot,
         'packages/renderer-webgl/src',
       ),
-      '@mochi/core': path.join(monorepoRoot, 'packages/core/src'),
+      '@mochi-labs/core': path.join(monorepoRoot, 'packages/core/src'),
     },
   },
   server: {

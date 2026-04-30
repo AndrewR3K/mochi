@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { GameCanvas } from '@mochi/vue';
+import { GameCanvas } from '@mochi-labs/vue';
 import { computed, shallowRef } from 'vue';
 
 import FirstGameScene from './game/FirstGameScene.vue';

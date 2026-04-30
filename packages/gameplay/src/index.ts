@@ -172,7 +172,7 @@ export type {
   World,
   WorldEntitySnapshot,
   WorldSnapshot,
-} from '@mochi/core';
+} from '@mochi-labs/core';
 export {
   DEFAULT_COLLISION_LAYER,
   DEFAULT_COLLISION_MASK,
@@ -201,8 +201,8 @@ export {
   setComponent,
   setSphereCollisionBody,
   vec3,
-} from '@mochi/core';
+} from '@mochi-labs/core';
 export type {
   WebGLLightingOptions,
   WebGLRendererOptions,
-} from '@mochi/renderer-webgl';
+} from '@mochi-labs/renderer-webgl';

@@ -20,10 +20,10 @@ Mochi is web-native first. It should feel natural inside Vue and other frontend 
 
 ## Current status
 
-- `@mochi/core` exists for headless world, input, components, and frame-loop primitives.
-- `@mochi/renderer-webgl` exists as the current custom WebGL2 renderer.
-- `@mochi/gameplay` exists for the high-level facade, controller presets, scene lifecycle, and gameplay helpers.
-- `@mochi/vue` exists as the Vue adapter for canvas hosting and HUD/UI ergonomics.
+- `@mochi-labs/core` exists for headless world, input, components, and frame-loop primitives.
+- `@mochi-labs/renderer-webgl` exists as the current custom WebGL2 renderer.
+- `@mochi-labs/gameplay` exists for the high-level facade, controller presets, scene lifecycle, and gameplay helpers.
+- `@mochi-labs/vue` exists as the Vue adapter for canvas hosting and HUD/UI ergonomics.
 - Controller preset taxonomy exists.
 - Playground has multiple demos:
   - `Nightfall Run`

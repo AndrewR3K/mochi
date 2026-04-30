@@ -1,4 +1,4 @@
-import type { InputState } from '@mochi/core';
+import type { InputState } from '@mochi-labs/core';
 
 export type KeyBinding = string | readonly string[];
 

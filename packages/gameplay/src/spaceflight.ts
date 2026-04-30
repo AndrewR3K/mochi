@@ -1,4 +1,4 @@
-import type { Entity, Vec3, World } from '@mochi/core';
+import type { Entity, Vec3, World } from '@mochi-labs/core';
 
 import {
   DEFAULT_SPACEFLIGHT_INPUT_BINDINGS,

@@ -1,4 +1,4 @@
-import type { GameOptions, RuntimeOptions } from '@mochi/gameplay';
+import type { GameOptions, RuntimeOptions } from '@mochi-labs/gameplay';
 
 export interface GameCanvasOptionsInput {
   canvas: HTMLCanvasElement;

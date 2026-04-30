@@ -14,13 +14,13 @@ Alpha docs use hand-written package pages first. Move to generated docs after th
 External developers should import from package roots:
 
 ```ts
-import { createGame } from '@mochi/gameplay';
-import { GameCanvas, useGameScene } from '@mochi/vue';
+import { createGame } from '@mochi-labs/gameplay';
+import { GameCanvas, useGameScene } from '@mochi-labs/vue';
 ```
 
-Avoid imports like `@mochi/gameplay/src/scene`. If a useful API is not exported from a package root, treat that as an engine issue.
+Avoid imports like `@mochi-labs/gameplay/src/scene`. If a useful API is not exported from a package root, treat that as an engine issue.
 
-## `@mochi/core`
+## `@mochi-labs/core`
 
 Use core directly for headless/runtime work:
 
@@ -31,7 +31,7 @@ Use core directly for headless/runtime work:
 - collision bodies, filtering, point/sphere/ray queries
 - camera viewport rays
 
-## `@mochi/renderer-webgl`
+## `@mochi-labs/renderer-webgl`
 
 Use renderer APIs when building custom hosts:
 
@@ -39,9 +39,9 @@ Use renderer APIs when building custom hosts:
 - lighting options
 - render snapshots from `World`
 
-Most game developers should use `@mochi/gameplay` instead of creating the renderer directly.
+Most game developers should use `@mochi-labs/gameplay` instead of creating the renderer directly.
 
-## `@mochi/gameplay`
+## `@mochi-labs/gameplay`
 
 Use gameplay as the default game-facing entry point:
 
@@ -58,7 +58,7 @@ Use gameplay as the default game-facing entry point:
 - asset registry
 - inspection snapshots and debug visuals
 
-## `@mochi/vue`
+## `@mochi-labs/vue`
 
 Use Vue for the visibility layer:
 

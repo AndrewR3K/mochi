@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useGame } from '@mochi/vue';
-import { createFirstPersonController, distance2d, type Entity } from '@mochi/gameplay';
+import { useGame } from '@mochi-labs/vue';
+import { createFirstPersonController, distance2d, type Entity } from '@mochi-labs/gameplay';
 import { computed, onBeforeUnmount, shallowRef } from 'vue';
 import DemoHud from '../components/DemoHud.vue';
 
