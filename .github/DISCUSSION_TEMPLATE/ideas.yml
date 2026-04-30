@@ -1,0 +1,27 @@
+title: "[Idea]: "
+labels: ["idea"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use ideas for early engine direction, API shape, starter concepts, and demo proposals before they become issues.
+  - type: textarea
+    id: idea
+    attributes:
+      label: Idea
+      description: What should Mochi explore?
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it matters
+      description: What game-dev workflow or player experience would improve?
+    validations:
+      required: true
+  - type: textarea
+    id: sketch
+    attributes:
+      label: API or gameplay sketch
+      description: Optional code, scene flow, or demo concept.
+      render: ts

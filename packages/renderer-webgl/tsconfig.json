@@ -4,8 +4,8 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "@mochi/core": ["../core/src/index.ts"],
-      "@mochi/core/*": ["../core/src/*"]
+      "@mochi-labs/core": ["../core/src/index.ts"],
+      "@mochi-labs/core/*": ["../core/src/*"]
     }
   },
   "include": ["src/**/*.ts"]

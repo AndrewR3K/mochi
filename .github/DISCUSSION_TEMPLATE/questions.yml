@@ -1,0 +1,20 @@
+title: "[Question]: "
+labels: ["question"]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: What are you trying to understand or build?
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Share the docs, package, demo, or code path you are looking at.
+  - type: textarea
+    id: tried
+    attributes:
+      label: What you tried
+      description: Commands, snippets, or links that might help answer faster.

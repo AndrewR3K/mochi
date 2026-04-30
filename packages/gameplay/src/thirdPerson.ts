@@ -1,4 +1,4 @@
-import type { Entity } from '@mochi/core';
+import type { Entity } from '@mochi-labs/core';
 
 import {
   DEFAULT_CHARACTER_INPUT_BINDINGS,

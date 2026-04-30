@@ -4,16 +4,19 @@ on:
   workflow_dispatch:
     inputs:
       bump:
-        description: Version bump to apply when an exact version is not provided.
+        description: Version bump or prerelease train to apply when an exact version is not provided.
         required: true
-        default: patch
+        default: alpha
         type: choice
         options:
+          - alpha
+          - beta
+          - rc
           - patch
           - minor
           - major
       version:
-        description: Optional exact version, for example 0.2.0.
+        description: Optional exact version, for example 0.2.0-alpha.0 or 0.2.0.
         required: false
         type: string
 
@@ -74,6 +77,9 @@ jobs:
 
           ## Verification
           - pnpm verify
+
+          ## Publish
+          After merge, run the Publish npm workflow. It will infer the npm dist-tag from v${VERSION}.
           EOF
 
           gh pr create \

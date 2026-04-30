@@ -1,4 +1,4 @@
-import type { PrimitiveKind, RenderSnapshot } from '@mochi/core';
+import type { PrimitiveKind, RenderSnapshot } from '@mochi-labs/core';
 
 import { geometries } from './geometry';
 

@@ -5,4 +5,4 @@ export { useGame } from './useGame';
 export { useGameScene, type GameSceneHandle } from './useGameScene';
 export { useGameStats, type GameStatsRefs } from './useGameStats';
 
-export type { FrameCallback, Game, GameOptions, RuntimeOptions } from '@mochi/gameplay';
+export type { FrameCallback, Game, GameOptions, RuntimeOptions } from '@mochi-labs/gameplay';

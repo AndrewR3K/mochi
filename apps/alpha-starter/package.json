@@ -1,0 +1,21 @@
+{
+  "name": "alpha-starter",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit -p tsconfig.app.json && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@mochi-labs/gameplay": "workspace:*",
+    "@mochi-labs/vue": "workspace:*",
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "typescript": "~5.7.2",
+    "vite": "^6.0.6",
+    "vue-tsc": "^2.2.0"
+  }
+}

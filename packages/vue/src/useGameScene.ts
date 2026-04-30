@@ -1,6 +1,6 @@
 import { onBeforeUnmount } from 'vue';
 
-import type { GameScene } from '@mochi/gameplay';
+import type { GameScene } from '@mochi-labs/gameplay';
 
 import { useGame } from './useGame';
 

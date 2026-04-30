@@ -1,5 +1,5 @@
-import { createRuntime, type FrameCallback, type Runtime } from '@mochi/core';
-import type { WebGLGameRenderer } from '@mochi/renderer-webgl';
+import { createRuntime, type FrameCallback, type Runtime } from '@mochi-labs/core';
+import type { WebGLGameRenderer } from '@mochi-labs/renderer-webgl';
 import type { Game, GameStats } from '../src/game';
 import { createScene, mountScene, type MountedScene, type SceneSetup } from '../src/scene';
 

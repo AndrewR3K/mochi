@@ -5,12 +5,12 @@ import {
   type RuntimeOptions,
   type RuntimeStats,
   type World,
-} from '@mochi/core';
+} from '@mochi-labs/core';
 import {
   createWebGLRenderer,
   type WebGLGameRenderer,
   type WebGLRendererOptions,
-} from '@mochi/renderer-webgl';
+} from '@mochi-labs/renderer-webgl';
 
 import { connectBrowserInput } from './browserInput';
 import {

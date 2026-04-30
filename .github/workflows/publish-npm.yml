@@ -1,0 +1,93 @@
+name: Publish npm
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Run npm publish without publishing packages.
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Verify workspace
+        run: pnpm verify
+
+      - name: Require npm token for real publish
+        if: ${{ !inputs.dry_run && env.NODE_AUTH_TOKEN == '' }}
+        run: |
+          echo "NPM_TOKEN is required for a real npm publish."
+          exit 1
+
+      - name: Resolve npm dist-tag
+        id: release
+        shell: bash
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+
+          if [[ "${VERSION}" == *"-alpha."* ]]; then
+            TAG="alpha"
+          elif [[ "${VERSION}" == *"-beta."* ]]; then
+            TAG="beta"
+          elif [[ "${VERSION}" == *"-rc."* ]]; then
+            TAG="rc"
+          elif [[ "${VERSION}" == *"-"* ]]; then
+            echo "Unsupported prerelease version '${VERSION}'. Use alpha, beta, or rc."
+            exit 1
+          else
+            TAG="latest"
+          fi
+
+          echo "version=${VERSION}" >> "${GITHUB_OUTPUT}"
+          echo "tag=${TAG}" >> "${GITHUB_OUTPUT}"
+          echo "Publishing version ${VERSION} with npm tag ${TAG}."
+
+      - name: Publish packages
+        shell: bash
+        run: |
+          publish_package() {
+            local package_dir="$1"
+            local dry_run_flag=""
+
+            if [[ "${{ inputs.dry_run }}" == "true" ]]; then
+              dry_run_flag="--dry-run"
+            fi
+
+            pnpm --dir "${package_dir}" publish \
+              --access public \
+              --tag "${{ steps.release.outputs.tag }}" \
+              --provenance \
+              ${dry_run_flag}
+          }
+
+          publish_package packages/core
+          publish_package packages/renderer-webgl
+          publish_package packages/gameplay
+          publish_package packages/vue

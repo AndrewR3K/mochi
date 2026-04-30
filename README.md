@@ -11,15 +11,16 @@ The goal is a web-native engine that can grow toward Unity, Godot, and Unreal-le
 
 ## What is in this repo
 
-- `packages/core` (`@mochi/core`) - headless runtime primitives: world, entities, components, collision bodies, transforms, input state, and frame loop
-- `packages/renderer-webgl` (`@mochi/renderer-webgl`) - custom WebGL2 renderer with simple material lighting
-- `packages/gameplay` (`@mochi/gameplay`) - high-level facade (`createGame`), controller presets, scene lifecycle, gameplay helpers, and debug utilities
-- `packages/vue` (`@mochi/vue`) - Vue adapter (`GameCanvas`, `useGame`, `useGameScene`, `useFrame`, `useGameStats`)
+- `packages/core` (`@mochi-labs/core`) - headless runtime primitives: world, entities, components, collision bodies, transforms, input state, and frame loop
+- `packages/renderer-webgl` (`@mochi-labs/renderer-webgl`) - custom WebGL2 renderer with simple material lighting
+- `packages/gameplay` (`@mochi-labs/gameplay`) - high-level facade (`createGame`), controller presets, scene lifecycle, gameplay helpers, and debug utilities
+- `packages/vue` (`@mochi-labs/vue`) - Vue adapter (`GameCanvas`, `useGame`, `useGameScene`, `useFrame`, `useGameStats`)
 - `apps/playground` - playable demo app with multiple showcase scenes
+- `apps/alpha-starter` - isolated starter app that exercises Mochi like an external developer would
 
 ## Current controller presets
 
-From `@mochi/gameplay`:
+From `@mochi-labs/gameplay`:
 
 - `createFirstPersonController`
 - `createThirdPersonOrbitController`
@@ -53,6 +54,12 @@ pnpm install
 pnpm dev
 ```
 
+### Run alpha starter
+
+```bash
+pnpm dev:starter
+```
+
 ### Build playground
 
 ```bash
@@ -65,12 +72,12 @@ pnpm build
 pnpm verify
 ```
 
-`pnpm verify` typechecks every package with a `typecheck` script, then builds the playground. Use it before opening a PR or changing shared engine APIs.
+`pnpm verify` typechecks every package with a `typecheck` script, runs the test suite, and builds the apps. Use it before opening a PR or changing shared engine APIs.
 
 ## Minimal usage (Vue + facade)
 
 ```ts
-import { createGame, createMaterial, createThirdPersonOverShoulderController } from '@mochi/gameplay';
+import { createGame, createMaterial, createThirdPersonOverShoulderController } from '@mochi-labs/gameplay';
 
 const game = createGame({ canvas });
 const scene = game.createScene();
@@ -125,6 +132,13 @@ Entity blueprints instantiate reusable prefab-style hierarchies while keeping ga
 ## Start here docs
 
 - [Getting Started](docs/GETTING_STARTED.md)
+- [First Game in 10 Minutes](docs/FIRST_GAME.md)
+- [Alpha Release](docs/ALPHA_RELEASE.md)
+- [External Developer Workflow](docs/EXTERNAL_DEVELOPER_WORKFLOW.md)
+- [Versioning](docs/VERSIONING.md)
+- [Release Process](docs/RELEASE_PROCESS.md)
+- [Public API Reference Direction](docs/API_REFERENCE.md)
+- [Discussions](docs/DISCUSSIONS.md)
 - [Choosing Camera + Controls](docs/PRESET_GUIDE.md)
 - [Suggested Game Project Layout](docs/PROJECT_LAYOUT.md)
 - [Roadmap](docs/ROADMAP.md)

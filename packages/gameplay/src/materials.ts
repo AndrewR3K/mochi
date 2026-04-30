@@ -1,4 +1,4 @@
-import type { Material, Vec3 } from '@mochi/core';
+import type { Material, Vec3 } from '@mochi-labs/core';
 
 export type MaterialPresetKind = 'solid' | 'emissive' | 'warning' | 'neutral';
 

@@ -1,0 +1,18 @@
+<svg width="960" height="420" viewBox="0 0 960 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="960" height="420" rx="28" fill="#060914"/>
+  <rect x="70" y="78" width="360" height="264" rx="22" fill="#0F172A" stroke="#38BDF8" stroke-width="4"/>
+  <rect x="530" y="78" width="360" height="264" rx="22" fill="#0F172A" stroke="#86EFAC" stroke-width="4"/>
+  <text x="250" y="122" text-anchor="middle" fill="#E0F2FE" font-family="Arial, sans-serif" font-size="26" font-weight="700">App.vue</text>
+  <text x="710" y="122" text-anchor="middle" fill="#DCFCE7" font-family="Arial, sans-serif" font-size="26" font-weight="700">FirstGameScene.vue</text>
+  <text x="250" y="166" text-anchor="middle" fill="#BAE6FD" font-family="Arial, sans-serif" font-size="18">Canvas host</text>
+  <text x="250" y="204" text-anchor="middle" fill="#BAE6FD" font-family="Arial, sans-serif" font-size="18">HUD state</text>
+  <text x="250" y="242" text-anchor="middle" fill="#BAE6FD" font-family="Arial, sans-serif" font-size="18">Buttons and status</text>
+  <text x="250" y="280" text-anchor="middle" fill="#BAE6FD" font-family="Arial, sans-serif" font-size="18">Vue visibility layer</text>
+  <text x="710" y="166" text-anchor="middle" fill="#BBF7D0" font-family="Arial, sans-serif" font-size="18">Scene entities</text>
+  <text x="710" y="204" text-anchor="middle" fill="#BBF7D0" font-family="Arial, sans-serif" font-size="18">Controller preset</text>
+  <text x="710" y="242" text-anchor="middle" fill="#BBF7D0" font-family="Arial, sans-serif" font-size="18">Collision and debug</text>
+  <text x="710" y="280" text-anchor="middle" fill="#BBF7D0" font-family="Arial, sans-serif" font-size="18">Hot-loop gameplay</text>
+  <path d="M438 210h82" stroke="#F8FAFC" stroke-width="5" stroke-linecap="round"/>
+  <path d="M505 190l24 20-24 20" stroke="#F8FAFC" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="480" y="378" text-anchor="middle" fill="#CBD5E1" font-family="Arial, sans-serif" font-size="18">Props down, events up. Keep simulation in Mochi scene code.</text>
+</svg>

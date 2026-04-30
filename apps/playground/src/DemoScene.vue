@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useGame, useGameScene, useGameStats } from '@mochi/vue';
+import { useGame, useGameScene, useGameStats } from '@mochi-labs/vue';
 import {
   createBoxCollider,
   createThirdPersonOverShoulderController,
@@ -9,7 +9,7 @@ import {
   resolveGroundHeight as resolveColliderGroundHeight,
   type BoxCollider,
   type Entity,
-} from '@mochi/gameplay';
+} from '@mochi-labs/gameplay';
 import { computed, shallowRef } from 'vue';
 
 interface Core {

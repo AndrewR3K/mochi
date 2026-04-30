@@ -11,19 +11,25 @@ pnpm dev
 
 Open the URL printed by Vite.
 
+To test the external-developer starter instead of the full playground:
+
+```bash
+pnpm dev:starter
+```
+
 ## 2) Understand the package split
 
-- `@mochi/core` - world state, input state, and frame loop primitives
-- `@mochi/renderer-webgl` - rendering backend
-- `@mochi/gameplay` - high-level facade, control presets, scene lifecycle, and gameplay helpers
-- `@mochi/vue` - Vue adapter and UI-facing ergonomics
+- `@mochi-labs/core` - world state, input state, and frame loop primitives
+- `@mochi-labs/renderer-webgl` - rendering backend
+- `@mochi-labs/gameplay` - high-level facade, control presets, scene lifecycle, and gameplay helpers
+- `@mochi-labs/vue` - Vue adapter and UI-facing ergonomics
 
-Use `@mochi/gameplay` first unless you are working on engine internals.
+Use `@mochi-labs/gameplay` first unless you are working on engine internals.
 
 ## 3) Create your first scene object
 
 ```ts
-import { useGame, useGameScene } from '@mochi/vue';
+import { useGame, useGameScene } from '@mochi-labs/vue';
 
 const game = useGame();
 const { scene } = useGameScene();
@@ -43,7 +49,7 @@ const player = scene.createEntity({
 ## 4) Pick a controller preset
 
 ```ts
-import { createThirdPersonOverShoulderController } from '@mochi/gameplay';
+import { createThirdPersonOverShoulderController } from '@mochi-labs/gameplay';
 
 const controller = createThirdPersonOverShoulderController(game, {
   target: player,
@@ -93,11 +99,12 @@ Use `scene.reset()` when a demo needs replay behavior without rebuilding the who
 
 ## Recommended workflow
 
-1. Prototype in `apps/playground`
-2. Keep gameplay logic scene-local first
-3. Extract shared mechanics into `packages/gameplay` only when they are useful outside one demo
-4. Run `pnpm verify` before changing public API or opening a PR
-5. Add new presets when a control/camera pattern stabilizes
+1. Prototype engine ideas in `apps/playground`
+2. Validate external-facing flow in `apps/alpha-starter`
+3. Keep gameplay logic scene-local first
+4. Extract shared mechanics into `packages/gameplay` only when they are useful outside one demo
+5. Run `pnpm verify` before changing public API or opening a PR
+6. Add new presets when a control/camera pattern stabilizes
 
 ## Common pitfalls
 

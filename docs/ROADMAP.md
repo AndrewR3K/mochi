@@ -20,10 +20,10 @@ Mochi is web-native first. It should feel natural inside Vue and other frontend 
 
 ## Current status
 
-- `@mochi/core` exists for headless world, input, components, and frame-loop primitives.
-- `@mochi/renderer-webgl` exists as the current custom WebGL2 renderer.
-- `@mochi/gameplay` exists for the high-level facade, controller presets, scene lifecycle, and gameplay helpers.
-- `@mochi/vue` exists as the Vue adapter for canvas hosting and HUD/UI ergonomics.
+- `@mochi-labs/core` exists for headless world, input, components, and frame-loop primitives.
+- `@mochi-labs/renderer-webgl` exists as the current custom WebGL2 renderer.
+- `@mochi-labs/gameplay` exists for the high-level facade, controller presets, scene lifecycle, and gameplay helpers.
+- `@mochi-labs/vue` exists as the Vue adapter for canvas hosting and HUD/UI ergonomics.
 - Controller preset taxonomy exists.
 - Playground has multiple demos:
   - `Nightfall Run`
@@ -33,6 +33,7 @@ Mochi is web-native first. It should feel natural inside Vue and other frontend 
   - `Preset Lab`
   - `First Person Range`
   - `Tactics Board`
+- `Alpha Starter`
 
 ## Near-term checklist
 
@@ -85,10 +86,11 @@ Mochi is web-native first. It should feel natural inside Vue and other frontend 
 
 - [ ] Package public API docs (vitepress with github pages).
 - [x] Add initial tests for controller presets and scene cleanup.
-- [ ] Expand tests across renderer behavior and Vue composables.
-- [ ] Add release workflow.
-- [ ] Add example starter template.
-- [ ] Decide package publishing strategy.
+- [x] Expand tests across renderer behavior and Vue composables.
+- [x] Add release workflow.
+- [x] Add example starter template.
+- [x] Decide package publishing strategy for alpha.
+- [x] Add alpha/beta/rc versioning flow.
 
 ## Long-term platform checklist
 
@@ -109,6 +111,7 @@ Mochi is web-native first. It should feel natural inside Vue and other frontend 
 - [ ] Add WebGPU backend exploration after WebGL2 renderer matures.
 - [ ] Add advanced LOD presets and support.
 - [ ] Add ray tracing direction when the renderer stack is ready.
+- [ ] Add Particle system
 
 ### Assets and animation
 
@@ -145,7 +148,7 @@ Mochi is web-native first. It should feel natural inside Vue and other frontend 
 ### Ecosystem
 
 - [ ] Establish contribution guidelines.
-- [ ] Add package/versioning strategy.
+- [x] Add package/versioning strategy.
 - [ ] Create project website/docs site.
 - [ ] Add community demo gallery when ready.
 - [ ] Add Tauri support for desktop and mobile builds.
