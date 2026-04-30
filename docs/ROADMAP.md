@@ -1,6 +1,6 @@
 # Roadmap
 
-This roadmap is intentionally practical. The long-term goal is a full-featured, AAA-capable web game engine that can be used by anyone, while the near-term work stays grounded in playable vertical slices.
+This roadmap is intentionally practical. The long-term goal is a full-featured, AAA-capable web game engine that can stand beside Unity, Godot, and Unreal as a serious option for modern web developers, while the near-term work stays grounded in playable vertical slices.
 
 ## North star
 
@@ -16,6 +16,8 @@ Mochi should eventually provide the kinds of systems expected from a serious gam
 
 The engine should not become complex by default. AAA-level capability should be layered behind simple entry points.
 
+Mochi is web-native first: it should feel natural inside Vue and other modern frontend stacks, but the engine core must stay framework-agnostic enough for React, Svelte, vanilla TypeScript, and non-DOM runtimes to build on it. Demos are proof points for external developers, not special cases that require editing the engine.
+
 ## Current status
 
 - `@mochi/core` exists for headless world, input, components, and frame-loop primitives.
@@ -26,9 +28,9 @@ The engine should not become complex by default. AAA-level capability should be 
 - Playground has multiple demos:
   - `Nightfall Run`
   - `Orbital Islands`
-- `Velocity Circuit`
-- `Starfield Drift`
-- `Preset Lab`
+  - `Velocity Circuit`
+  - `Starfield Drift`
+  - `Preset Lab`
   - `First Person Range`
   - `Tactics Board`
 
@@ -58,6 +60,7 @@ The engine should not become complex by default. AAA-level capability should be 
 - [x] Add collision/world helper APIs promoted from playground patterns.
 - [x] Add reset/replay helpers for demos and small games.
 - [x] Add input binding config (`WASD`, arrows, gamepad-ready shape).
+- [x] Add pooled projectile helpers for simple combat loops.
 
 ### Vue layer
 
@@ -117,6 +120,7 @@ The engine should not become complex by default. AAA-level capability should be 
 - [ ] Promote collision helpers into reusable engine primitives.
 - [ ] Add character controller foundations.
 - [ ] Add trigger volumes, hitboxes, and damage zones.
+- [x] Add first reusable projectile emitter for blaster-style interactions.
 - [ ] Add physics backend decision when simple collision is no longer enough.
 
 ### Tools and developer experience
@@ -143,6 +147,7 @@ The engine should not become complex by default. AAA-level capability should be 
 - Keep the default path simple.
 - Preserve lower-level escape hatches.
 - Promote patterns only after they appear in more than one demo.
+- Keep demos as examples of public engine usage, not as hidden requirements for engine modification.
 - Avoid framework coupling in runtime and renderer.
 - Build demos that feel playable, not just technically correct.
 - Grow toward AAA capability through staged systems, not speculative rewrites.

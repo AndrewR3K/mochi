@@ -33,6 +33,15 @@ src/
 
 Keep gameplay state in engine/runtime structures; keep Vue focused on presentation and player-facing controls.
 
+## Engine vs game code
+
+Treat `packages/*` as the engine that external developers install and build against. Treat `apps/playground` as a consumer of that public API.
+
+- Demos should be written like external game code whenever possible.
+- Demo-specific mission rules, enemy behavior, scoring, layout, and UI should stay in the demo/app layer.
+- Promote code into `packages/gameplay` only when it is a reusable engine primitive with a clear public API.
+- If a demo needs a new engine feature, make that as a separate, reviewable engine change and keep the demo as an example of using it.
+
 ## Scene lifecycle pattern
 
 1. Create entities

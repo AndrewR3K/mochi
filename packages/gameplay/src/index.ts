@@ -83,6 +83,15 @@ export {
   type SpaceflightControllerOptions,
 } from './spaceflight';
 export {
+  createProjectileEmitter,
+  type Projectile,
+  type ProjectileEmitter,
+  type ProjectileEmitterOptions,
+  type ProjectileFireOptions,
+  type ProjectileHit,
+  type ProjectileTarget,
+} from './projectiles';
+export {
   createVehicleController,
   type VehicleController,
   type VehicleControllerOptions,

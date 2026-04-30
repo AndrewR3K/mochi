@@ -92,6 +92,29 @@ const bodies = queryCollisionBodies(game.world.allEntities());
 const triggerPairs = queryTriggerPairs(bodies);
 ```
 
+### Projectiles
+
+```ts
+import { createProjectileEmitter, getSpaceflightForward } from '@mochi/gameplay';
+
+const blasters = createProjectileEmitter({
+  scene,
+  targets: () => enemies.map((enemy) => ({
+    entity: enemy.entity,
+    radius: 1,
+    active: () => !enemy.destroyed,
+    onHit: () => {
+      enemy.destroyed = true;
+    },
+  })),
+});
+
+blasters.fire({
+  position: ship.transform.position,
+  direction: getSpaceflightForward(ship),
+});
+```
+
 ### Vue HUD stats
 
 ```ts
@@ -183,6 +206,7 @@ const controller = createSpaceflightArcadeController(game, {
 - In vehicle presets, `forward` and `backward` map to throttle and brake.
 - For vehicle presets, tune `acceleration`, `maxSpeed`, `drag`, and `turnSpeed`.
 - In spaceflight presets, tune `thrust`, `maxSpeed`, `drag`, pitch/yaw/roll speeds, and 3D bounds.
+- Use pooled projectile emitters for repeated blaster-style firing rather than creating unbounded entities per shot.
 - Tune sensitivity and camera lerp before adding special logic.
 - Keep defaults unless you have a clear gameplay reason.
 - Add a new preset only if multiple projects need the same tuned profile.
