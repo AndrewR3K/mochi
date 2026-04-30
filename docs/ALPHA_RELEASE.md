@@ -15,9 +15,21 @@ Alpha does not mean the engine is complete. It means the public path is coherent
 
 ## Alpha-supported package path
 
-Before public npm publishing, the supported alpha path is workspace consumption inside this repo and packed/local package validation for outside apps.
+The supported alpha path for game developers is npm package installation from the alpha dist-tag:
 
-Use the workspace path for engine development:
+```bash
+pnpm add @mochi-labs/vue@alpha vue
+```
+
+With npm:
+
+```bash
+npm install @mochi-labs/vue@alpha vue
+```
+
+`@mochi-labs/vue` is the default Vue game entry point and brings in the gameplay, renderer, and core packages.
+
+Use the workspace path only for engine development:
 
 ```bash
 pnpm install
@@ -25,7 +37,7 @@ pnpm dev:starter
 pnpm verify
 ```
 
-Use packed package artifacts when validating an app outside the monorepo:
+Use packed package artifacts only when validating unpublished local package changes in an app outside the monorepo:
 
 ```bash
 pnpm --dir packages/core pack --pack-destination ../../dist-packages
@@ -35,7 +47,7 @@ pnpm --dir packages/vue pack --pack-destination ../../dist-packages
 ```
 
 Then install the generated tarballs in the separate app. This catches dependency and export issues that workspace aliases can hide.
-Until the packages are published to a registry, the separate app must also use `pnpm.overrides` for each `@mochi-labs/*` package so transitive Mochi dependencies resolve to local tarballs.
+When using tarballs, the separate app must also use `pnpm.overrides` for each `@mochi-labs/*` package so transitive Mochi dependencies resolve to the same local artifacts.
 
 ## Stable during alpha
 
@@ -61,7 +73,7 @@ These APIs should avoid churn unless a change clearly improves the external deve
 ## Exit checklist
 
 - [ ] `apps/alpha-starter` builds through `pnpm verify`.
-- [x] A separate app has been validated using packed packages.
+- [x] A separate app has been validated using package installation.
 - [x] First-game docs are current.
 - [x] Package/release process docs are current.
 - [x] Alpha limitations are linked from README and release notes.

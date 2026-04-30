@@ -84,7 +84,7 @@ Mochi is web-native first. It should feel natural inside Vue and other frontend 
 
 ## Medium-term checklist
 
-- [ ] Package public API docs (vitepress with github pages).
+- [x] Package public API docs (vitepress with github pages).
 - [x] Add initial tests for controller presets and scene cleanup.
 - [x] Expand tests across renderer behavior and Vue composables.
 - [x] Add release workflow.
@@ -149,7 +149,7 @@ Mochi is web-native first. It should feel natural inside Vue and other frontend 
 
 - [ ] Establish contribution guidelines.
 - [x] Add package/versioning strategy.
-- [ ] Create project website/docs site.
+- [x] Create project website/docs site.
 - [ ] Add community demo gallery when ready.
 - [ ] Add Tauri support for desktop and mobile builds.
 - [ ] Add React and Svelte adapters.

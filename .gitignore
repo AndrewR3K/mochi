@@ -1,7 +1,11 @@
 node_modules
 dist
 dist-packages
+docs/.vitepress/dist
+docs/.vitepress/.temp
+docs/.vitepress/cache
 *.local
 .DS_Store
 .vite-dev.*
+.vitepress-dev*
 .env

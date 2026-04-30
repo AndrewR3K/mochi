@@ -72,7 +72,7 @@ Keep hot-loop simulation data in Mochi scene/runtime state. Use Vue for HUDs, me
 
 ## API doc exit criteria
 
-- [ ] Add VitePress site skeleton.
-- [ ] Add one page per package.
+- [x] Add VitePress site skeleton.
+- [x] Add one page per package.
 - [ ] Generate or validate exported symbols.
 - [ ] Publish docs through GitHub Pages.
