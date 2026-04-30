@@ -58,6 +58,7 @@ The engine should not become complex by default. AAA-level capability should be 
 - [x] Add collision/world helper APIs promoted from playground patterns.
 - [x] Add reset/replay helpers for demos and small games.
 - [x] Add input binding config (`WASD`, arrows, gamepad-ready shape).
+- [x] Add pooled projectile helpers for simple combat loops.
 
 ### Vue layer
 
@@ -117,6 +118,7 @@ The engine should not become complex by default. AAA-level capability should be 
 - [ ] Promote collision helpers into reusable engine primitives.
 - [ ] Add character controller foundations.
 - [ ] Add trigger volumes, hitboxes, and damage zones.
+- [x] Add first reusable projectile emitter for blaster-style interactions.
 - [ ] Add physics backend decision when simple collision is no longer enough.
 
 ### Tools and developer experience

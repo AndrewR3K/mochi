@@ -16,6 +16,7 @@ This recap covers the latest engine and playground work after the initial core/r
 - Added simple material presets and `createMaterial()` for current solid-color rendering.
 - Reworked `vehicleArcade` and `vehicleSim` to use vehicle-style throttle, braking, steering, drag, and chase camera behavior instead of character-style movement.
 - Added `spaceflightArcade`, a spacecraft controller preset for open 3D movement with thrust, pitch, yaw, roll, vertical strafe, velocity readout, and chase camera behavior.
+- Added pooled projectile emitters with lifetime, target hit callbacks, hit signals, and scene reset integration.
 
 ## Rendering
 
@@ -34,6 +35,7 @@ This recap covers the latest engine and playground work after the initial core/r
 - Added `First Person Range`, a dedicated `firstPerson` demo with signal collection, a timer, and reset support.
 - Added `Tactics Board`, an `isometric` demo with blockers, capture zones, and reset support.
 - Added `Starfield Drift`, a small spaceflight demo with beacons, asteroids, starfield markers, and ship HUD telemetry.
+- Updated `Starfield Drift` with blaster fire, shootable drone targets, and combined beacon/drone mission completion.
 - Added a `Tactics Board` debug toggle for showing blocker collision bounds and the controlled unit target.
 - Updated `Velocity Circuit` to show speed and use the new vehicle controller feel.
 
