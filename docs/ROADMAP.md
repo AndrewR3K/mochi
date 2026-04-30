@@ -125,12 +125,15 @@ Mochi is web-native first. It should feel natural inside Vue and other frontend 
 - [x] Add first reusable projectile emitter for blaster-style interactions.
 - [x] Add collision layer and mask filtering.
 - [x] Add spatial collision queries for point and sphere-volume checks.
+- [x] Add ray collision queries for picking, aiming, sensors, and editor selection.
 - [ ] Add physics backend decision when simple collision is no longer enough.
 
 ### Tools and developer experience
 
 - [ ] Add visual debug overlays.
 - [x] Add initial game inspection snapshots for debug overlays and editor panels.
+- [x] Add lifecycle-bound scene scheduling for timers, cooldowns, waves, and debug refreshes.
+- [x] Add prefab-style entity blueprints for reusable hierarchies.
 - [ ] Add starter templates by game style.
 - [ ] Add example cookbook.
 - [ ] Add profiling and performance guidance.

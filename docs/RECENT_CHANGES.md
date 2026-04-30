@@ -14,7 +14,10 @@ This recap covers engine and playground work after the initial core/renderer/gam
 - Added entity names and tags for organization, queries, inspection, and editor-style workflows.
 - Added collision layer/mask filtering to runtime collision bodies.
 - Added spatial collision queries for point and sphere-volume checks.
+- Added ray collision queries for picking, aiming, sensors, and editor selection.
 - Added gameplay inspection snapshots that summarize world, hierarchy, collision, trigger, renderable, and tag state.
+- Added lifecycle-bound scene scheduling for delays and intervals.
+- Added prefab-style entity blueprints for reusable hierarchy construction.
 - Added gameplay trigger volumes and damage zones with enter/stay/exit events and interval-based damage callbacks.
 - Added shared collision helpers for box colliders, 2D distance checks, ground height resolution, box collision resolution, and stepped collision movement.
 - Added debug helpers for rendering collider footprints and target markers through scene-owned entities.
@@ -47,6 +50,7 @@ This recap covers engine and playground work after the initial core/renderer/gam
 - Updated `Starfield Drift` with blaster fire, shootable drone targets, and combined beacon/drone mission completion.
 - Added a `Tactics Board` debug toggle for showing blocker collision bounds and the controlled unit target.
 - Updated `Tactics Board` to consume engine tags, collision layers, and inspection snapshots in its debug HUD.
+- Updated `Tactics Board` to use a scene scheduler for debug inspection refreshes.
 - Updated `Velocity Circuit` to show speed and use the new vehicle controller feel.
 
 ## Testing

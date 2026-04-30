@@ -104,6 +104,9 @@ Runtime clocks support pause/resume, time scaling, manual stepping, max delta cl
 Collision bodies support layer/mask filtering, and worlds can create/load serializable snapshots for save, restore, and editor workflows.
 Entities support names and tags for organization, queries, inspection tools, and editor-style workflows.
 Spatial collision queries and gameplay inspection snapshots help build debug overlays, selection tools, objectives, and editor panels without demo-specific engine code.
+Ray collision queries support picking, aiming, line-of-sight checks, and editor selection.
+Scene schedulers provide lifecycle-bound delays and intervals for cooldowns, waves, UI refreshes, and timed rules.
+Entity blueprints instantiate reusable prefab-style hierarchies while keeping game-specific behavior in game code.
 
 ## Playground demos
 

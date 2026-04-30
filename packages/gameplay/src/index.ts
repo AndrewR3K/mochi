@@ -68,6 +68,12 @@ export {
   type ResolveGroundHeightOptions,
 } from './collision';
 export {
+  instantiateEntityBlueprint,
+  type EntityBlueprint,
+  type EntityBlueprintInstance,
+  type EntityBlueprintOptions,
+} from './blueprints';
+export {
   createScene,
   disposeScene,
   mountScene,
@@ -76,6 +82,13 @@ export {
   type MountedScene,
   type SceneSetup,
 } from './scene';
+export {
+  createSceneScheduler,
+  type SceneScheduleEvent,
+  type SceneScheduleOptions,
+  type SceneScheduledTask,
+  type SceneScheduler,
+} from './scheduler';
 export {
   createSpaceflightController,
   getSpaceflightForward,
@@ -123,6 +136,9 @@ export type {
   CollisionLayer,
   CollisionPair,
   CollisionQueryOptions,
+  CollisionRay,
+  CollisionRayHit,
+  CollisionRayQueryOptions,
   CollisionShape,
   CollisionShapeKind,
   Entity,
@@ -160,6 +176,7 @@ export {
   hasComponent,
   overlapsCollisionBodies,
   queryCollisionBodies,
+  queryCollisionBodiesAlongRay,
   queryCollisionBodiesAtPoint,
   queryCollisionBodiesInSphere,
   queryCollisionPairs,

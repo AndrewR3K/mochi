@@ -5,6 +5,7 @@ import {
   canCollisionBodiesInteract,
   overlapsCollisionBodies,
   queryCollisionBodies,
+  queryCollisionBodiesAlongRay,
   queryCollisionBodiesAtPoint,
   queryCollisionBodiesInSphere,
   queryCollisionPairs,
@@ -145,5 +146,50 @@ describe('collision bodies', () => {
     assert.deepEqual(pointHits.map((body) => body.entity.id), ['floor']);
     assert.deepEqual(terrainHits.map((body) => body.entity.id), ['floor']);
     assert.deepEqual(actorHits.map((body) => body.entity.id), ['unit']);
+  });
+
+  it('queries collision bodies along rays in hit order', () => {
+    const world = new World();
+    const targetLayer = 1 << 1;
+    setSphereCollisionBody(world.createEntity({
+      id: 'near',
+      transform: { position: { x: 0, y: 0, z: -4 } },
+    }), {
+      radius: 0.5,
+      layer: targetLayer,
+    });
+    setBoxCollisionBody(world.createEntity({
+      id: 'far',
+      transform: {
+        position: { x: 0, y: 0, z: -8 },
+        scale: { x: 2, y: 2, z: 2 },
+      },
+    }), {
+      layer: targetLayer,
+    });
+    setSphereCollisionBody(world.createEntity({
+      id: 'ignored',
+      transform: { position: { x: 0, y: 0, z: -2 } },
+    }), {
+      radius: 0.5,
+      layer: 1 << 3,
+    });
+
+    const hits = queryCollisionBodiesAlongRay(
+      queryCollisionBodies(world.allEntities()),
+      {
+        origin: { x: 0, y: 0, z: 0 },
+        direction: { x: 0, y: 0, z: -2 },
+      },
+      {
+        layer: 1,
+        mask: targetLayer,
+        maxDistance: 10,
+      },
+    );
+
+    assert.deepEqual(hits.map((hit) => hit.body.entity.id), ['near', 'far']);
+    assert.equal(hits[0].distance, 3.5);
+    assert.deepEqual(hits[0].point, { x: 0, y: 0, z: -3.5 });
   });
 });

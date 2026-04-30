@@ -6,6 +6,7 @@ import {
   createDebugTargetMarker,
   createGameInspectionSnapshot,
   createIsometricController,
+  createSceneScheduler,
   overlapsCollisionBodies,
   resolveBoxCollisions,
   setBoxCollisionBody,
@@ -34,6 +35,7 @@ const timer = shallowRef(70);
 const state = shallowRef<'running' | 'won' | 'lost'>('running');
 const debugBounds = shallowRef(false);
 const inspection = shallowRef(createGameInspectionSnapshot(game));
+const scheduler = createSceneScheduler(scene);
 
 scene.createEntity({
   id: 'tactics-board',
@@ -90,6 +92,8 @@ scene.addReset(() => {
     point.secured = false;
   }
 });
+scene.addReset(scheduleInspectionRefresh);
+scheduleInspectionRefresh();
 
 const label = computed(() => {
   if (state.value === 'won') return 'All zones secured';
@@ -127,10 +131,6 @@ scene.onFrame(({ delta, elapsed }) => {
 
   if (state.value === 'running' && secured.value === points.length) {
     state.value = 'won';
-  }
-
-  if (debugBounds.value) {
-    inspection.value = createGameInspectionSnapshot(game);
   }
 });
 
@@ -204,6 +204,14 @@ function resetBoard(): void {
 function toggleDebugBounds(): void {
   debugBounds.value = !debugBounds.value;
   inspection.value = createGameInspectionSnapshot(game);
+}
+
+function scheduleInspectionRefresh(): void {
+  scheduler.interval(0.25, () => {
+    if (debugBounds.value) {
+      inspection.value = createGameInspectionSnapshot(game);
+    }
+  });
 }
 </script>
 

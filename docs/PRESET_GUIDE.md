@@ -118,7 +118,11 @@ const triggerPairs = queryTriggerPairs(bodies);
 ### Spatial collision queries
 
 ```ts
-import { queryCollisionBodiesAtPoint, queryCollisionBodiesInSphere } from '@mochi/gameplay';
+import {
+  queryCollisionBodiesAlongRay,
+  queryCollisionBodiesAtPoint,
+  queryCollisionBodiesInSphere,
+} from '@mochi/gameplay';
 
 const nearby = queryCollisionBodiesInSphere(
   queryCollisionBodies(game.world.allEntities()),
@@ -129,6 +133,15 @@ const nearby = queryCollisionBodiesInSphere(
 const clicked = queryCollisionBodiesAtPoint(
   queryCollisionBodies(game.world.allEntities()),
   targetPoint,
+);
+
+const aimed = queryCollisionBodiesAlongRay(
+  queryCollisionBodies(game.world.allEntities()),
+  {
+    origin: camera.position,
+    direction: { x: 0, y: 0, z: -1 },
+  },
+  { maxDistance: 100 },
 );
 ```
 
@@ -274,6 +287,49 @@ console.log(inspection.entityCount, inspection.collisionBodyCount, inspection.ta
 ```
 
 Use inspection snapshots for debug HUDs, editor panels, profiling tools, and automated checks. They summarize engine-owned state and leave game-specific interpretation to the app.
+
+### Scene scheduler
+
+```ts
+import { createSceneScheduler } from '@mochi/gameplay';
+
+const scheduler = createSceneScheduler(scene);
+
+scheduler.delay(2, () => {
+  spawnWave();
+});
+
+scheduler.interval(0.25, () => {
+  refreshDebugOverlay();
+});
+```
+
+Scheduled callbacks are owned by the scene and are cleaned up on scene disposal.
+
+### Entity blueprints
+
+```ts
+import { instantiateEntityBlueprint } from '@mochi/gameplay';
+
+const ship = instantiateEntityBlueprint(scene, {
+  id: 'ship',
+  name: 'Scout',
+  tags: ['vehicle'],
+  renderable: {
+    primitive: 'cube',
+    material: createMaterial('solid'),
+  },
+  children: [
+    {
+      id: 'turret',
+      tags: ['weapon'],
+      transform: { position: { x: 0, y: 0.8, z: -0.4 } },
+    },
+  ],
+});
+```
+
+Blueprints are prefab-style entity hierarchies. They should describe reusable structure; behavior, AI, inventory, and mission state should live in systems or scene code.
 
 ### Spaceflight controls
 

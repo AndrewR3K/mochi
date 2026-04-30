@@ -58,6 +58,21 @@ export interface CollisionPair {
 
 export interface CollisionQueryOptions extends CollisionFilterOptions {}
 
+export interface CollisionRay {
+  origin: Vec3;
+  direction: Vec3;
+}
+
+export interface CollisionRayHit {
+  body: CollisionBody;
+  distance: number;
+  point: Vec3;
+}
+
+export interface CollisionRayQueryOptions extends CollisionQueryOptions {
+  maxDistance?: number;
+}
+
 export const collisionBody: ComponentType<CollisionBody> =
   createComponentType<CollisionBody>('runtime.collisionBody');
 
@@ -188,6 +203,37 @@ export function queryCollisionBodiesAtPoint(
   return queryCollisionBodiesInSphere(bodies, point, 0, options);
 }
 
+export function queryCollisionBodiesAlongRay(
+  bodies: readonly CollisionBody[],
+  ray: CollisionRay,
+  options: CollisionRayQueryOptions = {},
+): CollisionRayHit[] {
+  const direction = normalize(ray.direction);
+  if (!direction) return [];
+
+  const maxDistance = options.maxDistance ?? Infinity;
+  const hits: CollisionRayHit[] = [];
+
+  for (const body of bodies) {
+    if (!canCollisionBodyMatchFilter(body, options)) continue;
+
+    const distance = intersectBodyRay(body, ray.origin, direction);
+    if (distance === null || distance > maxDistance) continue;
+
+    hits.push({
+      body,
+      distance,
+      point: {
+        x: ray.origin.x + direction.x * distance,
+        y: ray.origin.y + direction.y * distance,
+        z: ray.origin.z + direction.z * distance,
+      },
+    });
+  }
+
+  return hits.sort((a, b) => a.distance - b.distance);
+}
+
 function overlapsBoxes(
   a: Entity,
   aShape: BoxCollisionShape,
@@ -270,6 +316,115 @@ function canCollisionBodyMatchFilter(
   const layer = options.layer ?? DEFAULT_COLLISION_LAYER;
   const mask = options.mask ?? DEFAULT_COLLISION_MASK;
   return (mask & body.layer) !== 0 && (body.mask & layer) !== 0;
+}
+
+function intersectBodyRay(body: CollisionBody, origin: Vec3, direction: Vec3): number | null {
+  if (body.shape.kind === 'sphere') {
+    return intersectSphereRay(getEntityWorldPosition(body.entity), body.shape.radius, origin, direction);
+  }
+
+  const center = getEntityWorldPosition(body.entity);
+  return intersectBoxRay(
+    {
+      x: center.x - body.shape.halfX,
+      y: center.y - body.shape.halfY,
+      z: center.z - body.shape.halfZ,
+    },
+    {
+      x: center.x + body.shape.halfX,
+      y: center.y + body.shape.halfY,
+      z: center.z + body.shape.halfZ,
+    },
+    origin,
+    direction,
+  );
+}
+
+function intersectSphereRay(
+  center: Vec3,
+  radius: number,
+  origin: Vec3,
+  direction: Vec3,
+): number | null {
+  const ox = origin.x - center.x;
+  const oy = origin.y - center.y;
+  const oz = origin.z - center.z;
+  const b = ox * direction.x + oy * direction.y + oz * direction.z;
+  const c = distanceSquared(ox, oy, oz) - radius * radius;
+  const discriminant = b * b - c;
+
+  if (discriminant < 0) return null;
+
+  const root = Math.sqrt(discriminant);
+  const near = -b - root;
+  if (near >= 0) return near;
+
+  const far = -b + root;
+  return far >= 0 ? far : null;
+}
+
+function intersectBoxRay(min: Vec3, max: Vec3, origin: Vec3, direction: Vec3): number | null {
+  let near = -Infinity;
+  let far = Infinity;
+
+  const x = intersectAxis(origin.x, direction.x, min.x, max.x, near, far);
+  if (!x) return null;
+  near = x.near;
+  far = x.far;
+
+  const y = intersectAxis(origin.y, direction.y, min.y, max.y, near, far);
+  if (!y) return null;
+  near = y.near;
+  far = y.far;
+
+  const z = intersectAxis(origin.z, direction.z, min.z, max.z, near, far);
+  if (!z) return null;
+  near = z.near;
+  far = z.far;
+
+  if (far < 0) return null;
+  return near >= 0 ? near : far;
+}
+
+function intersectAxis(
+  origin: number,
+  direction: number,
+  min: number,
+  max: number,
+  currentNear: number,
+  currentFar: number,
+): { near: number; far: number } | null {
+  if (direction === 0) {
+    return origin < min || origin > max
+      ? null
+      : { near: currentNear, far: currentFar };
+  }
+
+  const inverse = 1 / direction;
+  let near = (min - origin) * inverse;
+  let far = (max - origin) * inverse;
+
+  if (near > far) {
+    const swap = near;
+    near = far;
+    far = swap;
+  }
+
+  near = Math.max(currentNear, near);
+  far = Math.min(currentFar, far);
+
+  return near > far ? null : { near, far };
+}
+
+function normalize(vector: Vec3): Vec3 | null {
+  const length = Math.hypot(vector.x, vector.y, vector.z);
+  if (length === 0) return null;
+
+  return {
+    x: vector.x / length,
+    y: vector.y / length,
+    z: vector.z / length,
+  };
 }
 
 function clamp(value: number, min: number, max: number): number {
