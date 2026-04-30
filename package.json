@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "pnpm --filter playground dev",
     "build": "pnpm --filter playground build",
-    "test": "node --import tsx --test packages/core/test/collision.test.ts packages/core/test/input-runtime.test.ts packages/core/test/math.test.ts packages/gameplay/test/presets.test.ts packages/gameplay/test/projectiles.test.ts packages/gameplay/test/scene.test.ts",
+    "test": "node --import tsx --test packages/core/test/collision.test.ts packages/core/test/input-runtime.test.ts packages/core/test/math.test.ts packages/core/test/world.test.ts packages/gameplay/test/inspection.test.ts packages/gameplay/test/presets.test.ts packages/gameplay/test/projectiles.test.ts packages/gameplay/test/scene.test.ts packages/gameplay/test/triggers.test.ts",
     "version:bump": "node scripts/bump-version.mjs",
     "version:check": "node scripts/bump-version.mjs --check",
     "typecheck": "pnpm -r --workspace-concurrency=1 --if-present typecheck && pnpm exec tsc -p tsconfig.test.json --noEmit",

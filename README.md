@@ -7,7 +7,7 @@ Vue.js-first 3D game engine.
 Mochi is built around a simple idea: game developers should spend time on gameplay, not engine plumbing.
 The core runtime and renderer stay framework-agnostic, while Vue provides an ergonomic shell for canvas hosting and HUD/UI.
 
-The long-term ambition is a full-featured, AAA-capable web game engine that remains approachable for solo developers, small teams, and external contributors.
+The goal is a web-native engine that can grow toward Unity, Godot, and Unreal-level capability without making the first scene hard to build.
 
 ## What is in this repo
 
@@ -29,6 +29,7 @@ From `@mochi/gameplay`:
 - `createSideScroller2DController`
 - `createVehicleArcadeController`
 - `createVehicleSimController`
+- `createSpaceflightArcadeController`
 - `createRailCameraController`
 - `createStrategyFreeCamController`
 - `createControllerPreset(game, kind, options)` with `CONTROLLER_PRESET_KINDS`
@@ -97,11 +98,18 @@ Call `scene.dispose()` when switching scenes or unmounting UI to remove owned en
 Call `scene.reset()` to restore owned entity transforms and run custom scene reset hooks.
 Controller presets use WASD/arrows by default and accept an `input` map when a game needs custom bindings.
 Renderer lighting can be tuned with `createGame({ renderer: { lighting: { ambient, direction, directional } } })`.
+Use fixed-step simulation with `createGame({ runtime: { fixedStep: 1 / 60 } })` or `<GameCanvas :runtime="{ fixedStep: 1 / 60 }">`.
+Entities can be parented for compound actors; render and collision queries use world-space transforms.
+Runtime clocks support pause/resume, time scaling, manual stepping, max delta clamping, and fixed-step catch-up limits.
+Collision bodies support layer/mask filtering, and worlds can create/load serializable snapshots for save, restore, and editor workflows.
+Entities support names and tags for organization, queries, inspection tools, and editor-style workflows.
+Spatial collision queries and gameplay inspection snapshots help build debug overlays, selection tools, objectives, and editor panels without demo-specific engine code.
 
 ## Playground demos
 
 - `Nightfall Run` - third-person combat-style traversal with hazards and extraction objective
 - `Orbital Islands` - jumping/double-jumping platform traversal
+- `Starfield Drift` - spaceflight, beacon collection, and projectile target practice
 - `Velocity Circuit` - arcade vehicle loop and checkpoint racing flow
 - `Preset Lab` - live controller preset switching sandbox
 - `First Person Range` - first-person movement and signal collection challenge
@@ -118,5 +126,4 @@ Renderer lighting can be tuned with `createGame({ renderer: { lighting: { ambien
 
 ## Project direction
 
-The long-term goal is a configuration-first engine where common game styles are presets instead of bespoke rewrites.  
-The north star is AAA-level capability with beginner-friendly defaults: advanced systems when you need them, simple APIs when you just want to build.
+Mochi should be a configuration-first engine where common game styles start from presets instead of one-off rewrites. Advanced systems should be available when a game needs them; simple APIs should stay simple.

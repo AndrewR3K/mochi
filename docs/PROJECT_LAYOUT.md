@@ -1,6 +1,6 @@
 # Suggested Game Project Layout
 
-Use this as a baseline for teams building on Mochi.
+Use this as a starting point for teams building on Mochi.
 
 ## Minimal structure
 
@@ -31,16 +31,16 @@ src/
 - `game/entities` - entity creation helpers/factories
 - `ui/` - Vue-only visibility layer, HUD, menus, overlays
 
-Keep gameplay state in engine/runtime structures; keep Vue focused on presentation and player-facing controls.
+Keep gameplay state in engine/runtime structures. Keep Vue focused on HUDs, menus, overlays, and player-facing controls.
 
 ## Engine vs game code
 
 Treat `packages/*` as the engine that external developers install and build against. Treat `apps/playground` as a consumer of that public API.
 
-- Demos should be written like external game code whenever possible.
+- Demos should be written like external game code.
 - Demo-specific mission rules, enemy behavior, scoring, layout, and UI should stay in the demo/app layer.
 - Promote code into `packages/gameplay` only when it is a reusable engine primitive with a clear public API.
-- If a demo needs a new engine feature, make that as a separate, reviewable engine change and keep the demo as an example of using it.
+- If a demo needs a new engine feature, make that a reviewable engine change and keep the demo as an example of the public API.
 
 ## Scene lifecycle pattern
 
@@ -63,7 +63,7 @@ scene.onFrame(({ delta }) => {
 });
 ```
 
-That keeps teardown local and avoids manual `game.world.removeEntity(...)` calls spread through UI components.
+That keeps teardown local and avoids scattered `game.world.removeEntity(...)` calls.
 
 ## Workspace checks
 
@@ -81,6 +81,6 @@ That keeps teardown local and avoids manual `game.world.removeEntity(...)` calls
 
 ## Scaling from prototype to game
 
-- Prototype quickly in one scene file
+- Prototype in one scene file
 - Split into systems/factories once logic repeats
 - Promote stable patterns to `packages/gameplay` (presets/utilities)

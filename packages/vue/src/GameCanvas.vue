@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { createGame, type FrameCallback, type Game } from '@mochi/gameplay';
+import {
+  createGame,
+  type FrameCallback,
+  type Game,
+  type RuntimeOptions,
+} from '@mochi/gameplay';
 import {
   onBeforeUnmount,
   onMounted,
@@ -14,6 +19,7 @@ const props = withDefaults(
   defineProps<{
     maxPixelRatio?: number;
     clearColor?: [number, number, number, number];
+    runtime?: RuntimeOptions;
     autoStart?: boolean;
     onFrame?: FrameCallback;
   }>(),
@@ -44,6 +50,7 @@ onMounted(() => {
 
   const game = createGame({
     canvas,
+    runtime: props.runtime,
     maxPixelRatio: props.maxPixelRatio,
     autoStart: props.autoStart,
     renderer: {

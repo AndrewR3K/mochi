@@ -55,6 +55,7 @@ export function createGame(options: GameOptions): Game {
   const maxPixelRatio = options.maxPixelRatio ?? 2;
   const stats: GameStats = {
     frame: 0,
+    rawDelta: 0,
     delta: 0,
     elapsed: 0,
     fps: 0,
@@ -72,6 +73,7 @@ export function createGame(options: GameOptions): Game {
 
   const syncStats = () => {
     stats.frame = runtime.stats.frame;
+    stats.rawDelta = runtime.stats.rawDelta;
     stats.delta = runtime.stats.delta;
     stats.elapsed = runtime.stats.elapsed;
     stats.fps = stats.delta > 0 ? 1 / stats.delta : 0;

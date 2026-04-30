@@ -1,12 +1,12 @@
 # Roadmap
 
-This roadmap is intentionally practical. The long-term goal is a full-featured, AAA-capable web game engine that can stand beside Unity, Godot, and Unreal as a serious option for modern web developers, while the near-term work stays grounded in playable vertical slices.
+This roadmap keeps the ambition high and the next steps practical. Mochi should become a web-native engine that can stand beside Unity, Godot, and Unreal for modern web developers. Near-term work should still ship playable slices.
 
 ## North star
 
-Mochi should eventually provide the kinds of systems expected from a serious game engine:
+Mochi should provide the systems developers expect from a full game engine:
 
-- robust scene/world runtime
+- stable scene/world runtime
 - scalable rendering pipeline
 - animation and asset workflows
 - physics/collision and gameplay framework
@@ -14,9 +14,9 @@ Mochi should eventually provide the kinds of systems expected from a serious gam
 - tooling, debugging, profiling, and editor-like workflows
 - approachable APIs and templates for solo developers and teams
 
-The engine should not become complex by default. AAA-level capability should be layered behind simple entry points.
+The engine should not become complex by default. Advanced capability should sit behind simple entry points.
 
-Mochi is web-native first: it should feel natural inside Vue and other modern frontend stacks, but the engine core must stay framework-agnostic enough for React, Svelte, vanilla TypeScript, and non-DOM runtimes to build on it. Demos are proof points for external developers, not special cases that require editing the engine.
+Mochi is web-native first. It should feel natural inside Vue and other frontend stacks, while the core stays framework-agnostic enough for React, Svelte, vanilla TypeScript, and non-DOM runtimes. Demos are proof points for external developers, not special cases that require engine edits.
 
 ## Current status
 
@@ -42,8 +42,10 @@ Mochi is web-native first: it should feel natural inside Vue and other modern fr
 - [x] Add scene lifecycle helpers (`createScene`, `mountScene`, `disposeScene`).
 - [x] Add runtime-level collision primitives (`box`, `sphere`, `trigger`) so demos stop reimplementing collision locally.
 - [x] Add event/channel helpers for score, damage, collection, and mission events.
-- [ ] Add deterministic fixed-step mode examples.
+- [x] Add deterministic fixed-step mode examples.
 - [x] Add initial runtime tests for fixed-step ticking, input frame reset, math transforms, and collision queries.
+- [x] Add runtime clock controls for pause/resume, time scale, manual stepping, max delta, and fixed-step catch-up limits.
+- [x] Add entity names and tags for organization, queries, inspection, and editor workflows.
 
 ### Rendering
 
@@ -93,9 +95,9 @@ Mochi is web-native first: it should feel natural inside Vue and other modern fr
 ### Runtime and world
 
 - [ ] Move from basic entities toward a stable scene/world architecture.
-- [ ] Add transform hierarchy and parent/child relationships.
-- [ ] Add serializable scene format.
-- [ ] Add save/load and snapshot support (file based and DB based options).
+- [x] Add transform hierarchy and parent/child relationships.
+- [x] Add serializable world snapshots for engine-owned scene state.
+- [ ] Add save/load persistence adapters (file based and DB based options).
 - [ ] Add worker/off-main-thread exploration for simulation.
 
 ### Rendering
@@ -105,8 +107,8 @@ Mochi is web-native first: it should feel natural inside Vue and other modern fr
 - [ ] Add shadows once lighting and materials are stable.
 - [ ] Add instancing and batching for scale.
 - [ ] Add WebGPU backend exploration after WebGL2 renderer matures.
-- [ ] Advanced LOD presets and support
-- [ ] ray tracing support
+- [ ] Add advanced LOD presets and support.
+- [ ] Add ray tracing direction when the renderer stack is ready.
 
 ### Assets and animation
 
@@ -119,19 +121,21 @@ Mochi is web-native first: it should feel natural inside Vue and other modern fr
 
 - [ ] Promote collision helpers into reusable engine primitives.
 - [ ] Add character controller foundations.
-- [ ] Add trigger volumes, hitboxes, and damage zones.
+- [x] Add trigger volumes, hitboxes, and damage zones.
 - [x] Add first reusable projectile emitter for blaster-style interactions.
+- [x] Add collision layer and mask filtering.
+- [x] Add spatial collision queries for point and sphere-volume checks.
 - [ ] Add physics backend decision when simple collision is no longer enough.
 
 ### Tools and developer experience
 
 - [ ] Add visual debug overlays.
-- [ ] Add scene inspection tools.
+- [x] Add initial game inspection snapshots for debug overlays and editor panels.
 - [ ] Add starter templates by game style.
 - [ ] Add example cookbook.
 - [ ] Add profiling and performance guidance.
-- [ ] Multiplayer support
-- [ ] Anti Cheat
+- [ ] Add multiplayer support.
+- [ ] Add anti-cheat guidance and hooks.
 
 ### Ecosystem
 
@@ -139,8 +143,8 @@ Mochi is web-native first: it should feel natural inside Vue and other modern fr
 - [ ] Add package/versioning strategy.
 - [ ] Create project website/docs site.
 - [ ] Add community demo gallery when ready.
-- [ ] Tauri support for desktop native and mobile native games
-- [ ] Support for React and Svelte
+- [ ] Add Tauri support for desktop and mobile builds.
+- [ ] Add React and Svelte adapters.
 
 ## Design principles
 
@@ -150,4 +154,4 @@ Mochi is web-native first: it should feel natural inside Vue and other modern fr
 - Keep demos as examples of public engine usage, not as hidden requirements for engine modification.
 - Avoid framework coupling in runtime and renderer.
 - Build demos that feel playable, not just technically correct.
-- Grow toward AAA capability through staged systems, not speculative rewrites.
+- Grow toward engine-scale capability through staged systems, not speculative rewrites.

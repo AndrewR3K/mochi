@@ -4,9 +4,14 @@ import {
   setComponent,
   type ComponentType,
 } from './components';
-import type { Entity } from './world';
+import { getEntityWorldPosition, type Entity } from './world';
+import type { Vec3 } from './math';
 
 export type CollisionShapeKind = 'box' | 'sphere';
+export type CollisionLayer = number;
+
+export const DEFAULT_COLLISION_LAYER = 1;
+export const DEFAULT_COLLISION_MASK = 0xffffffff;
 
 export interface BoxCollisionShape {
   kind: 'box';
@@ -26,24 +31,32 @@ export interface CollisionBody {
   entity: Entity;
   shape: CollisionShape;
   trigger: boolean;
+  layer: CollisionLayer;
+  mask: CollisionLayer;
 }
 
-export interface BoxCollisionOptions {
+export interface CollisionFilterOptions {
+  layer?: CollisionLayer;
+  mask?: CollisionLayer;
+  trigger?: boolean;
+}
+
+export interface BoxCollisionOptions extends CollisionFilterOptions {
   halfX?: number;
   halfY?: number;
   halfZ?: number;
-  trigger?: boolean;
 }
 
-export interface SphereCollisionOptions {
+export interface SphereCollisionOptions extends CollisionFilterOptions {
   radius?: number;
-  trigger?: boolean;
 }
 
 export interface CollisionPair {
   a: CollisionBody;
   b: CollisionBody;
 }
+
+export interface CollisionQueryOptions extends CollisionFilterOptions {}
 
 export const collisionBody: ComponentType<CollisionBody> =
   createComponentType<CollisionBody>('runtime.collisionBody');
@@ -79,6 +92,8 @@ export function createBoxCollisionBody(
       halfZ: options.halfZ ?? entity.transform.scale.z / 2,
     },
     trigger: options.trigger ?? false,
+    layer: options.layer ?? DEFAULT_COLLISION_LAYER,
+    mask: options.mask ?? DEFAULT_COLLISION_MASK,
   };
 }
 
@@ -97,10 +112,14 @@ export function createSphereCollisionBody(
       ) / 2,
     },
     trigger: options.trigger ?? false,
+    layer: options.layer ?? DEFAULT_COLLISION_LAYER,
+    mask: options.mask ?? DEFAULT_COLLISION_MASK,
   };
 }
 
 export function overlapsCollisionBodies(a: CollisionBody, b: CollisionBody): boolean {
+  if (!canCollisionBodiesInteract(a, b)) return false;
+
   if (a.shape.kind === 'box') {
     if (b.shape.kind === 'box') {
       return overlapsBoxes(a.entity, a.shape, b.entity, b.shape);
@@ -114,6 +133,10 @@ export function overlapsCollisionBodies(a: CollisionBody, b: CollisionBody): boo
   }
 
   return overlapsBoxSphere(b.entity, b.shape, a.entity, a.shape);
+}
+
+export function canCollisionBodiesInteract(a: CollisionBody, b: CollisionBody): boolean {
+  return (a.mask & b.layer) !== 0 && (b.mask & a.layer) !== 0;
 }
 
 export function queryCollisionBodies(entities: Iterable<Entity>): CollisionBody[] {
@@ -145,14 +168,34 @@ export function queryTriggerPairs(bodies: readonly CollisionBody[]): CollisionPa
   return queryCollisionPairs(bodies).filter((pair) => pair.a.trigger || pair.b.trigger);
 }
 
+export function queryCollisionBodiesInSphere(
+  bodies: readonly CollisionBody[],
+  center: Vec3,
+  radius: number,
+  options: CollisionQueryOptions = {},
+): CollisionBody[] {
+  return bodies.filter((body) =>
+    canCollisionBodyMatchFilter(body, options) &&
+    overlapsBodySphere(body, center, radius),
+  );
+}
+
+export function queryCollisionBodiesAtPoint(
+  bodies: readonly CollisionBody[],
+  point: Vec3,
+  options: CollisionQueryOptions = {},
+): CollisionBody[] {
+  return queryCollisionBodiesInSphere(bodies, point, 0, options);
+}
+
 function overlapsBoxes(
   a: Entity,
   aShape: BoxCollisionShape,
   b: Entity,
   bShape: BoxCollisionShape,
 ): boolean {
-  const aPosition = a.transform.position;
-  const bPosition = b.transform.position;
+  const aPosition = getEntityWorldPosition(a);
+  const bPosition = getEntityWorldPosition(b);
 
   return (
     Math.abs(aPosition.x - bPosition.x) < aShape.halfX + bShape.halfX &&
@@ -167,8 +210,8 @@ function overlapsSpheres(
   b: Entity,
   bShape: SphereCollisionShape,
 ): boolean {
-  const aPosition = a.transform.position;
-  const bPosition = b.transform.position;
+  const aPosition = getEntityWorldPosition(a);
+  const bPosition = getEntityWorldPosition(b);
   const radius = aShape.radius + bShape.radius;
 
   return distanceSquared(
@@ -184,8 +227,8 @@ function overlapsBoxSphere(
   sphere: Entity,
   sphereShape: SphereCollisionShape,
 ): boolean {
-  const boxPosition = box.transform.position;
-  const spherePosition = sphere.transform.position;
+  const boxPosition = getEntityWorldPosition(box);
+  const spherePosition = getEntityWorldPosition(sphere);
   const closestX = clamp(spherePosition.x, boxPosition.x - boxShape.halfX, boxPosition.x + boxShape.halfX);
   const closestY = clamp(spherePosition.y, boxPosition.y - boxShape.halfY, boxPosition.y + boxShape.halfY);
   const closestZ = clamp(spherePosition.z, boxPosition.z - boxShape.halfZ, boxPosition.z + boxShape.halfZ);
@@ -195,6 +238,38 @@ function overlapsBoxSphere(
     spherePosition.y - closestY,
     spherePosition.z - closestZ,
   ) < sphereShape.radius * sphereShape.radius;
+}
+
+function overlapsBodySphere(body: CollisionBody, center: Vec3, radius: number): boolean {
+  if (body.shape.kind === 'sphere') {
+    const bodyPosition = getEntityWorldPosition(body.entity);
+    const combinedRadius = body.shape.radius + radius;
+    return distanceSquared(
+      bodyPosition.x - center.x,
+      bodyPosition.y - center.y,
+      bodyPosition.z - center.z,
+    ) <= combinedRadius * combinedRadius;
+  }
+
+  const boxPosition = getEntityWorldPosition(body.entity);
+  const closestX = clamp(center.x, boxPosition.x - body.shape.halfX, boxPosition.x + body.shape.halfX);
+  const closestY = clamp(center.y, boxPosition.y - body.shape.halfY, boxPosition.y + body.shape.halfY);
+  const closestZ = clamp(center.z, boxPosition.z - body.shape.halfZ, boxPosition.z + body.shape.halfZ);
+
+  return distanceSquared(
+    center.x - closestX,
+    center.y - closestY,
+    center.z - closestZ,
+  ) <= radius * radius;
+}
+
+function canCollisionBodyMatchFilter(
+  body: CollisionBody,
+  options: CollisionQueryOptions,
+): boolean {
+  const layer = options.layer ?? DEFAULT_COLLISION_LAYER;
+  const mask = options.mask ?? DEFAULT_COLLISION_MASK;
+  return (mask & body.layer) !== 0 && (body.mask & layer) !== 0;
 }
 
 function clamp(value: number, min: number, max: number): number {

@@ -2,8 +2,11 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import {
   World,
+  canCollisionBodiesInteract,
   overlapsCollisionBodies,
   queryCollisionBodies,
+  queryCollisionBodiesAtPoint,
+  queryCollisionBodiesInSphere,
   queryCollisionPairs,
   queryTriggerPairs,
   setBoxCollisionBody,
@@ -72,5 +75,75 @@ describe('collision bodies', () => {
     assert.equal(pairs[0].a.entity.id, 'player');
     assert.equal(pairs[0].b.entity.id, 'pickup');
     assert.equal(triggerPairs.length, 1);
+  });
+
+  it('filters collision pairs with layers and masks', () => {
+    const world = new World();
+    const playerLayer = 1;
+    const enemyLayer = 1 << 1;
+    const pickupLayer = 1 << 2;
+    const player = setSphereCollisionBody(world.createEntity({ id: 'player' }), {
+      radius: 1,
+      layer: playerLayer,
+      mask: enemyLayer | pickupLayer,
+    });
+    const enemy = setSphereCollisionBody(world.createEntity({ id: 'enemy' }), {
+      radius: 1,
+      layer: enemyLayer,
+      mask: playerLayer,
+    });
+    const decoration = setSphereCollisionBody(world.createEntity({ id: 'decoration' }), {
+      radius: 1,
+      layer: pickupLayer,
+      mask: 0,
+    });
+
+    const pairs = queryCollisionPairs(queryCollisionBodies(world.allEntities()));
+
+    assert.equal(canCollisionBodiesInteract(player, enemy), true);
+    assert.equal(canCollisionBodiesInteract(player, decoration), false);
+    assert.equal(overlapsCollisionBodies(player, decoration), false);
+    assert.equal(pairs.length, 1);
+    assert.equal(pairs[0].a.entity.id, 'player');
+    assert.equal(pairs[0].b.entity.id, 'enemy');
+  });
+
+  it('queries collision bodies by point and sphere volume', () => {
+    const world = new World();
+    const terrainLayer = 1;
+    const actorLayer = 1 << 1;
+    const floor = setBoxCollisionBody(world.createEntity({
+      id: 'floor',
+      transform: { scale: { x: 10, y: 1, z: 10 } },
+    }), {
+      layer: terrainLayer,
+      mask: actorLayer,
+    });
+    const unit = setSphereCollisionBody(world.createEntity({
+      id: 'unit',
+      transform: { position: { x: 3, y: 0, z: 0 } },
+    }), {
+      radius: 0.5,
+      layer: actorLayer,
+      mask: terrainLayer,
+    });
+    const bodies = [floor, unit];
+
+    const pointHits = queryCollisionBodiesAtPoint(bodies, { x: 0, y: 0, z: 0 }, {
+      layer: actorLayer,
+      mask: terrainLayer,
+    });
+    const terrainHits = queryCollisionBodiesInSphere(bodies, { x: 2.25, y: 0, z: 0 }, 0.5, {
+      layer: actorLayer,
+      mask: terrainLayer,
+    });
+    const actorHits = queryCollisionBodiesInSphere(bodies, { x: 2.25, y: 0, z: 0 }, 0.5, {
+      layer: terrainLayer,
+      mask: actorLayer,
+    });
+
+    assert.deepEqual(pointHits.map((body) => body.entity.id), ['floor']);
+    assert.deepEqual(terrainHits.map((body) => body.entity.id), ['floor']);
+    assert.deepEqual(actorHits.map((body) => body.entity.id), ['unit']);
   });
 });

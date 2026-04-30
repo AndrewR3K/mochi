@@ -1,6 +1,6 @@
 # Getting Started
 
-This guide gets you from clone to a playable prototype quickly.
+This guide takes you from clone to a playable prototype.
 
 ## 1) Install and run
 
@@ -18,7 +18,7 @@ Open the URL printed by Vite.
 - `@mochi/gameplay` - high-level facade, control presets, scene lifecycle, and gameplay helpers
 - `@mochi/vue` - Vue adapter and UI-facing ergonomics
 
-Use `@mochi/gameplay` first unless you are intentionally building low-level engine features.
+Use `@mochi/gameplay` first unless you are working on engine internals.
 
 ## 3) Create your first scene object
 
@@ -61,7 +61,32 @@ scene.onFrame(({ delta, input }) => {
 });
 ```
 
-## 6) Clean up on scene exit
+## 6) Choose deterministic stepping when needed
+
+For gameplay that must update at a stable simulation rate, configure the runtime with a fixed step:
+
+```vue
+<GameCanvas :runtime="{ fixedStep: 1 / 60 }">
+  <YourScene />
+</GameCanvas>
+```
+
+Headless setup uses the same option:
+
+```ts
+const game = createGame({
+  canvas,
+  runtime: {
+    fixedStep: 1 / 60,
+    maxDelta: 0.1,
+    maxFixedSteps: 5,
+  },
+});
+```
+
+Use `game.runtime.pause()`, `game.runtime.resume()`, `game.runtime.setTimeScale(0.5)`, and `game.runtime.step()` for pause menus, slow motion, debugging, and deterministic tools.
+
+## 7) Clean up on scene exit
 
 `useGameScene()` disposes scene-owned entities, frame listeners, controllers, and cleanup callbacks when the Vue component unmounts.
 Use `scene.reset()` when a demo needs replay behavior without rebuilding the whole game.
@@ -70,7 +95,7 @@ Use `scene.reset()` when a demo needs replay behavior without rebuilding the who
 
 1. Prototype in `apps/playground`
 2. Keep gameplay logic scene-local first
-3. Extract shared mechanics into `packages/gameplay` only when used in multiple demos/games
+3. Extract shared mechanics into `packages/gameplay` only when they are useful outside one demo
 4. Run `pnpm verify` before changing public API or opening a PR
 5. Add new presets when a control/camera pattern stabilizes
 

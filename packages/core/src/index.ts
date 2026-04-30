@@ -11,12 +11,17 @@ export {
   type EntityComponent,
 } from './components';
 export {
+  DEFAULT_COLLISION_LAYER,
+  DEFAULT_COLLISION_MASK,
+  canCollisionBodiesInteract,
   collisionBody,
   createBoxCollisionBody,
   createSphereCollisionBody,
   getCollisionBody,
   overlapsCollisionBodies,
   queryCollisionBodies,
+  queryCollisionBodiesAtPoint,
+  queryCollisionBodiesInSphere,
   queryCollisionPairs,
   queryTriggerPairs,
   setBoxCollisionBody,
@@ -24,7 +29,10 @@ export {
   type BoxCollisionOptions,
   type BoxCollisionShape,
   type CollisionBody,
+  type CollisionFilterOptions,
+  type CollisionLayer,
   type CollisionPair,
+  type CollisionQueryOptions,
   type CollisionShape,
   type CollisionShapeKind,
   type SphereCollisionOptions,
@@ -59,6 +67,8 @@ export {
 } from './runtime';
 export {
   World,
+  composeEntityWorldMatrix,
+  getEntityWorldPosition,
   type Camera,
   type Entity,
   type EntityId,
@@ -68,4 +78,6 @@ export {
   type Renderable,
   type RenderObjectSnapshot,
   type RenderSnapshot,
+  type WorldEntitySnapshot,
+  type WorldSnapshot,
 } from './world';

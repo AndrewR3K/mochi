@@ -69,6 +69,46 @@ describe('runtime frame loop', () => {
     assert.equal(runtime.stats.delta, 0.1);
   });
 
+  it('supports time scaling, pause, and manual stepping', () => {
+    const runtime = createRuntime({ timeScale: 0.5 });
+    const deltas: number[] = [];
+
+    runtime.onFrame(({ delta }) => {
+      deltas.push(delta);
+    });
+
+    runtime.tick(0.2);
+    runtime.pause();
+    runtime.tick(0.2);
+    runtime.step(0.1);
+    runtime.resume();
+    runtime.setTimeScale(2);
+    runtime.tick(0.1);
+
+    assert.deepEqual(deltas, [0.1, 0.1, 0.2]);
+    assert.equal(runtime.stats.rawDelta, 0.1);
+    assert.equal(runtime.paused, false);
+    assert.equal(runtime.timeScale, 2);
+  });
+
+  it('clamps large fixed-step catch-up work', () => {
+    const runtime = createRuntime({
+      fixedStep: 0.1,
+      maxDelta: 1,
+      maxFixedSteps: 3,
+    });
+    const deltas: number[] = [];
+
+    runtime.onFrame(({ delta }) => {
+      deltas.push(delta);
+    });
+    runtime.tick(4);
+
+    assert.deepEqual(deltas, [0.1, 0.1, 0.1]);
+    assert.equal(runtime.stats.rawDelta, 4);
+    assert.equal(runtime.stats.elapsed, 0.30000000000000004);
+  });
+
   it('reset clears world, listeners, input, and stats', () => {
     const runtime = createRuntime();
     let frames = 0;
