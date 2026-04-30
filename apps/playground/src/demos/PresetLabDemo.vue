@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useGame } from '@lite3d/vue';
+import { useGame } from '@mochi/vue';
 import {
   CONTROLLER_PRESET_KINDS,
   createControllerPreset,
   type ControllerPresetKind,
   type Entity,
   type ThirdPersonController,
-} from '@lite3d/gameplay';
+} from '@mochi/gameplay';
 import { computed, onBeforeUnmount, shallowRef } from 'vue';
 import DemoHud from '../components/DemoHud.vue';
 

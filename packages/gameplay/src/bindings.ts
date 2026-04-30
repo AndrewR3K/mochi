@@ -1,4 +1,4 @@
-import type { InputState } from '@lite3d/core';
+import type { InputState } from '@mochi/core';
 
 export type KeyBinding = string | readonly string[];
 

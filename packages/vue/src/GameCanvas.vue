@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { createGame, type FrameCallback, type Game } from '@lite3d/gameplay';
+import { createGame, type FrameCallback, type Game } from '@mochi/gameplay';
 import {
   onBeforeUnmount,
   onMounted,
@@ -72,14 +72,14 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div ref="root" class="lite3d-game-canvas">
-    <canvas ref="canvas" class="lite3d-game-canvas__canvas" />
+  <div ref="root" class="mochi-game-canvas">
+    <canvas ref="canvas" class="mochi-game-canvas__canvas" />
     <slot v-if="ready" />
   </div>
 </template>
 
 <style scoped>
-.lite3d-game-canvas {
+.mochi-game-canvas {
   position: relative;
   width: 100%;
   height: 100%;
@@ -87,7 +87,7 @@ onBeforeUnmount(() => {
   overflow: hidden;
 }
 
-.lite3d-game-canvas__canvas {
+.mochi-game-canvas__canvas {
   display: block;
   width: 100%;
   height: 100%;

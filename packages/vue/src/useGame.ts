@@ -1,6 +1,6 @@
 import { inject } from 'vue';
 
-import type { Game } from '@lite3d/gameplay';
+import type { Game } from '@mochi/gameplay';
 
 import { gameInjectionKey } from './injection';
 

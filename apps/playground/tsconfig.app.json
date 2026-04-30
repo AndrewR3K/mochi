@@ -4,14 +4,14 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "@lite3d/vue": ["../../packages/vue/src/index.ts"],
-      "@lite3d/vue/*": ["../../packages/vue/src/*"],
-      "@lite3d/gameplay": ["../../packages/gameplay/src/index.ts"],
-      "@lite3d/gameplay/*": ["../../packages/gameplay/src/*"],
-      "@lite3d/renderer-webgl": ["../../packages/renderer-webgl/src/index.ts"],
-      "@lite3d/renderer-webgl/*": ["../../packages/renderer-webgl/src/*"],
-      "@lite3d/core": ["../../packages/core/src/index.ts"],
-      "@lite3d/core/*": ["../../packages/core/src/*"]
+      "@mochi/vue": ["../../packages/vue/src/index.ts"],
+      "@mochi/vue/*": ["../../packages/vue/src/*"],
+      "@mochi/gameplay": ["../../packages/gameplay/src/index.ts"],
+      "@mochi/gameplay/*": ["../../packages/gameplay/src/*"],
+      "@mochi/renderer-webgl": ["../../packages/renderer-webgl/src/index.ts"],
+      "@mochi/renderer-webgl/*": ["../../packages/renderer-webgl/src/*"],
+      "@mochi/core": ["../../packages/core/src/index.ts"],
+      "@mochi/core/*": ["../../packages/core/src/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.vue"]

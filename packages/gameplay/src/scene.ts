@@ -1,4 +1,4 @@
-import type { Entity, EntityOptions, FrameCallback, Transform } from '@lite3d/core';
+import type { Entity, EntityOptions, FrameCallback, Transform } from '@mochi/core';
 
 import type { Game } from './game';
 

@@ -1,5 +1,5 @@
 {
-  "name": "@lite3d/renderer-webgl",
+  "name": "@mochi/renderer-webgl",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -16,7 +16,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@lite3d/core": "workspace:*"
+    "@mochi/core": "workspace:*"
   },
   "devDependencies": {
     "typescript": "~5.7.2"

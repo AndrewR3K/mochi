@@ -1,5 +1,5 @@
-import { createRuntime, type FrameCallback, type Runtime } from '@lite3d/core';
-import type { WebGLGameRenderer } from '@lite3d/renderer-webgl';
+import { createRuntime, type FrameCallback, type Runtime } from '@mochi/core';
+import type { WebGLGameRenderer } from '@mochi/renderer-webgl';
 import type { Game, GameStats } from '../src/game';
 import { createScene, mountScene, type MountedScene, type SceneSetup } from '../src/scene';
 

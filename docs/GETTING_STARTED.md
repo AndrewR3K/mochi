@@ -13,17 +13,17 @@ Open the URL printed by Vite.
 
 ## 2) Understand the package split
 
-- `@lite3d/core` - world state, input state, and frame loop primitives
-- `@lite3d/renderer-webgl` - rendering backend
-- `@lite3d/gameplay` - high-level facade, control presets, scene lifecycle, and gameplay helpers
-- `@lite3d/vue` - Vue adapter and UI-facing ergonomics
+- `@mochi/core` - world state, input state, and frame loop primitives
+- `@mochi/renderer-webgl` - rendering backend
+- `@mochi/gameplay` - high-level facade, control presets, scene lifecycle, and gameplay helpers
+- `@mochi/vue` - Vue adapter and UI-facing ergonomics
 
-Use `@lite3d/gameplay` first unless you are intentionally building low-level engine features.
+Use `@mochi/gameplay` first unless you are intentionally building low-level engine features.
 
 ## 3) Create your first scene object
 
 ```ts
-import { useGame, useGameScene } from '@lite3d/vue';
+import { useGame, useGameScene } from '@mochi/vue';
 
 const game = useGame();
 const { scene } = useGameScene();
@@ -43,7 +43,7 @@ const player = scene.createEntity({
 ## 4) Pick a controller preset
 
 ```ts
-import { createThirdPersonOverShoulderController } from '@lite3d/gameplay';
+import { createThirdPersonOverShoulderController } from '@mochi/gameplay';
 
 const controller = createThirdPersonOverShoulderController(game, {
   target: player,

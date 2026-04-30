@@ -1,4 +1,4 @@
-import type { InputWriter } from '@lite3d/core';
+import type { InputWriter } from '@mochi/core';
 
 export function connectBrowserInput(
   element: HTMLElement,

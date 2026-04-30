@@ -8,10 +8,7 @@
 
 ## Test plan
 
-- [ ] `pnpm --filter @lite3d/runtime typecheck`
-- [ ] `pnpm --filter @lite3d/render-webgl typecheck`
-- [ ] `pnpm --filter @lite3d/game typecheck`
-- [ ] `pnpm --filter playground build`
+- [ ] `pnpm verify`
 - [ ] Manually tested relevant demo(s)
 
 ## Screenshots / recordings (if UI/gameplay changed)

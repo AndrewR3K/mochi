@@ -1,5 +1,5 @@
 {
-  "name": "@lite3d/gameplay",
+  "name": "@mochi/gameplay",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -16,8 +16,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@lite3d/renderer-webgl": "workspace:*",
-    "@lite3d/core": "workspace:*"
+    "@mochi/renderer-webgl": "workspace:*",
+    "@mochi/core": "workspace:*"
   },
   "devDependencies": {
     "typescript": "~5.7.2"

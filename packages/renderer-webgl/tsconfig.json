@@ -4,8 +4,8 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "@lite3d/core": ["../core/src/index.ts"],
-      "@lite3d/core/*": ["../core/src/*"]
+      "@mochi/core": ["../core/src/index.ts"],
+      "@mochi/core/*": ["../core/src/*"]
     }
   },
   "include": ["src/**/*.ts"]

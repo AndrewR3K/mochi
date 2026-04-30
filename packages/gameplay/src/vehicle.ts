@@ -1,4 +1,4 @@
-import type { Entity, World } from '@lite3d/core';
+import type { Entity, World } from '@mochi/core';
 
 import {
   DEFAULT_VEHICLE_INPUT_BINDINGS,

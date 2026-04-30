@@ -38,8 +38,8 @@ This recap covers the latest engine and playground work after the initial core/r
 ## Testing
 
 - Added a root `pnpm test` command using Node's built-in test runner with TypeScript support through `tsx`.
-- Added initial `@lite3d/core` tests for math transform behavior, input frame state, runtime fixed-step ticking, runtime reset cleanup, and collision body queries.
-- Added initial `@lite3d/gameplay` tests for scene ownership, reset/dispose cleanup, public controller preset creation, character input binding movement, and vehicle reset behavior.
+- Added initial `@mochi/core` tests for math transform behavior, input frame state, runtime fixed-step ticking, runtime reset cleanup, and collision body queries.
+- Added initial `@mochi/gameplay` tests for scene ownership, reset/dispose cleanup, public controller preset creation, character input binding movement, and vehicle reset behavior.
 - Added `tsconfig.test.json` so test files are typechecked as part of `pnpm typecheck`.
 - Updated `pnpm verify` so tests run between typechecking and the playground build.
 
@@ -48,7 +48,7 @@ This recap covers the latest engine and playground work after the initial core/r
 - Updated `README.md` with scene lifecycle, reset, input binding, and demo coverage notes.
 - Added a root `pnpm verify` command and aligned CI to use the same local validation path.
 - Updated getting-started examples to use scene-owned entities, frame listeners, and controller cleanup.
-- Renamed packages to the cohesive public namespace: `@lite3d/core`, `@lite3d/renderer-webgl`, `@lite3d/gameplay`, and `@lite3d/vue`.
+- Renamed packages to the cohesive public namespace: `@mochi/core`, `@mochi/renderer-webgl`, `@mochi/gameplay`, and `@mochi/vue`.
 - Expanded `docs/PRESET_GUIDE.md` with scene reset, input binding examples, vehicle tuning guidance, and live demo references.
 - Updated `docs/ROADMAP.md` to mark completed chunks:
   - typed entity component helpers

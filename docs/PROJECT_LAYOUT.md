@@ -1,6 +1,6 @@
 # Suggested Game Project Layout
 
-Use this as a baseline for teams building on lite3d.
+Use this as a baseline for teams building on Mochi.
 
 ## Minimal structure
 

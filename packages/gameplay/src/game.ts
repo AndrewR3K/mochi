@@ -5,12 +5,12 @@ import {
   type RuntimeOptions,
   type RuntimeStats,
   type World,
-} from '@lite3d/core';
+} from '@mochi/core';
 import {
   createWebGLRenderer,
   type WebGLGameRenderer,
   type WebGLRendererOptions,
-} from '@lite3d/renderer-webgl';
+} from '@mochi/renderer-webgl';
 
 import { connectBrowserInput } from './browserInput';
 import {

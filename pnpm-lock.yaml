@@ -20,10 +20,10 @@ importers:
 
   apps/playground:
     dependencies:
-      '@lite3d/gameplay':
+      '@mochi/gameplay':
         specifier: workspace:*
         version: link:../../packages/gameplay
-      '@lite3d/vue':
+      '@mochi/vue':
         specifier: workspace:*
         version: link:../../packages/vue
       vue:
@@ -51,10 +51,10 @@ importers:
 
   packages/gameplay:
     dependencies:
-      '@lite3d/core':
+      '@mochi/core':
         specifier: workspace:*
         version: link:../core
-      '@lite3d/renderer-webgl':
+      '@mochi/renderer-webgl':
         specifier: workspace:*
         version: link:../renderer-webgl
     devDependencies:
@@ -64,7 +64,7 @@ importers:
 
   packages/renderer-webgl:
     dependencies:
-      '@lite3d/core':
+      '@mochi/core':
         specifier: workspace:*
         version: link:../core
     devDependencies:
@@ -74,7 +74,7 @@ importers:
 
   packages/vue:
     dependencies:
-      '@lite3d/gameplay':
+      '@mochi/gameplay':
         specifier: workspace:*
         version: link:../gameplay
     devDependencies:
