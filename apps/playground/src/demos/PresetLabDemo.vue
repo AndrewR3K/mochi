@@ -5,7 +5,7 @@ import {
   createControllerPreset,
   type ControllerPresetKind,
   type Entity,
-  type ThirdPersonController,
+  type PresetController,
 } from '@mochi/gameplay';
 import { computed, onBeforeUnmount, shallowRef } from 'vue';
 import DemoHud from '../components/DemoHud.vue';
@@ -19,6 +19,7 @@ const presetLabels: Record<ControllerPresetKind, string> = {
   sideScroller2D: 'Side Scroller',
   vehicleArcade: 'Vehicle Arcade',
   vehicleSim: 'Vehicle Sim',
+  spaceflightArcade: 'Spaceflight Arcade',
   railCamera: 'Rail Camera',
   strategyFreeCam: 'Strategy Free Cam',
 };
@@ -26,7 +27,7 @@ const presetLabels: Record<ControllerPresetKind, string> = {
 const game = useGame();
 const scene = game.createScene();
 const selectedPreset = shallowRef<ControllerPresetKind>('thirdPersonOrbit');
-let controller: ThirdPersonController | null = null;
+let controller: PresetController | null = null;
 scene.addCleanup(() => {
   controller?.dispose();
 });
@@ -71,10 +72,14 @@ function selectPreset(kind: ControllerPresetKind): void {
   controller?.dispose();
   selectedPreset.value = kind;
   scene.reset();
+  const bounds =
+    kind === 'spaceflightArcade'
+      ? { minX: -11.5, maxX: 11.5, minY: 0.7, maxY: 8, minZ: -11.5, maxZ: 11.5 }
+      : { minX: -11.5, maxX: 11.5, minZ: -11.5, maxZ: 11.5 };
   controller = createControllerPreset(game, kind, {
     target: player,
     groundY: 0.7,
-    bounds: { minX: -11.5, maxX: 11.5, minZ: -11.5, maxZ: 11.5 },
+    bounds,
   });
 }
 

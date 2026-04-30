@@ -1,11 +1,13 @@
 export { createGame, type Game, type GameOptions, type GameStats } from './game';
 export {
   DEFAULT_CHARACTER_INPUT_BINDINGS,
+  DEFAULT_SPACEFLIGHT_INPUT_BINDINGS,
   DEFAULT_VEHICLE_INPUT_BINDINGS,
   isBindingDown,
   wasBindingPressed,
   type CharacterInputBindings,
   type KeyBinding,
+  type SpaceflightInputBindings,
   type VehicleInputBindings,
 } from './bindings';
 export {
@@ -38,6 +40,7 @@ export {
   createIsometricController,
   createRailCameraController,
   createSideScroller2DController,
+  createSpaceflightArcadeController,
   createStrategyFreeCamController,
   createThirdPersonOrbitController,
   createThirdPersonOverShoulderController,
@@ -45,7 +48,9 @@ export {
   createVehicleArcadeController,
   createVehicleSimController,
   type ControllerPresetKind,
+  type PresetController,
   type PresetControllerOptions,
+  type SpaceflightPresetControllerOptions,
   type VehiclePresetControllerOptions,
 } from './presets';
 export {
@@ -71,6 +76,12 @@ export {
   type MountedScene,
   type SceneSetup,
 } from './scene';
+export {
+  createSpaceflightController,
+  getSpaceflightForward,
+  type SpaceflightController,
+  type SpaceflightControllerOptions,
+} from './spaceflight';
 export {
   createVehicleController,
   type VehicleController,

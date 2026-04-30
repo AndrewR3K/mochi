@@ -18,6 +18,19 @@ export interface VehicleInputBindings {
   right: KeyBinding;
 }
 
+export interface SpaceflightInputBindings {
+  thrust: KeyBinding;
+  brake: KeyBinding;
+  yawLeft: KeyBinding;
+  yawRight: KeyBinding;
+  pitchUp: KeyBinding;
+  pitchDown: KeyBinding;
+  rollLeft: KeyBinding;
+  rollRight: KeyBinding;
+  strafeUp: KeyBinding;
+  strafeDown: KeyBinding;
+}
+
 export const DEFAULT_CHARACTER_INPUT_BINDINGS: CharacterInputBindings = {
   forward: ['KeyW', 'ArrowUp'],
   backward: ['KeyS', 'ArrowDown'],
@@ -32,6 +45,19 @@ export const DEFAULT_VEHICLE_INPUT_BINDINGS: VehicleInputBindings = {
   backward: ['KeyS', 'ArrowDown'],
   left: ['KeyA', 'ArrowLeft'],
   right: ['KeyD', 'ArrowRight'],
+};
+
+export const DEFAULT_SPACEFLIGHT_INPUT_BINDINGS: SpaceflightInputBindings = {
+  thrust: ['KeyW', 'ArrowUp'],
+  brake: ['KeyS', 'ArrowDown'],
+  yawLeft: ['KeyA', 'ArrowLeft'],
+  yawRight: ['KeyD', 'ArrowRight'],
+  pitchUp: ['KeyR'],
+  pitchDown: ['KeyF'],
+  rollLeft: ['KeyQ'],
+  rollRight: ['KeyE'],
+  strafeUp: 'Space',
+  strafeDown: ['ShiftLeft', 'ShiftRight'],
 };
 
 export function isBindingDown(input: InputState, binding: KeyBinding): boolean {

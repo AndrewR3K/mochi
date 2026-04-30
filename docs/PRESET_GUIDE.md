@@ -12,6 +12,7 @@ Pick presets by camera/control model first, then genre.
 - `sideScroller2D` - side view movement lane
 - `vehicleArcade` - fast, forgiving throttle/brake/steer vehicle movement
 - `vehicleSim` - heavier vehicle movement with slower acceleration and steadier steering
+- `spaceflightArcade` - open 3D spacecraft movement with thrust, pitch, yaw, roll, vertical strafe, and chase camera
 - `railCamera` - constrained cinematic movement
 - `strategyFreeCam` - detached map camera
 
@@ -23,8 +24,9 @@ Pick presets by camera/control model first, then genre.
 - ARPG/RTS-lite -> `isometric` or `topDown`
 - Kart/arcade racer -> `vehicleArcade`
 - Sim racer -> `vehicleSim`
+- Small space game -> `spaceflightArcade`
 
-Use the playground `Preset Lab` demo to switch these camera/control models live. Use `First Person Range` for a focused `firstPerson` example, and `Tactics Board` for an `isometric` example.
+Use the playground `Preset Lab` demo to switch these camera/control models live. Use `First Person Range` for a focused `firstPerson` example, `Tactics Board` for an `isometric` example, and `Starfield Drift` for a `spaceflightArcade` example.
 
 ## API patterns
 
@@ -153,12 +155,34 @@ const controller = createThirdPersonOrbitController(game, {
 });
 ```
 
+### Spaceflight controls
+
+```ts
+import { createSpaceflightArcadeController } from '@mochi/gameplay';
+
+const controller = createSpaceflightArcadeController(game, {
+  target: ship,
+  bounds: { minX: -50, maxX: 50, minY: -10, maxY: 30, minZ: -200, maxZ: 50 },
+  input: {
+    thrust: 'KeyW',
+    brake: 'KeyS',
+    yawLeft: 'KeyA',
+    yawRight: 'KeyD',
+    pitchUp: 'KeyR',
+    pitchDown: 'KeyF',
+    rollLeft: 'KeyQ',
+    rollRight: 'KeyE',
+  },
+});
+```
+
 ## Tuning tips
 
 - Start with movement speed and camera distance.
 - Presets accept configurable keyboard bindings through `input`.
 - In vehicle presets, `forward` and `backward` map to throttle and brake.
 - For vehicle presets, tune `acceleration`, `maxSpeed`, `drag`, and `turnSpeed`.
+- In spaceflight presets, tune `thrust`, `maxSpeed`, `drag`, pitch/yaw/roll speeds, and 3D bounds.
 - Tune sensitivity and camera lerp before adding special logic.
 - Keep defaults unless you have a clear gameplay reason.
 - Add a new preset only if multiple projects need the same tuned profile.
