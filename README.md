@@ -160,6 +160,7 @@ Entity blueprints instantiate reusable prefab-style hierarchies while keeping ga
 - [First Game in 10 Minutes](docs/FIRST_GAME.md)
 - [Alpha Release](docs/ALPHA_RELEASE.md)
 - [External Developer Workflow](docs/EXTERNAL_DEVELOPER_WORKFLOW.md)
+- [Licensing](docs/LICENSING.md)
 - [Versioning](docs/VERSIONING.md)
 - [Release Process](docs/RELEASE_PROCESS.md)
 - [Public API Reference Direction](docs/API_REFERENCE.md)
@@ -171,3 +172,7 @@ Entity blueprints instantiate reusable prefab-style hierarchies while keeping ga
 ## Project direction
 
 Mochi should be a configuration-first engine where common game styles start from presets instead of one-off rewrites. Advanced systems should be available when a game needs them; simple APIs should stay simple.
+
+## License
+
+Mochi uses the Functional Source License, Version 1.1, Apache 2.0 Future License (FSL-1.1-ALv2). You can build and sell games/apps with Mochi, but you cannot repackage Mochi itself as a competing commercial engine or SDK. See [LICENSE.md](LICENSE.md) and [Licensing](docs/LICENSING.md).

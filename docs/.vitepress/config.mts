@@ -108,6 +108,7 @@ export default defineConfig({
           { text: 'Roadmap', link: '/ROADMAP' },
           { text: 'Recent Changes', link: '/RECENT_CHANGES' },
           { text: 'Discussions', link: '/DISCUSSIONS' },
+          { text: 'Licensing', link: '/LICENSING' },
         ],
       },
       {
@@ -120,7 +121,7 @@ export default defineConfig({
       },
     ],
     footer: {
-      message: 'Released under the project license.',
+      message: `Released under the <a href="${base}LICENSING">Mochi license</a>.`,
       copyright: 'Copyright © 2026 Mochi contributors',
     },
   },
