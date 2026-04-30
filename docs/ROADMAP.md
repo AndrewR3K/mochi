@@ -1,6 +1,6 @@
 # Roadmap
 
-This roadmap is intentionally practical. The long-term goal is a full-featured, AAA-capable web game engine that can be used by anyone, while the near-term work stays grounded in playable vertical slices.
+This roadmap is intentionally practical. The long-term goal is a full-featured, AAA-capable web game engine that can stand beside Unity, Godot, and Unreal as a serious option for modern web developers, while the near-term work stays grounded in playable vertical slices.
 
 ## North star
 
@@ -15,6 +15,8 @@ Mochi should eventually provide the kinds of systems expected from a serious gam
 - approachable APIs and templates for solo developers and teams
 
 The engine should not become complex by default. AAA-level capability should be layered behind simple entry points.
+
+Mochi is web-native first: it should feel natural inside Vue and other modern frontend stacks, but the engine core must stay framework-agnostic enough for React, Svelte, vanilla TypeScript, and non-DOM runtimes to build on it. Demos are proof points for external developers, not special cases that require editing the engine.
 
 ## Current status
 
