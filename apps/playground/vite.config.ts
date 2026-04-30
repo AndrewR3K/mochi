@@ -5,8 +5,10 @@ import vue from '@vitejs/plugin-vue';
 import { defineConfig } from 'vite';
 
 const monorepoRoot = fileURLToPath(new URL('../..', import.meta.url));
+const base = process.env.VITE_BASE_PATH ?? '/';
 
 export default defineConfig({
+  base,
   plugins: [vue()],
   resolve: {
     dedupe: ['vue'],
