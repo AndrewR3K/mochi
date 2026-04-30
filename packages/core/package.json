@@ -8,6 +8,11 @@
   "files": [
     "src"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndrewR3K/mochi.git",
+    "directory": "packages/core"
+  },
   "publishConfig": {
     "access": "public"
   },
