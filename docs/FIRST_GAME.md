@@ -1,6 +1,6 @@
 # First Game in 10 Minutes
 
-This guide uses the alpha starter app as the external developer path. It avoids engine internals and playground-only shortcuts.
+This guide shows the external developer path. It avoids engine internals and playground-only shortcuts.
 
 ![Signal Grove starter map](assets/first-game/starter-map.svg)
 
@@ -16,24 +16,37 @@ This guide uses the alpha starter app as the external developer path. It avoids 
 
 Use the checkboxes as you go. If a step feels unclear, that is alpha feedback worth filing.
 
-## 1) Run the starter
+## 1) Install Mochi in your app
+
+```bash
+pnpm add @mochi-labs/vue@alpha vue
+```
+
+With npm:
+
+```bash
+npm install @mochi-labs/vue@alpha vue
+```
+
+If you are contributing to Mochi itself, run the in-repo starter instead:
 
 ```bash
 pnpm install
 pnpm dev:starter
 ```
 
-Open the URL printed by Vite. You should see `Signal Grove`, a small third-person collection scene.
+Open the URL printed by Vite. The repository starter shows `Signal Grove`, a small third-person collection scene.
 
-- [ ] The app opens.
-- [ ] The HUD shows `Signals: 0 / 3`.
-- [ ] WASD moves the player.
-- [ ] The debug button toggles bounds and target markers.
+- [ ] Mochi is installed in your app, or the in-repo starter opens.
+- [ ] The canvas renders.
+- [ ] WASD moves the player once you add the controller.
+- [ ] The debug toggle shows bounds and target markers once you add debug visuals.
 
 <details>
 <summary>Troubleshooting</summary>
 
-- If dependencies are missing, run `pnpm install`.
+- If package dependencies are missing in your app, run `pnpm install` or `npm install`.
+- If repository workspace dependencies are missing while contributing to Mochi, run `pnpm install`.
 - If the port is busy, use the alternate Vite URL printed by the terminal.
 - If the canvas is blank, check the browser console for WebGL2 support errors.
 
@@ -41,7 +54,7 @@ Open the URL printed by Vite. You should see `Signal Grove`, a small third-perso
 
 ## 2) Understand the component split
 
-The starter has two important files:
+The in-repo starter has two important files:
 
 - `apps/alpha-starter/src/App.vue` hosts `<GameCanvas>` and HUD state.
 - `apps/alpha-starter/src/game/FirstGameScene.vue` owns scene entities, controller setup, collision, and gameplay rules.

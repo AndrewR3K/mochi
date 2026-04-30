@@ -33,12 +33,25 @@ Use:
 - PR template is defined at `.github/pull_request_template.md`.
 - CODEOWNERS is defined at `.github/CODEOWNERS`.
 
-## 4) Recommended merge strategy
+## 4) GitHub Pages
+
+In GitHub settings:
+
+`Settings -> Pages -> Build and deployment`
+
+Use:
+
+- **Source**: GitHub Actions
+- **Workflow**: `.github/workflows/pages.yml`
+
+The docs site is built with `pnpm docs:build` and deployed from `docs/.vitepress/dist`.
+
+## 5) Recommended merge strategy
 
 - Enable **Squash merge**
 - Disable **Merge commit** and **Rebase merge** (optional, but keeps history cleaner)
 
-## 5) Suggested branch naming
+## 6) Suggested branch naming
 
 - `feature/<area>-<short-name>`
 - `fix/<area>-<short-name>`
@@ -50,7 +63,7 @@ Example:
 - `feature/game-controller-presets`
 - `fix/sentry-collision-tunneling`
 
-## 6) Local branch workflow
+## 7) Local branch workflow
 
 ```bash
 git checkout main

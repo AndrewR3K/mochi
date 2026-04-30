@@ -1,10 +1,30 @@
 # External Developer Workflow
 
-Use this workflow to test Mochi as if it were already an external engine dependency.
+Use this workflow to test Mochi as an external engine dependency.
+
+## Published package path
+
+For normal game development, install the alpha packages from npm:
+
+```bash
+pnpm add @mochi-labs/vue@alpha vue
+```
+
+With npm:
+
+```bash
+npm install @mochi-labs/vue@alpha vue
+```
+
+Install lower-level packages directly only when you need to use them without the Vue adapter:
+
+```bash
+pnpm add @mochi-labs/gameplay@alpha @mochi-labs/renderer-webgl@alpha @mochi-labs/core@alpha
+```
 
 ## In-repo alpha starter
 
-The fastest feedback loop is the isolated starter app:
+Use the isolated starter app when contributing to this engine:
 
 ```bash
 pnpm dev:starter
@@ -18,9 +38,9 @@ Rules for the starter:
 - Do not copy helpers from `apps/playground`.
 - Treat friction as product feedback and create issues for it.
 
-## Outside-app validation
+## Unpublished local validation
 
-Before alpha, validate a separate app with packed packages.
+When changing Mochi packages locally, validate a separate app with packed packages before publishing.
 
 1. Build and verify Mochi.
 
@@ -59,7 +79,7 @@ pnpm --dir packages/vue pack --pack-destination ../../dist-packages
 }
 ```
 
-The overrides are required until Mochi packages are published to a registry. They force transitive `@mochi-labs/*` dependencies to resolve to the local tarballs instead of npm.
+The overrides force transitive `@mochi-labs/*` dependencies to resolve to the local tarballs instead of npm.
 
 4. Build the separate app.
 

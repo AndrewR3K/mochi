@@ -40,39 +40,63 @@ From `@mochi-labs/gameplay`:
 ### Requirements
 
 - Node.js 20+
-- pnpm 9+
+- pnpm, npm, or another Node package manager
 
 ### Install
+
+Install Mochi in your game app:
+
+```bash
+pnpm add @mochi-labs/vue@alpha vue
+```
+
+With npm:
+
+```bash
+npm install @mochi-labs/vue@alpha vue
+```
+
+`@mochi-labs/vue` brings in the gameplay, renderer, and core packages.
+
+### Contributing to the engine
+
+Clone this repository and install the workspace only when you are contributing to Mochi itself:
 
 ```bash
 pnpm install
 ```
 
-### Run playground
+Run the playground:
 
 ```bash
 pnpm dev
 ```
 
-### Run alpha starter
+Run the alpha starter:
 
 ```bash
 pnpm dev:starter
 ```
 
-### Build playground
+Run the docs site:
+
+```bash
+pnpm docs:dev
+```
+
+Build the playground and starter:
 
 ```bash
 pnpm build
 ```
 
-### Verify workspace
+Verify the workspace:
 
 ```bash
 pnpm verify
 ```
 
-`pnpm verify` typechecks every package with a `typecheck` script, runs the test suite, and builds the apps. Use it before opening a PR or changing shared engine APIs.
+`pnpm verify` typechecks every package with a `typecheck` script, runs the test suite, builds the apps, and builds the VitePress docs site. Use it before opening a PR or changing shared engine APIs.
 
 ## Minimal usage (Vue + facade)
 
@@ -131,6 +155,7 @@ Entity blueprints instantiate reusable prefab-style hierarchies while keeping ga
 
 ## Start here docs
 
+- [Developer Resources](docs/RESOURCES.md)
 - [Getting Started](docs/GETTING_STARTED.md)
 - [First Game in 10 Minutes](docs/FIRST_GAME.md)
 - [Alpha Release](docs/ALPHA_RELEASE.md)

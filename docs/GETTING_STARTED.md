@@ -1,23 +1,41 @@
 # Getting Started
 
-This guide takes you from clone to a playable prototype.
+This guide takes you from a game app to a playable prototype.
 
-## 1) Install and run
-
-```bash
-pnpm install
-pnpm dev
-```
-
-Open the URL printed by Vite.
-
-To test the external-developer starter instead of the full playground:
+## 1) Install Mochi
 
 ```bash
-pnpm dev:starter
+pnpm add @mochi-labs/vue@alpha vue
 ```
 
-## 2) Understand the package split
+With npm:
+
+```bash
+npm install @mochi-labs/vue@alpha vue
+```
+
+`@mochi-labs/vue` brings in the gameplay, renderer, and core packages. Install lower-level packages directly only when you need them:
+
+```bash
+pnpm add @mochi-labs/gameplay@alpha @mochi-labs/renderer-webgl@alpha @mochi-labs/core@alpha
+```
+
+## 2) Mount the canvas
+
+```vue
+<script setup lang="ts">
+import { GameCanvas } from '@mochi-labs/vue';
+import FirstScene from './game/FirstScene.vue';
+</script>
+
+<template>
+  <GameCanvas :runtime="{ fixedStep: 1 / 60 }">
+    <FirstScene />
+  </GameCanvas>
+</template>
+```
+
+## 3) Understand the package split
 
 - `@mochi-labs/core` - world state, input state, and frame loop primitives
 - `@mochi-labs/renderer-webgl` - rendering backend
@@ -26,7 +44,7 @@ pnpm dev:starter
 
 Use `@mochi-labs/gameplay` first unless you are working on engine internals.
 
-## 3) Create your first scene object
+## 4) Create your first scene object
 
 ```ts
 import { useGame, useGameScene } from '@mochi-labs/vue';
@@ -46,7 +64,7 @@ const player = scene.createEntity({
 });
 ```
 
-## 4) Pick a controller preset
+## 5) Pick a controller preset
 
 ```ts
 import { createThirdPersonOverShoulderController } from '@mochi-labs/gameplay';
@@ -57,7 +75,7 @@ const controller = createThirdPersonOverShoulderController(game, {
 scene.add(controller);
 ```
 
-## 5) Add gameplay loop logic
+## 6) Add gameplay loop logic
 
 ```ts
 scene.onFrame(({ delta, input }) => {
@@ -67,7 +85,7 @@ scene.onFrame(({ delta, input }) => {
 });
 ```
 
-## 6) Choose deterministic stepping when needed
+## 7) Choose deterministic stepping when needed
 
 For gameplay that must update at a stable simulation rate, configure the runtime with a fixed step:
 
@@ -92,19 +110,29 @@ const game = createGame({
 
 Use `game.runtime.pause()`, `game.runtime.resume()`, `game.runtime.setTimeScale(0.5)`, and `game.runtime.step()` for pause menus, slow motion, debugging, and deterministic tools.
 
-## 7) Clean up on scene exit
+## 8) Clean up on scene exit
 
 `useGameScene()` disposes scene-owned entities, frame listeners, controllers, and cleanup callbacks when the Vue component unmounts.
 Use `scene.reset()` when a demo needs replay behavior without rebuilding the whole game.
 
+## Contributing to Mochi
+
+Clone this repository and install the workspace only when you are contributing to the engine itself:
+
+```bash
+pnpm install
+pnpm dev
+```
+
+Use `pnpm dev:starter` to test the in-repo starter app, and run `pnpm verify` before opening a PR or changing public APIs.
+
 ## Recommended workflow
 
-1. Prototype engine ideas in `apps/playground`
-2. Validate external-facing flow in `apps/alpha-starter`
-3. Keep gameplay logic scene-local first
-4. Extract shared mechanics into `packages/gameplay` only when they are useful outside one demo
-5. Run `pnpm verify` before changing public API or opening a PR
-6. Add new presets when a control/camera pattern stabilizes
+1. Install Mochi into your game app.
+2. Keep gameplay logic scene-local first.
+3. Extract repeated app code into your own `src/game` helpers.
+4. Add engine features in this repository only when they are reusable outside one game.
+5. Run `pnpm verify` before changing public API or opening a PR.
 
 ## Common pitfalls
 
