@@ -53,7 +53,7 @@ Mochi is web-native first. It should feel natural inside Vue and other frontend 
 - [x] Add per-face or simple normal shading for cube/plane geometry.
 - [x] Add debug rendering for bounds and controller targets.
 - [x] Add simple material presets (`solid`, `emissive`, `warning`, `neutral`).
-- [ ] Add asset-loading direction after engine boundaries stabilize.
+- [x] Add initial asset-loading/cache direction with a reusable asset registry.
 
 ### Game facade
 
@@ -126,6 +126,7 @@ Mochi is web-native first. It should feel natural inside Vue and other frontend 
 - [x] Add collision layer and mask filtering.
 - [x] Add spatial collision queries for point and sphere-volume checks.
 - [x] Add ray collision queries for picking, aiming, sensors, and editor selection.
+- [x] Add camera viewport rays for mouse picking, aiming, sensors, and editor tooling.
 - [ ] Add physics backend decision when simple collision is no longer enough.
 
 ### Tools and developer experience
@@ -134,6 +135,7 @@ Mochi is web-native first. It should feel natural inside Vue and other frontend 
 - [x] Add initial game inspection snapshots for debug overlays and editor panels.
 - [x] Add lifecycle-bound scene scheduling for timers, cooldowns, waves, and debug refreshes.
 - [x] Add prefab-style entity blueprints for reusable hierarchies.
+- [x] Add debug ray visuals for ray-query and sensor debugging.
 - [ ] Add starter templates by game style.
 - [ ] Add example cookbook.
 - [ ] Add profiling and performance guidance.

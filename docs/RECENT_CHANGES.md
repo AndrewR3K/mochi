@@ -15,6 +15,8 @@ This recap covers engine and playground work after the initial core/renderer/gam
 - Added collision layer/mask filtering to runtime collision bodies.
 - Added spatial collision queries for point and sphere-volume checks.
 - Added ray collision queries for picking, aiming, sensors, and editor selection.
+- Added camera viewport ray helpers for mouse picking, aiming, sensors, and editor tools.
+- Added an asset registry for reusable loading/cache lifecycle management.
 - Added gameplay inspection snapshots that summarize world, hierarchy, collision, trigger, renderable, and tag state.
 - Added lifecycle-bound scene scheduling for delays and intervals.
 - Added prefab-style entity blueprints for reusable hierarchy construction.
@@ -51,6 +53,7 @@ This recap covers engine and playground work after the initial core/renderer/gam
 - Added a `Tactics Board` debug toggle for showing blocker collision bounds and the controlled unit target.
 - Updated `Tactics Board` to consume engine tags, collision layers, and inspection snapshots in its debug HUD.
 - Updated `Tactics Board` to use a scene scheduler for debug inspection refreshes.
+- Updated `Tactics Board` to show a scene-owned debug ray when debug visuals are enabled.
 - Updated `Velocity Circuit` to show speed and use the new vehicle controller feel.
 
 ## Testing

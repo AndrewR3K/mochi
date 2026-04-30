@@ -1,4 +1,10 @@
 export {
+  createCameraRay,
+  getCameraForward,
+  type CameraRay,
+  type ViewportPoint,
+} from './camera';
+export {
   createComponentType,
   getComponent,
   hasComponent,
@@ -52,8 +58,10 @@ export {
 export {
   composeTransform,
   mat4Identity,
+  mat4Invert,
   mat4LookAt,
   mat4Multiply,
+  mat4MultiplyVec4,
   mat4Perspective,
   transform,
   vec3,

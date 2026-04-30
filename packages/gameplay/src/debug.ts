@@ -28,6 +28,14 @@ export interface DebugTargetMarkerOptions {
   yOffset?: number;
 }
 
+export interface DebugRayOptions {
+  color?: Vec3;
+  enabled?: DebugEnabled;
+  id?: string;
+  length?: number;
+  thickness?: number;
+}
+
 type EdgeKind = 'north' | 'south' | 'east' | 'west';
 
 interface DebugEdge {
@@ -133,6 +141,58 @@ export function createDebugTargetMarker(
   };
 }
 
+export function createDebugRay(
+  scene: GameScene,
+  origin: Vec3 | (() => Vec3),
+  direction: Vec3 | (() => Vec3),
+  options: DebugRayOptions = {},
+): DebugVisual {
+  const length = options.length ?? 4;
+  const thickness = options.thickness ?? 0.06;
+  let enabled = readEnabled(options.enabled, false);
+  const ray = scene.createEntity({
+    id: options.id ?? 'debug-ray',
+    renderable: {
+      primitive: 'cube',
+      material: createMaterial(options.color ?? { x: 0.35, y: 0.9, z: 1 }),
+    },
+  });
+
+  const sync = () => {
+    enabled = readEnabled(options.enabled, enabled);
+    const from = readVec3(origin);
+    const normal = normalize(readVec3(direction));
+    const visibleLength = enabled ? length : 0;
+
+    ray.transform.position.x = from.x + normal.x * visibleLength * 0.5;
+    ray.transform.position.y = from.y + normal.y * visibleLength * 0.5;
+    ray.transform.position.z = from.z + normal.z * visibleLength * 0.5;
+    ray.transform.rotation.x = Math.asin(-normal.y);
+    ray.transform.rotation.y = Math.atan2(normal.x, -normal.z);
+    ray.transform.rotation.z = 0;
+    ray.transform.scale.x = enabled ? thickness : 0;
+    ray.transform.scale.y = enabled ? thickness : 0;
+    ray.transform.scale.z = visibleLength;
+  };
+
+  sync();
+  const unsubscribe = scene.onFrame(sync);
+
+  return {
+    get enabled() {
+      return enabled;
+    },
+    setEnabled(value) {
+      enabled = value;
+      sync();
+    },
+    dispose() {
+      unsubscribe();
+      scene.game.world.removeEntity(ray.id);
+    },
+  };
+}
+
 function createEdge(
   scene: GameScene,
   collider: BoxCollider,
@@ -188,4 +248,17 @@ function syncEdge(
 function readEnabled(enabled: DebugEnabled | undefined, fallback: boolean): boolean {
   if (typeof enabled === 'function') return enabled();
   return enabled ?? fallback;
+}
+
+function readVec3(value: Vec3 | (() => Vec3)): Vec3 {
+  return typeof value === 'function' ? value() : value;
+}
+
+function normalize(vector: Vec3): Vec3 {
+  const length = Math.hypot(vector.x, vector.y, vector.z) || 1;
+  return {
+    x: vector.x / length,
+    y: vector.y / length,
+    z: vector.z / length,
+  };
 }

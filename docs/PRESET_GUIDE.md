@@ -119,6 +119,7 @@ const triggerPairs = queryTriggerPairs(bodies);
 
 ```ts
 import {
+  createCameraRay,
   queryCollisionBodiesAlongRay,
   queryCollisionBodiesAtPoint,
   queryCollisionBodiesInSphere,
@@ -137,10 +138,12 @@ const clicked = queryCollisionBodiesAtPoint(
 
 const aimed = queryCollisionBodiesAlongRay(
   queryCollisionBodies(game.world.allEntities()),
-  {
-    origin: camera.position,
-    direction: { x: 0, y: 0, z: -1 },
-  },
+  createCameraRay(game.world.camera, {
+    x: pointerX,
+    y: pointerY,
+    width: game.renderer.width,
+    height: game.renderer.height,
+  }),
   { maxDistance: 100 },
 );
 ```
@@ -306,6 +309,24 @@ scheduler.interval(0.25, () => {
 
 Scheduled callbacks are owned by the scene and are cleaned up on scene disposal.
 
+### Asset registry
+
+```ts
+import { createAssetRegistry } from '@mochi/gameplay';
+
+const assets = createAssetRegistry();
+
+assets.register('level:arena', async () => {
+  const response = await fetch('/levels/arena.json');
+  return response.json();
+});
+
+await assets.preload(['level:arena']);
+const arena = assets.get('level:arena')?.value;
+```
+
+Use asset registries as a loading/cache boundary. They are intentionally data-agnostic so future mesh, texture, scene, audio, and game-specific asset pipelines can build on the same lifecycle.
+
 ### Entity blueprints
 
 ```ts
@@ -330,6 +351,19 @@ const ship = instantiateEntityBlueprint(scene, {
 ```
 
 Blueprints are prefab-style entity hierarchies. They should describe reusable structure; behavior, AI, inventory, and mission state should live in systems or scene code.
+
+### Debug rays
+
+```ts
+import { createDebugRay } from '@mochi/gameplay';
+
+createDebugRay(scene, player.transform.position, { x: 0, y: 0, z: -1 }, {
+  enabled: () => showDebug.value,
+  length: 6,
+});
+```
+
+Debug rays are scene-owned visuals for aiming, selection, sensors, and ray-query debugging.
 
 ### Spaceflight controls
 

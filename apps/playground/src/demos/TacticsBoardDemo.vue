@@ -3,6 +3,7 @@ import { useGame } from '@mochi/vue';
 import {
   createBoxCollider,
   createDebugBoxBounds,
+  createDebugRay,
   createDebugTargetMarker,
   createGameInspectionSnapshot,
   createIsometricController,
@@ -69,6 +70,11 @@ createDebugBoxBounds(scene, blockers, {
 });
 createDebugTargetMarker(scene, unit, {
   enabled: () => debugBounds.value,
+});
+createDebugRay(scene, () => unit.transform.position, () => ({ x: 0, y: 0, z: -1 }), {
+  id: 'tactics-debug-ray',
+  enabled: () => debugBounds.value,
+  length: 3,
 });
 const points: CapturePoint[] = [
   createCapturePoint('capture-a', -7, -6),

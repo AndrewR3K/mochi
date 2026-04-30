@@ -105,6 +105,8 @@ Collision bodies support layer/mask filtering, and worlds can create/load serial
 Entities support names and tags for organization, queries, inspection tools, and editor-style workflows.
 Spatial collision queries and gameplay inspection snapshots help build debug overlays, selection tools, objectives, and editor panels without demo-specific engine code.
 Ray collision queries support picking, aiming, line-of-sight checks, and editor selection.
+Camera helpers create viewport rays for mouse picking, aiming, sensors, and editor tools.
+Asset registries provide the first reusable loading/cache boundary for future mesh, texture, scene, and audio pipelines.
 Scene schedulers provide lifecycle-bound delays and intervals for cooldowns, waves, UI refreshes, and timed rules.
 Entity blueprints instantiate reusable prefab-style hierarchies while keeping game-specific behavior in game code.
 

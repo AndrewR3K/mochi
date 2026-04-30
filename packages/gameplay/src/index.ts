@@ -17,11 +17,20 @@ export {
 } from './events';
 export {
   createDebugBoxBounds,
+  createDebugRay,
   createDebugTargetMarker,
   type DebugBoxBoundsOptions,
+  type DebugRayOptions,
   type DebugTargetMarkerOptions,
   type DebugVisual,
 } from './debug';
+export {
+  createAssetRegistry,
+  type AssetLoader,
+  type AssetRecord,
+  type AssetRegistry,
+  type AssetStatus,
+} from './assets';
 export {
   MATERIAL_PRESET_COLORS,
   createMaterial,
@@ -126,6 +135,7 @@ export {
   type VehicleControllerOptions,
 } from './vehicle';
 export type {
+  Camera,
   ComponentId,
   ComponentStore,
   ComponentType,
@@ -141,6 +151,7 @@ export type {
   CollisionRayQueryOptions,
   CollisionShape,
   CollisionShapeKind,
+  CameraRay,
   Entity,
   EntityComponent,
   EntityId,
@@ -157,6 +168,7 @@ export type {
   SphereCollisionShape,
   Transform,
   Vec3,
+  ViewportPoint,
   World,
   WorldEntitySnapshot,
   WorldSnapshot,
@@ -167,9 +179,11 @@ export {
   canCollisionBodiesInteract,
   collisionBody,
   composeEntityWorldMatrix,
+  createCameraRay,
   createBoxCollisionBody,
   createComponentType,
   createSphereCollisionBody,
+  getCameraForward,
   getCollisionBody,
   getComponent,
   getEntityWorldPosition,
