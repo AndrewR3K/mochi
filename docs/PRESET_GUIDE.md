@@ -44,6 +44,30 @@ import { createControllerPreset } from '@mochi-labs/gameplay';
 const controller = createControllerPreset(game, 'thirdPersonOrbit', { target: player });
 ```
 
+### Character motor
+
+```ts
+import { createCharacterMotor } from '@mochi-labs/gameplay';
+
+const motor = createCharacterMotor({
+  target: player,
+  maxJumps: 2,
+  resolveGroundHeight: () => currentPlatformY,
+  bounds: { minX: -12, maxX: 12, minZ: -12, maxZ: 12 },
+});
+
+scene.onFrame(({ delta }) => {
+  motor.step({
+    delta,
+    move: { x: inputX, z: inputZ },
+    speed: 5.5,
+    jump: jumpPressed,
+  });
+});
+```
+
+Use `createCharacterMotor` when you want grounded movement, jump state, gravity, bounds, and dynamic ground height without taking a camera preset. The third-person controller presets use the same motor internally.
+
 ### Scene reset
 
 ```ts

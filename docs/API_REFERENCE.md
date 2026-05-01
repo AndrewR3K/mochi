@@ -49,6 +49,7 @@ Use gameplay as the default game-facing entry point:
 - `createGame`
 - scene lifecycle helpers
 - controller presets
+- character motors
 - collision helpers
 - material presets
 - events

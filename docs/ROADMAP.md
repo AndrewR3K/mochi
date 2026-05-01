@@ -123,7 +123,7 @@ Mochi is web-native first. It should feel natural inside Vue and other frontend 
 ### Physics and gameplay
 
 - [ ] Promote collision helpers into reusable engine primitives.
-- [ ] Add character controller foundations.
+- [x] Add character controller foundations.
 - [x] Add trigger volumes, hitboxes, and damage zones.
 - [x] Add first reusable projectile emitter for blaster-style interactions.
 - [x] Add collision layer and mask filtering.

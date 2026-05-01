@@ -25,6 +25,7 @@ This recap covers engine and playground work after the initial core/renderer/gam
 - Added debug helpers for rendering collider footprints and target markers through scene-owned entities.
 - Added typed event signals for small gameplay events like collection, damage, score, and mission state changes.
 - Added configurable keyboard bindings for character and vehicle controllers while keeping WASD/arrows as the default path.
+- Added a reusable character motor for grounded movement, jumping, bounds, and dynamic ground height outside camera presets.
 - Added material presets and `createMaterial()` for current solid-color rendering.
 - Reworked `vehicleArcade` and `vehicleSim` to use vehicle-style throttle, braking, steering, drag, and chase camera behavior instead of character-style movement.
 - Added `spaceflightArcade`, a spacecraft controller preset for open 3D movement with thrust, pitch, yaw, roll, vertical strafe, velocity readout, and chase camera behavior.
