@@ -17,9 +17,13 @@ export {
 } from './events';
 export {
   createDebugBoxBounds,
+  createDebugOverlay,
   createDebugRay,
   createDebugTargetMarker,
   type DebugBoxBoundsOptions,
+  type DebugOverlay,
+  type DebugOverlayOptions,
+  type DebugOverlayRayOptions,
   type DebugRayOptions,
   type DebugTargetMarkerOptions,
   type DebugVisual,

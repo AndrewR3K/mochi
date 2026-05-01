@@ -134,7 +134,7 @@ Mochi is web-native first. It should feel natural inside Vue and other frontend 
 
 ### Tools and developer experience
 
-- [ ] Add visual debug overlays.
+- [x] Add visual debug overlays.
 - [x] Add initial game inspection snapshots for debug overlays and editor panels.
 - [x] Add lifecycle-bound scene scheduling for timers, cooldowns, waves, and debug refreshes.
 - [x] Add prefab-style entity blueprints for reusable hierarchies.
