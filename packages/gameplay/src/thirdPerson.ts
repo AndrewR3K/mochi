@@ -6,6 +6,7 @@ import {
   wasBindingPressed,
   type CharacterInputBindings,
 } from './bindings';
+import { createCharacterMotor } from './character';
 import type { Game } from './game';
 
 export interface ThirdPersonControllerOptions {
@@ -70,12 +71,19 @@ export function createThirdPersonController(
   const minPitch = options.minPitch ?? -0.45;
   const maxPitch = options.maxPitch ?? 0.65;
   const rotateButtons = options.rotateButtons ?? [0, 2];
+  const motor = createCharacterMotor({
+    target,
+    gravity,
+    groundY,
+    jumpVelocity,
+    maxJumps: options.doubleJump === false ? 1 : 2,
+    resolveGroundHeight: options.resolveGroundHeight,
+    bounds: options.bounds,
+  });
   let targetYaw = options.yaw ?? 0;
   let targetPitch = options.pitch ?? 0.15;
   let yaw = targetYaw;
   let pitch = targetPitch;
-  let verticalVelocity = 0;
-  let jumpsRemaining = options.doubleJump === false ? 1 : 2;
 
   const unsubscribe = game.onFrame(({ delta, input, world }) => {
     const canMove = options.enabled?.() ?? true;
@@ -111,40 +119,17 @@ export function createThirdPersonController(
     const z = right.z * moveX + forward.z * moveZ;
     const length = Math.hypot(x, z);
 
-    if (canMove && length > 0) {
-      const normalizedX = x / length;
-      const normalizedZ = z / length;
-      const speed =
-        moveSpeed * (isBindingDown(input, inputBindings.sprint) ? sprintMultiplier : 1);
-      target.transform.position.x += normalizedX * speed * delta;
-      target.transform.position.z += normalizedZ * speed * delta;
-      target.transform.rotation.y = Math.atan2(normalizedX, normalizedZ);
-    }
+    const speed =
+      canMove && length > 0
+        ? moveSpeed * (isBindingDown(input, inputBindings.sprint) ? sprintMultiplier : 1)
+        : 0;
 
-    settleOnGround();
-
-    if (canMove && wasBindingPressed(input, inputBindings.jump) && jumpsRemaining > 0) {
-      verticalVelocity = jumpVelocity;
-      jumpsRemaining -= 1;
-    }
-
-    verticalVelocity -= gravity * delta;
-    target.transform.position.y += verticalVelocity * delta;
-
-    settleOnGround();
-
-    if (options.bounds) {
-      target.transform.position.x = clamp(
-        target.transform.position.x,
-        options.bounds.minX,
-        options.bounds.maxX,
-      );
-      target.transform.position.z = clamp(
-        target.transform.position.z,
-        options.bounds.minZ,
-        options.bounds.maxZ,
-      );
-    }
+    motor.step({
+      delta,
+      move: canMove ? { x, z } : undefined,
+      speed,
+      jump: canMove && wasBindingPressed(input, inputBindings.jump),
+    });
 
     const focus = {
       x: target.transform.position.x,
@@ -174,20 +159,9 @@ export function createThirdPersonController(
       targetPitch = options.pitch ?? 0.15;
       yaw = targetYaw;
       pitch = targetPitch;
-      verticalVelocity = 0;
-      jumpsRemaining = options.doubleJump === false ? 1 : 2;
+      motor.reset();
     },
   };
-
-  function settleOnGround(): void {
-    const dynamicGroundY = options.resolveGroundHeight?.(target) ?? groundY;
-
-    if (target.transform.position.y <= dynamicGroundY && verticalVelocity <= 0) {
-      target.transform.position.y = dynamicGroundY;
-      verticalVelocity = 0;
-      jumpsRemaining = options.doubleJump === false ? 1 : 2;
-    }
-  }
 }
 
 function clamp(value: number, min: number, max: number): number {

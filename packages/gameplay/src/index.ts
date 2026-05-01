@@ -38,6 +38,14 @@ export {
   type MaterialPresetKind,
 } from './materials';
 export {
+  createCharacterMotor,
+  type CharacterMotor,
+  type CharacterMotorBounds,
+  type CharacterMotorOptions,
+  type CharacterMotorState,
+  type CharacterMotorStepOptions,
+} from './character';
+export {
   createThirdPersonController,
   type ThirdPersonController,
   type ThirdPersonControllerOptions,
