@@ -31,6 +31,7 @@ This recap covers engine and playground work after the initial core/renderer/gam
 - Added pooled projectile emitters with lifetime, target hit callbacks, hit signals, and scene reset integration.
 - Exposed fixed-step runtime configuration through `GameCanvas` for deterministic Vue-hosted simulations.
 - Added runtime clock controls for pause/resume, time scaling, manual stepping, max delta clamping, and fixed-step catch-up limits.
+- Added runtime profiling helpers for frame pacing summaries and over-budget frame detection.
 
 ## Rendering
 

@@ -132,6 +132,7 @@ Renderer lighting can be tuned with `createGame({ renderer: { lighting: { ambien
 Use fixed-step simulation with `createGame({ runtime: { fixedStep: 1 / 60 } })` or `<GameCanvas :runtime="{ fixedStep: 1 / 60 }">`.
 Entities can be parented for compound actors; render and collision queries use world-space transforms.
 Runtime clocks support pause/resume, time scaling, manual stepping, max delta clamping, and fixed-step catch-up limits.
+Runtime profilers summarize frame pacing, FPS ranges, and over-budget frames for HUDs, debug panels, and automated checks.
 Collision bodies support layer/mask filtering, and worlds can create/load serializable snapshots for save, restore, and editor workflows.
 Entities support names and tags for organization, queries, inspection tools, and editor-style workflows.
 Spatial collision queries and gameplay inspection snapshots help build debug overlays, selection tools, objectives, and editor panels without demo-specific engine code.

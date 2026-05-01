@@ -141,7 +141,7 @@ Mochi is web-native first. It should feel natural inside Vue and other frontend 
 - [x] Add debug ray visuals for ray-query and sensor debugging.
 - [ ] Add starter templates by game style.
 - [ ] Add example cookbook.
-- [ ] Add profiling and performance guidance.
+- [x] Add first runtime profiling helper and performance guidance.
 - [ ] Add multiplayer support.
 - [ ] Add anti-cheat guidance and hooks.
 

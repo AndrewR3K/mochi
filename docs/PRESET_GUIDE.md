@@ -201,6 +201,26 @@ const stats = useGameStats();
 const fpsLabel = computed(() => Math.round(stats.fps.value));
 ```
 
+### Runtime profiling
+
+```ts
+import { createRuntimeProfiler } from '@mochi-labs/gameplay';
+
+const profiler = createRuntimeProfiler(game.runtime, {
+  frameBudget: 1 / 60,
+  maxSamples: 180,
+  budgetSource: 'rawDelta',
+});
+
+scene.onFrame(() => {
+  if (profiler.summary.overBudgetFrames > 0) {
+    console.table(profiler.summary);
+  }
+});
+```
+
+Use runtime profilers for frame pacing HUDs, debug panels, and automated performance checks. `rawDelta` catches host-frame stalls even when fixed-step simulation keeps gameplay deltas stable; `delta` measures simulation-step pacing.
+
 ### Vue scene lifecycle
 
 ```ts
