@@ -25,8 +25,9 @@ Avoid imports like `@mochi-labs/gameplay/src/scene`. If a useful API is not expo
 Use core directly for headless/runtime work:
 
 - `World`
-- entities, transforms, names, tags, hierarchy, and snapshots
+- entities, transforms, names, tags, hierarchy, snapshots, and snapshot persistence helpers
 - runtime loop, fixed-step controls, pause/time-scale/manual step
+- runtime profiling helpers
 - input state
 - collision bodies, filtering, point/sphere/ray queries
 - camera viewport rays
@@ -48,6 +49,7 @@ Use gameplay as the default game-facing entry point:
 - `createGame`
 - scene lifecycle helpers
 - controller presets
+- character motors
 - collision helpers
 - material presets
 - events

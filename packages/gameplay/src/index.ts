@@ -38,6 +38,14 @@ export {
   type MaterialPresetKind,
 } from './materials';
 export {
+  createCharacterMotor,
+  type CharacterMotor,
+  type CharacterMotorBounds,
+  type CharacterMotorOptions,
+  type CharacterMotorState,
+  type CharacterMotorStepOptions,
+} from './character';
+export {
   createThirdPersonController,
   type ThirdPersonController,
   type ThirdPersonControllerOptions,
@@ -171,6 +179,11 @@ export type {
   Renderable,
   Runtime,
   RuntimeOptions,
+  RuntimeProfiler,
+  RuntimeProfilerBudgetSource,
+  RuntimeProfilerOptions,
+  RuntimeProfilerSample,
+  RuntimeProfilerSummary,
   SphereCollisionOptions,
   SphereCollisionShape,
   Transform,
@@ -178,7 +191,9 @@ export type {
   ViewportPoint,
   World,
   WorldEntitySnapshot,
+  MemoryWorldSnapshotStore,
   WorldSnapshot,
+  WorldSnapshotStore,
 } from '@mochi-labs/core';
 export {
   DEFAULT_COLLISION_LAYER,
@@ -189,12 +204,16 @@ export {
   createCameraRay,
   createBoxCollisionBody,
   createComponentType,
+  createMemoryWorldSnapshotStore,
+  createRuntimeProfiler,
   createSphereCollisionBody,
+  deserializeWorldSnapshot,
   getCameraForward,
   getCollisionBody,
   getComponent,
   getEntityWorldPosition,
   hasComponent,
+  loadWorldSnapshot,
   overlapsCollisionBodies,
   queryCollisionBodies,
   queryCollisionBodiesAlongRay,
@@ -204,9 +223,12 @@ export {
   queryComponents,
   queryTriggerPairs,
   removeComponent,
+  saveWorldSnapshot,
+  serializeWorldSnapshot,
   setBoxCollisionBody,
   setComponent,
   setSphereCollisionBody,
+  summarizeRuntimeSamples,
   vec3,
 } from '@mochi-labs/core';
 export type {

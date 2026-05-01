@@ -44,6 +44,30 @@ import { createControllerPreset } from '@mochi-labs/gameplay';
 const controller = createControllerPreset(game, 'thirdPersonOrbit', { target: player });
 ```
 
+### Character motor
+
+```ts
+import { createCharacterMotor } from '@mochi-labs/gameplay';
+
+const motor = createCharacterMotor({
+  target: player,
+  maxJumps: 2,
+  resolveGroundHeight: () => currentPlatformY,
+  bounds: { minX: -12, maxX: 12, minZ: -12, maxZ: 12 },
+});
+
+scene.onFrame(({ delta }) => {
+  motor.step({
+    delta,
+    move: { x: inputX, z: inputZ },
+    speed: 5.5,
+    jump: jumpPressed,
+  });
+});
+```
+
+Use `createCharacterMotor` when you want grounded movement, jump state, gravity, bounds, and dynamic ground height without taking a camera preset. The third-person controller presets use the same motor internally.
+
 ### Scene reset
 
 ```ts
@@ -228,6 +252,26 @@ const stats = useGameStats();
 const fpsLabel = computed(() => Math.round(stats.fps.value));
 ```
 
+### Runtime profiling
+
+```ts
+import { createRuntimeProfiler } from '@mochi-labs/gameplay';
+
+const profiler = createRuntimeProfiler(game.runtime, {
+  frameBudget: 1 / 60,
+  maxSamples: 180,
+  budgetSource: 'rawDelta',
+});
+
+scene.onFrame(() => {
+  if (profiler.summary.overBudgetFrames > 0) {
+    console.table(profiler.summary);
+  }
+});
+```
+
+Use runtime profilers for frame pacing HUDs, debug panels, and automated performance checks. `rawDelta` catches host-frame stalls even when fixed-step simulation keeps gameplay deltas stable; `delta` measures simulation-step pacing.
+
 ### Vue scene lifecycle
 
 ```ts
@@ -299,13 +343,21 @@ The child keeps a local transform, while rendering and collision queries use the
 ### World snapshots
 
 ```ts
-const saved = game.world.createWorldSnapshot();
+import {
+  createMemoryWorldSnapshotStore,
+  loadWorldSnapshot,
+  saveWorldSnapshot,
+  serializeWorldSnapshot,
+} from '@mochi-labs/gameplay';
 
-game.world.clear();
-game.world.loadWorldSnapshot(saved);
+const saved = serializeWorldSnapshot(game.world.createWorldSnapshot());
+const store = createMemoryWorldSnapshotStore();
+
+await saveWorldSnapshot(game.world, store, 'checkpoint-1');
+await loadWorldSnapshot(game.world, store, 'checkpoint-1');
 ```
 
-World snapshots include camera state, entity transforms, hierarchy, renderables, and world-space positions. Keep game-specific state such as score, inventory, quest flags, and network state in game code or dedicated systems.
+World snapshots include camera state, entity transforms, hierarchy, renderables, and world-space positions. Persistence helpers keep serialization and storage adapter boundaries consistent. Use the memory store for tests and prototypes; production saves can implement `WorldSnapshotStore` for files, browser storage, cloud saves, or database-backed slots. Keep game-specific state such as score, inventory, quest flags, and network state in game code or dedicated systems.
 
 ### Game inspection snapshots
 

@@ -56,6 +56,15 @@ export {
   type PointerState,
 } from './input';
 export {
+  createRuntimeProfiler,
+  summarizeRuntimeSamples,
+  type RuntimeProfiler,
+  type RuntimeProfilerBudgetSource,
+  type RuntimeProfilerOptions,
+  type RuntimeProfilerSample,
+  type RuntimeProfilerSummary,
+} from './profiler';
+export {
   composeTransform,
   mat4Identity,
   mat4Invert,
@@ -69,6 +78,15 @@ export {
   type Transform,
   type Vec3,
 } from './math';
+export {
+  createMemoryWorldSnapshotStore,
+  deserializeWorldSnapshot,
+  loadWorldSnapshot,
+  saveWorldSnapshot,
+  serializeWorldSnapshot,
+  type MemoryWorldSnapshotStore,
+  type WorldSnapshotStore,
+} from './persistence';
 export {
   createRuntime,
   type FrameCallback,
