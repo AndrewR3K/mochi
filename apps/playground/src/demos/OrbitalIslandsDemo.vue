@@ -21,6 +21,7 @@ const game = useGame();
 const scene = game.createScene();
 const beaconsCollected = shallowRef(0);
 const timer = shallowRef(60);
+const lives = shallowRef(3);
 const state = shallowRef<'running' | 'won' | 'lost'>('running');
 
 const player = createBox('island-player', 0, 0.7, 0, 0.85, 1.4, 0.85, {
@@ -36,6 +37,7 @@ const platforms: BoxCollider[] = [
   createPlatform('island-d', -6.1, 4.4, 7.1, 3.2, 0.4, 3.2, { x: 0.32, y: 0.2, z: 0.56 }),
   createPlatform('island-goal', 0, 5.7, 0.2, 4.5, 0.4, 4.5, { x: 0.38, y: 0.3, z: 0.68 }),
 ];
+let lastPlatform = platforms[0];
 
 const beacons: Beacon[] = [
   createBeacon('beacon-1', 6.5, -3.2, 2.05),
@@ -56,14 +58,21 @@ scene.add(controller);
 
 const label = computed(() => {
   if (state.value === 'won') return 'All beacons synced';
-  if (state.value === 'lost') return 'Void drift detected';
+  if (state.value === 'lost') return 'Signal lost';
   return `${beaconsCollected.value}/5 beacons`;
+});
+
+const meta = computed(() => {
+  if (state.value === 'lost') return 'Out of lives';
+  return `${Math.ceil(timer.value)}s  |  ${lives.value} lives`;
 });
 
 scene.onFrame(({ delta, elapsed }) => {
   if (state.value === 'running') {
     timer.value = Math.max(0, timer.value - delta);
     if (timer.value === 0) state.value = 'lost';
+    updateLastPlatform();
+    if (isTouchingVoidGround()) loseLife();
   }
 
   for (const beacon of beacons) {
@@ -139,14 +148,57 @@ function resolveGroundHeight(): number {
     snapDistance: 0.6,
   });
 }
+
+function updateLastPlatform(): void {
+  const platform = standingPlatform();
+  if (platform) {
+    lastPlatform = platform;
+  }
+}
+
+function standingPlatform(): BoxCollider | undefined {
+  const playerHalfHeight = player.transform.scale.y * 0.5;
+
+  return platforms.find((platform) => {
+    const dx = Math.abs(player.transform.position.x - platform.entity.transform.position.x);
+    const dz = Math.abs(player.transform.position.z - platform.entity.transform.position.z);
+    const onFootprint = dx < platform.halfX + 0.24 && dz < platform.halfZ + 0.24;
+    const standingY = platform.topY + playerHalfHeight;
+    return onFootprint && Math.abs(player.transform.position.y - standingY) < 0.12;
+  });
+}
+
+function isTouchingVoidGround(): boolean {
+  return !standingPlatform() && player.transform.position.y <= 0.72;
+}
+
+function loseLife(): void {
+  lives.value -= 1;
+
+  if (lives.value <= 0) {
+    state.value = 'lost';
+    return;
+  }
+
+  respawnOnLastPlatform();
+}
+
+function respawnOnLastPlatform(): void {
+  player.transform.position.x = lastPlatform.entity.transform.position.x;
+  player.transform.position.y = lastPlatform.topY + player.transform.scale.y * 0.5 + 0.04;
+  player.transform.position.z = lastPlatform.entity.transform.position.z;
+  player.transform.rotation.x = 0;
+  player.transform.rotation.z = 0;
+  controller.reset();
+}
 </script>
 
 <template>
   <DemoHud
     mode="ORBITAL ISLANDS"
     :title="label"
-    :meta="`${Math.ceil(timer)}s`"
-    hint="WASD + Space/Double-jump. Reach every floating beacon."
+    :meta="meta"
+    hint="WASD + Space/Double-jump. Falling to the ground costs a life and returns you to your last island."
     position="top-right"
   />
 </template>
