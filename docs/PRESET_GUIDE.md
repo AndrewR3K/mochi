@@ -316,13 +316,21 @@ The child keeps a local transform, while rendering and collision queries use the
 ### World snapshots
 
 ```ts
-const saved = game.world.createWorldSnapshot();
+import {
+  createMemoryWorldSnapshotStore,
+  loadWorldSnapshot,
+  saveWorldSnapshot,
+  serializeWorldSnapshot,
+} from '@mochi-labs/gameplay';
 
-game.world.clear();
-game.world.loadWorldSnapshot(saved);
+const saved = serializeWorldSnapshot(game.world.createWorldSnapshot());
+const store = createMemoryWorldSnapshotStore();
+
+await saveWorldSnapshot(game.world, store, 'checkpoint-1');
+await loadWorldSnapshot(game.world, store, 'checkpoint-1');
 ```
 
-World snapshots include camera state, entity transforms, hierarchy, renderables, and world-space positions. Keep game-specific state such as score, inventory, quest flags, and network state in game code or dedicated systems.
+World snapshots include camera state, entity transforms, hierarchy, renderables, and world-space positions. Persistence helpers keep serialization and storage adapter boundaries consistent. Use the memory store for tests and prototypes; production saves can implement `WorldSnapshotStore` for files, browser storage, cloud saves, or database-backed slots. Keep game-specific state such as score, inventory, quest flags, and network state in game code or dedicated systems.
 
 ### Game inspection snapshots
 

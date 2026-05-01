@@ -11,6 +11,7 @@ This recap covers engine and playground work after the initial core/renderer/gam
 - Added runtime collision bodies for box, sphere, and trigger-style overlap queries.
 - Added parent/child entity hierarchy so compound actors can keep local transforms while rendering and collision queries use world-space transforms.
 - Added serializable world snapshots for engine-owned scene state, including camera state, hierarchy, transforms, renderables, and world positions.
+- Added world snapshot persistence helpers with JSON serialization, load/save helpers, and an in-memory store adapter.
 - Added entity names and tags for organization, queries, inspection, and editor-style workflows.
 - Added collision layer/mask filtering to runtime collision bodies.
 - Added spatial collision queries for point and sphere-volume checks.

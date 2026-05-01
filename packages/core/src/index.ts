@@ -79,6 +79,15 @@ export {
   type Vec3,
 } from './math';
 export {
+  createMemoryWorldSnapshotStore,
+  deserializeWorldSnapshot,
+  loadWorldSnapshot,
+  saveWorldSnapshot,
+  serializeWorldSnapshot,
+  type MemoryWorldSnapshotStore,
+  type WorldSnapshotStore,
+} from './persistence';
+export {
   createRuntime,
   type FrameCallback,
   type FrameContext,

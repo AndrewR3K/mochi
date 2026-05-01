@@ -25,7 +25,7 @@ Avoid imports like `@mochi-labs/gameplay/src/scene`. If a useful API is not expo
 Use core directly for headless/runtime work:
 
 - `World`
-- entities, transforms, names, tags, hierarchy, and snapshots
+- entities, transforms, names, tags, hierarchy, snapshots, and snapshot persistence helpers
 - runtime loop, fixed-step controls, pause/time-scale/manual step
 - runtime profiling helpers
 - input state

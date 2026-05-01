@@ -135,6 +135,7 @@ Entities can be parented for compound actors; render and collision queries use w
 Runtime clocks support pause/resume, time scaling, manual stepping, max delta clamping, and fixed-step catch-up limits.
 Runtime profilers summarize frame pacing, FPS ranges, and over-budget frames for HUDs, debug panels, and automated checks.
 Collision bodies support layer/mask filtering, and worlds can create/load serializable snapshots for save, restore, and editor workflows.
+Snapshot persistence helpers provide JSON serialization plus a store interface for checkpoint slots and future file, browser, cloud, or database adapters.
 Entities support names and tags for organization, queries, inspection tools, and editor-style workflows.
 Spatial collision queries and gameplay inspection snapshots help build debug overlays, selection tools, objectives, and editor panels without demo-specific engine code.
 Ray collision queries support picking, aiming, line-of-sight checks, and editor selection.
