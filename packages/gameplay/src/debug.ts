@@ -1,6 +1,10 @@
-import type { Entity, Vec3 } from '@mochi-labs/core';
+import type { Entity, FrameContext, Vec3 } from '@mochi-labs/core';
 
 import type { BoxCollider } from './collision';
+import {
+  createGameInspectionSnapshot,
+  type GameInspectionSnapshot,
+} from './inspection';
 import { createMaterial } from './materials';
 import type { Disposable, GameScene } from './scene';
 
@@ -9,6 +13,12 @@ type DebugEnabled = boolean | (() => boolean);
 export interface DebugVisual extends Disposable {
   readonly enabled: boolean;
   setEnabled(enabled: boolean): void;
+}
+
+export interface DebugOverlay extends DebugVisual {
+  readonly snapshot: GameInspectionSnapshot;
+  readonly visuals: readonly DebugVisual[];
+  refresh(): GameInspectionSnapshot;
 }
 
 export interface DebugBoxBoundsOptions {
@@ -36,12 +46,111 @@ export interface DebugRayOptions {
   thickness?: number;
 }
 
+export interface DebugOverlayRayOptions extends DebugRayOptions {
+  direction: Vec3 | (() => Vec3);
+  origin: Vec3 | (() => Vec3);
+}
+
+export interface DebugOverlayOptions {
+  boxes?: readonly BoxCollider[];
+  boxOptions?: Omit<DebugBoxBoundsOptions, 'enabled'>;
+  enabled?: DebugEnabled;
+  onSnapshot?: (snapshot: GameInspectionSnapshot) => void;
+  rays?: readonly DebugOverlayRayOptions[];
+  refreshInterval?: number;
+  targets?: readonly Entity[];
+  targetOptions?: Omit<DebugTargetMarkerOptions, 'enabled' | 'id'>;
+}
+
 type EdgeKind = 'north' | 'south' | 'east' | 'west';
 
 interface DebugEdge {
   entity: Entity;
   collider: BoxCollider;
   kind: EdgeKind;
+}
+
+export function createDebugOverlay(
+  scene: GameScene,
+  options: DebugOverlayOptions = {},
+): DebugOverlay {
+  const visuals: DebugVisual[] = [];
+  let enabled = readEnabled(options.enabled, false);
+  let snapshot = createGameInspectionSnapshot(scene.game);
+  let refreshIn = 0;
+  const refreshInterval = Math.max(0, options.refreshInterval ?? 0.25);
+  const isEnabled = () => enabled;
+
+  if (options.boxes?.length) {
+    visuals.push(createDebugBoxBounds(scene, options.boxes, {
+      ...options.boxOptions,
+      enabled: isEnabled,
+    }));
+  }
+
+  for (const target of options.targets ?? []) {
+    visuals.push(createDebugTargetMarker(scene, target, {
+      ...options.targetOptions,
+      enabled: isEnabled,
+    }));
+  }
+
+  for (const ray of options.rays ?? []) {
+    visuals.push(createDebugRay(scene, ray.origin, ray.direction, {
+      ...ray,
+      enabled: isEnabled,
+    }));
+  }
+
+  const refresh = () => {
+    snapshot = createGameInspectionSnapshot(scene.game);
+    options.onSnapshot?.(snapshot);
+    return snapshot;
+  };
+
+  const sync = ({ delta }: FrameContext) => {
+    enabled = readEnabled(options.enabled, enabled);
+    if (!enabled) return;
+
+    refreshIn -= delta;
+    if (refreshIn > 0) return;
+
+    refresh();
+    refreshIn = refreshInterval;
+  };
+
+  refresh();
+  const unsubscribe = scene.onFrame(sync);
+  scene.addReset(() => {
+    refreshIn = 0;
+    refresh();
+  });
+
+  return {
+    get enabled() {
+      return enabled;
+    },
+    get snapshot() {
+      return snapshot;
+    },
+    get visuals() {
+      return visuals;
+    },
+    setEnabled(value) {
+      enabled = value;
+      for (const visual of visuals) {
+        visual.setEnabled(value);
+      }
+      if (value) refresh();
+    },
+    refresh,
+    dispose() {
+      unsubscribe();
+      for (const visual of visuals) {
+        visual.dispose();
+      }
+    },
+  };
 }
 
 export function createDebugBoxBounds(

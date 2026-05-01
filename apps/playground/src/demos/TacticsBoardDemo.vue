@@ -2,12 +2,9 @@
 import { useGame } from '@mochi-labs/vue';
 import {
   createBoxCollider,
-  createDebugBoxBounds,
-  createDebugRay,
-  createDebugTargetMarker,
+  createDebugOverlay,
   createGameInspectionSnapshot,
   createIsometricController,
-  createSceneScheduler,
   overlapsCollisionBodies,
   resolveBoxCollisions,
   setBoxCollisionBody,
@@ -36,7 +33,6 @@ const timer = shallowRef(70);
 const state = shallowRef<'running' | 'won' | 'lost'>('running');
 const debugBounds = shallowRef(false);
 const inspection = shallowRef(createGameInspectionSnapshot(game));
-const scheduler = createSceneScheduler(scene);
 
 scene.createEntity({
   id: 'tactics-board',
@@ -65,16 +61,21 @@ const blockers: BoxCollider[] = [
   createBlocker('tactics-blocker-b', 4.2, 0.55, 2.2, 1.2, 1.1, 5.2, { x: 0.18, y: 0.2, z: 0.3 }),
   createBlocker('tactics-blocker-c', 0, 0.45, 0, 3.5, 0.9, 1.1, { x: 0.22, y: 0.24, z: 0.36 }),
 ];
-createDebugBoxBounds(scene, blockers, {
+const debugOverlay = createDebugOverlay(scene, {
+  boxes: blockers,
   enabled: () => debugBounds.value,
-});
-createDebugTargetMarker(scene, unit, {
-  enabled: () => debugBounds.value,
-});
-createDebugRay(scene, () => unit.transform.position, () => ({ x: 0, y: 0, z: -1 }), {
-  id: 'tactics-debug-ray',
-  enabled: () => debugBounds.value,
-  length: 3,
+  targets: [unit],
+  rays: [
+    {
+      id: 'tactics-debug-ray',
+      origin: () => unit.transform.position,
+      direction: () => ({ x: 0, y: 0, z: -1 }),
+      length: 3,
+    },
+  ],
+  onSnapshot: (snapshot) => {
+    inspection.value = snapshot;
+  },
 });
 const points: CapturePoint[] = [
   createCapturePoint('capture-a', -7, -6),
@@ -98,8 +99,6 @@ scene.addReset(() => {
     point.secured = false;
   }
 });
-scene.addReset(scheduleInspectionRefresh);
-scheduleInspectionRefresh();
 
 const label = computed(() => {
   if (state.value === 'won') return 'All zones secured';
@@ -209,15 +208,7 @@ function resetBoard(): void {
 
 function toggleDebugBounds(): void {
   debugBounds.value = !debugBounds.value;
-  inspection.value = createGameInspectionSnapshot(game);
-}
-
-function scheduleInspectionRefresh(): void {
-  scheduler.interval(0.25, () => {
-    if (debugBounds.value) {
-      inspection.value = createGameInspectionSnapshot(game);
-    }
-  });
+  inspection.value = debugOverlay.refresh();
 }
 </script>
 

@@ -299,16 +299,29 @@ const player = scene.createEntity({
 ### Debug bounds
 
 ```ts
-import { createDebugBoxBounds, createDebugTargetMarker } from '@mochi-labs/gameplay';
+import { createDebugOverlay } from '@mochi-labs/gameplay';
 
-createDebugBoxBounds(scene, colliders, {
+const debugOverlay = createDebugOverlay(scene, {
+  boxes: colliders,
   enabled: () => showDebugBounds.value,
+  targets: [player],
+  rays: [
+    {
+      id: 'aim-ray',
+      origin: () => player.transform.position,
+      direction: () => ({ x: 0, y: 0, z: -1 }),
+      length: 4,
+    },
+  ],
+  onSnapshot: (snapshot) => {
+    debugStats.value = snapshot;
+  },
 });
 
-createDebugTargetMarker(scene, player, {
-  enabled: () => showDebugBounds.value,
-});
+debugOverlay.refresh();
 ```
+
+Use `createDebugOverlay` when a HUD needs visual debug entities and inspection snapshots from one scene-owned helper. Use the lower-level `createDebugBoxBounds`, `createDebugTargetMarker`, and `createDebugRay` helpers when you need to compose a custom overlay yourself.
 
 ### Input bindings
 

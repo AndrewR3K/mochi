@@ -24,6 +24,7 @@ This recap covers engine and playground work after the initial core/renderer/gam
 - Added gameplay trigger volumes and damage zones with enter/stay/exit events and interval-based damage callbacks.
 - Added shared collision helpers for box colliders, 2D distance checks, ground height resolution, box collision resolution, and stepped collision movement.
 - Added debug helpers for rendering collider footprints and target markers through scene-owned entities.
+- Added a debug overlay helper that combines scene-owned bounds, target markers, rays, and throttled inspection snapshots for HUDs and editor-style panels.
 - Added typed event signals for small gameplay events like collection, damage, score, and mission state changes.
 - Added configurable keyboard bindings for character and vehicle controllers while keeping WASD/arrows as the default path.
 - Added a reusable character motor for grounded movement, jumping, bounds, and dynamic ground height outside camera presets.

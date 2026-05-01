@@ -59,7 +59,7 @@ Use gameplay as the default game-facing entry point:
 - scene scheduler
 - entity blueprints
 - asset registry
-- inspection snapshots and debug visuals
+- inspection snapshots, debug visuals, and debug overlays
 
 ## `@mochi-labs/vue`
 
