@@ -27,6 +27,7 @@ Use core directly for headless/runtime work:
 - `World`
 - entities, transforms, names, tags, hierarchy, and snapshots
 - runtime loop, fixed-step controls, pause/time-scale/manual step
+- runtime profiling helpers
 - input state
 - collision bodies, filtering, point/sphere/ray queries
 - camera viewport rays

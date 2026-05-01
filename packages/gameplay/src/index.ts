@@ -172,6 +172,11 @@ export type {
   Renderable,
   Runtime,
   RuntimeOptions,
+  RuntimeProfiler,
+  RuntimeProfilerBudgetSource,
+  RuntimeProfilerOptions,
+  RuntimeProfilerSample,
+  RuntimeProfilerSummary,
   SphereCollisionOptions,
   SphereCollisionShape,
   Transform,
@@ -190,6 +195,7 @@ export {
   createCameraRay,
   createBoxCollisionBody,
   createComponentType,
+  createRuntimeProfiler,
   createSphereCollisionBody,
   getCameraForward,
   getCollisionBody,
@@ -208,6 +214,7 @@ export {
   setBoxCollisionBody,
   setComponent,
   setSphereCollisionBody,
+  summarizeRuntimeSamples,
   vec3,
 } from '@mochi-labs/core';
 export type {
