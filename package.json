@@ -15,7 +15,7 @@
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
     "build": "pnpm --filter playground build && pnpm --filter alpha-starter build",
-    "test": "node --import tsx --test \"packages/**/test/**/*.test.ts\"",
+    "test": "node scripts/run-tests.mjs",
     "version:bump": "node scripts/bump-version.mjs",
     "version:check": "node scripts/bump-version.mjs --check",
     "typecheck": "pnpm -r --workspace-concurrency=1 --if-present typecheck && pnpm exec tsc -p tsconfig.test.json --noEmit",
