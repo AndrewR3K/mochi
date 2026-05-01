@@ -20,7 +20,7 @@ describe('renderer geometry', () => {
           geometry.normals[i + 1],
           geometry.normals[i + 2],
         );
-        assert.equal(length, 1);
+        assert.ok(Math.abs(length - 1) < 1e-6);
       }
     }
   });

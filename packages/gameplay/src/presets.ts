@@ -39,13 +39,22 @@ type VehiclePresetOptions = Pick<
   VehicleControllerOptions,
   | 'acceleration'
   | 'brakeDeceleration'
+  | 'autoThrottle'
   | 'drag'
   | 'maxSpeed'
   | 'reverseSpeed'
   | 'turnSpeed'
+  | 'maxSteerAngle'
+  | 'steeringResponse'
+  | 'wheelBase'
+  | 'lateralGrip'
+  | 'rollingResistance'
+  | 'aerodynamicDrag'
   | 'cameraDistance'
   | 'cameraHeight'
   | 'cameraLerp'
+  | 'cameraMode'
+  | 'cameraLead'
   | 'focusHeight'
   | 'input'
 >;
@@ -218,17 +227,17 @@ export function createIsometricController(
     jumpVelocity: 0,
     gravity: 28,
     doubleJump: false,
-    cameraDistance: 11.5,
-    cameraHeight: 4.2,
+    cameraDistance: 10.5,
+    cameraHeight: 2.2,
     focusHeight: 0.25,
     cameraLerp: 10,
     cameraRotationLerp: 16,
     lookSensitivity: 0,
     rotateButtons: [],
     yaw: Math.PI * 0.25,
-    minPitch: -0.9,
-    maxPitch: -0.9,
-    pitch: -0.9,
+    minPitch: 0.62,
+    maxPitch: 0.62,
+    pitch: 0.62,
     ...options,
   });
 }

@@ -66,6 +66,27 @@ describe('controller presets', () => {
     assert.equal(target.transform.position.y, 0);
   });
 
+  it('keeps the isometric preset camera above the target with fixed diagonal framing', () => {
+    const game = createHeadlessGame();
+    const target = game.world.createEntity({
+      id: 'iso',
+      transform: { position: { x: 0, y: 0.7, z: 0 } },
+    });
+    const controller = createControllerPreset(game, 'isometric', {
+      target,
+      bounds: { minX: -20, maxX: 20, minZ: -20, maxZ: 20 },
+    });
+
+    for (let i = 0; i < 120; i += 1) {
+      game.runtime.tick(1 / 60);
+    }
+
+    assert.ok(game.world.camera.position.y > game.world.camera.target.y + 2);
+    assert.ok(game.world.camera.position.x < target.transform.position.x);
+    assert.ok(game.world.camera.position.z > target.transform.position.z);
+    controller.dispose();
+  });
+
   it('accelerates and resets vehicle arcade controllers', () => {
     const game = createHeadlessGame();
     const target = game.world.createEntity({ id: 'vehicle' });
@@ -82,6 +103,26 @@ describe('controller presets', () => {
     assert.equal(controller.getSpeed(), 0);
     assert.deepEqual(target.transform.position, { x: 0, y: 0, z: 0 });
     assert.equal(target.transform.rotation.y, 0);
+  });
+
+  it('steers vehicle movement from front-wheel angle while staying on groundY', () => {
+    const game = createHeadlessGame();
+    const target = game.world.createEntity({ id: 'vehicle' });
+    const controller = createVehicleArcadeController(game, {
+      target,
+      groundY: 1.25,
+    });
+
+    game.runtime.inputWriter.setKey('KeyW', true);
+    game.runtime.inputWriter.setKey('KeyD', true);
+    for (let i = 0; i < 24; i += 1) {
+      game.runtime.tick(1 / 60);
+    }
+
+    assert.ok(controller.getSteerAngle() > 0);
+    assert.ok(target.transform.rotation.y > 0);
+    assert.ok(target.transform.position.x > 0.02);
+    assert.equal(target.transform.position.y, 1.25);
   });
 
   it('flies spaceflight controllers in open 3D space', () => {
