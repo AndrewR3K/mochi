@@ -11,7 +11,14 @@ const src = computed(() => {
 </script>
 
 <template>
-  <iframe class="demo-frame" :src="src" allow="gamepad; fullscreen" />
+  <iframe
+    class="demo-frame"
+    title="Mochi live demo playground"
+    :src="src"
+    allow="gamepad; fullscreen"
+    loading="lazy"
+    referrerpolicy="no-referrer"
+  />
 </template>
 
 <style scoped>

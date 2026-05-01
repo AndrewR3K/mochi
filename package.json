@@ -19,7 +19,8 @@
     "version:bump": "node scripts/bump-version.mjs",
     "version:check": "node scripts/bump-version.mjs --check",
     "typecheck": "pnpm -r --workspace-concurrency=1 --if-present typecheck && pnpm exec tsc -p tsconfig.test.json --noEmit",
-    "verify": "pnpm version:check && pnpm typecheck && pnpm test && pnpm build && pnpm docs:build"
+    "verify": "pnpm version:check && pnpm typecheck && pnpm test && pnpm build && pnpm docs:build",
+    "security:audit": "pnpm audit --audit-level=high"
   },
   "devDependencies": {
     "@types/node": "22.0.0",
