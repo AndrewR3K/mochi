@@ -36,30 +36,35 @@ const ship = scene.createEntity({
   id: 'drift-runner',
   transform: {
     position: { x: 0, y: 3, z: 10 },
-    scale: { x: 0.9, y: 0.35, z: 1.8 },
-  },
-  renderable: {
-    primitive: 'cube',
-    material: { color: { x: 0.28, y: 0.95, z: 0.78 } },
   },
 });
 
-const nose = createBox('ship-nose', 0, 3, 8.65, 0.38, 0.28, 0.6, {
+createShipPart('ship-hull', 0, 0, 0, 0.9, 0.35, 1.8, {
+  x: 0.28,
+  y: 0.95,
+  z: 0.78,
+});
+createShipPart('ship-canopy', 0, 0.24, -0.28, 0.44, 0.18, 0.52, {
+  x: 0.12,
+  y: 0.28,
+  z: 0.42,
+});
+createShipPart('ship-nose', 0, 0, -1.15, 0.38, 0.28, 0.6, {
   x: 0.85,
   y: 1,
   z: 0.74,
 });
-const leftWing = createBox('left-wing', -0.9, 3, 10.25, 0.9, 0.16, 0.9, {
+createShipPart('left-wing', -0.9, 0, 0.25, 0.9, 0.16, 0.9, {
   x: 0.16,
   y: 0.58,
   z: 1,
 });
-const rightWing = createBox('right-wing', 0.9, 3, 10.25, 0.9, 0.16, 0.9, {
+createShipPart('right-wing', 0.9, 0, 0.25, 0.9, 0.16, 0.9, {
   x: 0.16,
   y: 0.58,
   z: 1,
 });
-const engineGlow = createBox('engine-glow', 0, 3, 11.15, 0.55, 0.18, 0.24, {
+const engineGlow = createShipPart('engine-glow', 0, 0, 1.18, 0.55, 0.18, 0.24, {
   x: 0.35,
   y: 0.75,
   z: 1,
@@ -155,7 +160,6 @@ const label = computed(() => {
 scene.onFrame(({ delta, elapsed, input }) => {
   speed.value = controller.getSpeed();
   altitude.value = ship.transform.position.y;
-  syncShipParts();
   fireCooldown = Math.max(0, fireCooldown - delta);
 
   const flame = 0.7 + Math.sin(elapsed * 18) * 0.25 + Math.min(speed.value / 24, 1) * 0.55;
@@ -201,34 +205,6 @@ scene.onFrame(({ delta, elapsed, input }) => {
 onBeforeUnmount(() => {
   scene.dispose();
 });
-
-function syncShipParts(): void {
-  const forward = getSpaceflightForward(ship);
-  const yaw = ship.transform.rotation.y;
-  const right = { x: Math.cos(yaw), z: Math.sin(yaw) };
-
-  setPartTransform(nose, forward, right, 1.05, 0);
-  setPartTransform(leftWing, forward, right, -0.15, -0.95);
-  setPartTransform(rightWing, forward, right, -0.15, 0.95);
-  setPartTransform(engineGlow, forward, right, -1.05, 0);
-}
-
-function setPartTransform(
-  part: Entity,
-  forward: { x: number; y: number; z: number },
-  right: { x: number; z: number },
-  forwardOffset: number,
-  rightOffset: number,
-): void {
-  part.transform.position.x =
-    ship.transform.position.x + forward.x * forwardOffset + right.x * rightOffset;
-  part.transform.position.y = ship.transform.position.y + forward.y * forwardOffset;
-  part.transform.position.z =
-    ship.transform.position.z + forward.z * forwardOffset + right.z * rightOffset;
-  part.transform.rotation.x = ship.transform.rotation.x;
-  part.transform.rotation.y = ship.transform.rotation.y;
-  part.transform.rotation.z = ship.transform.rotation.z;
-}
 
 function createBeacon(
   id: string,
@@ -282,13 +258,37 @@ function fireBlaster(): void {
   const forward = getSpaceflightForward(ship);
   blasters.fire({
     position: {
-      x: nose.transform.position.x + forward.x * 0.5,
-      y: nose.transform.position.y + forward.y * 0.5,
-      z: nose.transform.position.z + forward.z * 0.5,
+      x: ship.transform.position.x + forward.x * 1.6,
+      y: ship.transform.position.y + forward.y * 1.6,
+      z: ship.transform.position.z + forward.z * 1.6,
     },
     direction: forward,
   });
   fireCooldown = 0.16;
+}
+
+function createShipPart(
+  id: string,
+  x: number,
+  y: number,
+  z: number,
+  sx: number,
+  sy: number,
+  sz: number,
+  color: { x: number; y: number; z: number },
+): Entity {
+  return scene.createEntity({
+    id,
+    parent: ship,
+    transform: {
+      position: { x, y, z },
+      scale: { x: sx, y: sy, z: sz },
+    },
+    renderable: {
+      primitive: 'cube',
+      material: { color },
+    },
+  });
 }
 
 function completeMissionIfReady(): void {

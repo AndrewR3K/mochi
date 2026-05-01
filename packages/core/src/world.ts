@@ -12,7 +12,7 @@ import {
 import type { ComponentStore } from './components';
 
 export type EntityId = string;
-export type PrimitiveKind = 'cube' | 'plane';
+export type PrimitiveKind = 'cube' | 'plane' | 'cylinder';
 
 export interface Material {
   color: Vec3;

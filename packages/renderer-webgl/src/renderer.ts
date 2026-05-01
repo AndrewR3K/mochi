@@ -96,6 +96,7 @@ export function createWebGLRenderer(
   const gpuGeometry: Record<PrimitiveKind, GpuGeometry> = {
     cube: uploadGeometry(gl, geometries.cube),
     plane: uploadGeometry(gl, geometries.plane),
+    cylinder: uploadGeometry(gl, geometries.cylinder),
   };
 
   gl.enable(gl.DEPTH_TEST);
