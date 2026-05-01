@@ -56,6 +56,15 @@ export {
   type PointerState,
 } from './input';
 export {
+  createRuntimeProfiler,
+  summarizeRuntimeSamples,
+  type RuntimeProfiler,
+  type RuntimeProfilerBudgetSource,
+  type RuntimeProfilerOptions,
+  type RuntimeProfilerSample,
+  type RuntimeProfilerSummary,
+} from './profiler';
+export {
   composeTransform,
   mat4Identity,
   mat4Invert,
