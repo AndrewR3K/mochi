@@ -215,6 +215,33 @@ blasters.fire({
 });
 ```
 
+### Particles
+
+```ts
+import { createParticleEmitter } from '@mochi-labs/gameplay';
+
+const sparks = createParticleEmitter({
+  scene,
+  maxParticles: 48,
+  lifetime: 0.45,
+  size: 0.16,
+  gravity: { x: 0, y: -5, z: 0 },
+  drag: 1.5,
+});
+
+sparks.burst(12, (index) => ({
+  position: enemy.transform.position,
+  direction: {
+    x: Math.cos(index) * 0.8,
+    y: 0.6,
+    z: Math.sin(index) * 0.8,
+  },
+  speed: 5,
+}));
+```
+
+Particle emitters are pooled and scene-owned, so they are safe for repeated sparks, dust, pickup bursts, and small impact effects. They use current engine primitives today and leave room for renderer-native particle backends later.
+
 ### Vue HUD stats
 
 ```ts

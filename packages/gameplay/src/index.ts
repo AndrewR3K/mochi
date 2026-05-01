@@ -122,6 +122,13 @@ export {
   type ProjectileTarget,
 } from './projectiles';
 export {
+  createParticleEmitter,
+  type Particle,
+  type ParticleEmitOptions,
+  type ParticleEmitter,
+  type ParticleEmitterOptions,
+} from './particles';
+export {
   createGameInspectionSnapshot,
   type GameInspectionSnapshot,
   type TagInspection,

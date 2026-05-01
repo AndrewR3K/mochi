@@ -143,6 +143,7 @@ Camera helpers create viewport rays for mouse picking, aiming, sensors, and edit
 Asset registries provide the first reusable loading/cache boundary for future mesh, texture, scene, and audio pipelines.
 Scene schedulers provide lifecycle-bound delays and intervals for cooldowns, waves, UI refreshes, and timed rules.
 Entity blueprints instantiate reusable prefab-style hierarchies while keeping game-specific behavior in game code.
+Pooled particle emitters cover lightweight sparks, dust, pickups, and impact effects with scene-owned cleanup.
 
 ## Playground demos
 
