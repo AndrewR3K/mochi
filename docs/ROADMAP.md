@@ -99,7 +99,7 @@ Mochi is web-native first. It should feel natural inside Vue and other frontend 
 - [ ] Move from basic entities toward a stable scene/world architecture.
 - [x] Add transform hierarchy and parent/child relationships.
 - [x] Add serializable world snapshots for engine-owned scene state.
-- [ ] Add save/load persistence adapters (file based and DB based options).
+- [x] Add first save/load persistence adapter boundary for world snapshots.
 - [ ] Add worker/off-main-thread exploration for simulation.
 
 ### Rendering
