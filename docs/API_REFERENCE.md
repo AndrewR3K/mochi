@@ -53,6 +53,7 @@ Use gameplay as the default game-facing entry point:
 - events
 - triggers and damage zones
 - projectile emitter
+- particle emitter
 - scene scheduler
 - entity blueprints
 - asset registry

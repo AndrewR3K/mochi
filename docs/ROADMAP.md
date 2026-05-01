@@ -111,7 +111,7 @@ Mochi is web-native first. It should feel natural inside Vue and other frontend 
 - [ ] Add WebGPU backend exploration after WebGL2 renderer matures.
 - [ ] Add advanced LOD presets and support.
 - [ ] Add ray tracing direction when the renderer stack is ready.
-- [ ] Add Particle system
+- [x] Add first scene-owned particle emitter for lightweight effects.
 
 ### Assets and animation
 

@@ -29,6 +29,7 @@ This recap covers engine and playground work after the initial core/renderer/gam
 - Reworked `vehicleArcade` and `vehicleSim` to use vehicle-style throttle, braking, steering, drag, and chase camera behavior instead of character-style movement.
 - Added `spaceflightArcade`, a spacecraft controller preset for open 3D movement with thrust, pitch, yaw, roll, vertical strafe, velocity readout, and chase camera behavior.
 - Added pooled projectile emitters with lifetime, target hit callbacks, hit signals, and scene reset integration.
+- Added pooled particle emitters for scene-owned sparks, dust, pickup bursts, and other lightweight effects.
 - Exposed fixed-step runtime configuration through `GameCanvas` for deterministic Vue-hosted simulations.
 - Added runtime clock controls for pause/resume, time scaling, manual stepping, max delta clamping, and fixed-step catch-up limits.
 
